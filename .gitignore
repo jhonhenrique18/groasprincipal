@@ -3,8 +3,6 @@ __pycache__/
 instance/
 *.db
 .env
-static/uploads/*
-!static/uploads/.gitkeep
 venv/
 .venv/
 *.egg-info/

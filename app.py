@@ -340,19 +340,12 @@ def admin_settings():
 # ──────────────────── INIT DB ────────────────────
 
 def init_db():
-    """Create tables and seed default categories."""
+    """Create tables and run seed if database is empty."""
     db.create_all()
     if Category.query.count() == 0:
-        defaults = [
-            ('Especias y Condimentos', 'especias-y-condimentos', 1),
-            ('Hierbas Medicinales', 'hierbas-medicinales', 2),
-            ('Tés e Infusiones', 'tes-e-infusiones', 3),
-            ('Suplementos Naturales', 'suplementos-naturales', 4),
-            ('Frutos Secos y Semillas', 'frutos-secos-y-semillas', 5),
-        ]
-        for name, slug, order in defaults:
-            db.session.add(Category(name=name, slug=slug, order=order))
-        db.session.commit()
+        # First run — seed all data
+        from seed import seed
+        seed()
 
 with app.app_context():
     init_db()
