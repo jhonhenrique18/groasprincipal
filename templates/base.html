@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- ═══ SEO: Title & Description ═══ -->
+    <title>{% block title %}Grãos S.A.{% endblock %} | El Mayor Proveedor de Productos Naturales del Paraguay</title>
+    <meta name="description" content="{% block meta_description %}Grãos S.A. — Importadora y distribuidora mayorista de especias, condimentos, hierbas medicinales y productos naturales. Importación directa desde 16 países con entregas a todo el Paraguay.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}especias Paraguay, condimentos al por mayor, hierbas medicinales Paraguay, productos naturales, importadora Paraguay, distribuidora mayorista, Grãos SA, suplementos naturales, importación directa, proveedor especias{% endblock %}">
+    <meta name="author" content="Grãos S.A.">
+    <meta name="robots" content="{% block meta_robots %}index, follow{% endblock %}">
+    <link rel="canonical" href="{% block canonical %}{{ request.url }}{% endblock %}">
+
+    <!-- ═══ SEO: Open Graph (Facebook, LinkedIn, WhatsApp) ═══ -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:site_name" content="Grãos S.A.">
+    <meta property="og:title" content="{% block og_title %}Grãos S.A. — El Mayor Proveedor de Productos Naturales del Paraguay{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Importadora y distribuidora mayorista de especias, condimentos, hierbas medicinales y productos naturales. Importación directa desde 16 países.{% endblock %}">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:image" content="{% block og_image %}https://graosfoz.com.br/wp-content/uploads/2024/09/logo-verde.png{% endblock %}">
+    <meta property="og:locale" content="es_PY">
+
+    <!-- ═══ SEO: Twitter Cards ═══ -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block tw_title %}Grãos S.A. — Productos Naturales{% endblock %}">
+    <meta name="twitter:description" content="{% block tw_description %}Importadora y distribuidora mayorista de productos naturales para todo el Paraguay.{% endblock %}">
+    <meta name="twitter:image" content="{% block tw_image %}https://graosfoz.com.br/wp-content/uploads/2024/09/logo-verde.png{% endblock %}">
+
+    <!-- ═══ SEO: Geographic targeting ═══ -->
+    <meta name="geo.region" content="PY">
+    <meta name="geo.country" content="PY">
+    <meta name="language" content="Spanish">
+    <meta name="content-language" content="es">
+
+    <!-- ═══ SEO: Schema.org JSON-LD (Organization) ═══ -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Grãos S.A.",
+        "url": "{{ request.host_url }}",
+        "logo": "https://graosfoz.com.br/wp-content/uploads/2024/09/logo-verde.png",
+        "description": "Importadora y distribuidora mayorista de especias, condimentos, hierbas medicinales y productos naturales para todo el Paraguay.",
+        "areaServed": {
+            "@type": "Country",
+            "name": "Paraguay"
+        },
+        {% if site_email %}"email": "{{ site_email }}",{% endif %}
+        {% if site_whatsapp_raw %}"telephone": "{{ site_whatsapp_raw }}",{% endif %}
+        "sameAs": []
+    }
+    </script>
+
+    <!-- ═══ SEO: Schema.org JSON-LD (WebSite with SearchAction) ═══ -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Grãos S.A.",
+        "url": "{{ request.host_url }}",
+        "description": "El mayor proveedor de productos naturales del Paraguay",
+        "inLanguage": "es"
+    }
+    </script>
+
+    {% block structured_data %}{% endblock %}
+
+    <!-- ═══ Performance ═══ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    {% block head %}{% endblock %}
+</head>
+<body>
+
+    <!-- ═══ NAVBAR ═══ -->
+    <header>
+        <nav class="navbar" id="navbar" aria-label="Navegación principal">
+            <div class="nav-inner">
+                <a href="{{ url_for('index') }}" class="nav-logo" aria-label="Grãos S.A. - Inicio">
+                    <img src="https://graosfoz.com.br/wp-content/uploads/2024/09/logo-verde.png" alt="Grãos S.A. — Importadora y distribuidora de productos naturales en Paraguay" width="160" height="40" loading="eager">
+                </a>
+                <button class="nav-toggle" id="navToggle" aria-label="Abrir menú de navegación" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+                <ul class="nav-links" id="navLinks" role="navigation">
+                    <li><a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Inicio</a></li>
+                    <li><a href="{{ url_for('productos') }}" class="{% if request.endpoint in ('productos', 'producto') %}active{% endif %}">Productos</a></li>
+                    <li><a href="{{ url_for('nosotros') }}" class="{% if request.endpoint == 'nosotros' %}active{% endif %}">Nosotros</a></li>
+                    <li><a href="{{ url_for('contacto') }}" class="{% if request.endpoint == 'contacto' %}active{% endif %}">Contacto</a></li>
+                    <li><a href="{{ site_whatsapp_link }}" target="_blank" rel="noopener noreferrer" class="nav-cta" aria-label="Contactar por WhatsApp">WhatsApp</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ═══ MAIN ═══ -->
+    <main id="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages" role="alert">
+            {% for cat, msg in messages %}
+            <div class="flash flash-{{ cat }}">{{ msg }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer class="site-footer" role="contentinfo">
+        <div class="footer-top">
+            <div class="footer-col">
+                <img src="https://graosfoz.com.br/wp-content/uploads/2024/09/LOGO-GRAOS-BRANCO.svg" alt="Grãos S.A." class="footer-logo" width="140" height="40" loading="lazy">
+                <p class="footer-about">Importadora y distribuidora de productos naturales, especias, condimentos y hierbas medicinales para todo el Paraguay.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Mapa del Sitio</h4>
+                <nav aria-label="Mapa del sitio">
+                    <ul>
+                        <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                        <li><a href="{{ url_for('productos') }}">Productos</a></li>
+                        <li><a href="{{ url_for('nosotros') }}">Nosotros</a></li>
+                        <li><a href="{{ url_for('contacto') }}">Contacto</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <ul>
+                    <li>WhatsApp: {{ site_whatsapp_display }}</li>
+                    {% if site_email %}<li>{{ site_email }}</li>{% endif %}
+                    <li>Paraguay</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Grãos S.A. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- ═══ WHATSAPP FLOAT ═══ -->
+    <a href="{{ site_whatsapp_link }}" target="_blank" rel="noopener noreferrer" class="wa-float" aria-label="Contactar por WhatsApp">
+        <svg viewBox="0 0 32 32" fill="#fff" aria-hidden="true"><path d="M16.004 0C7.166 0 .002 7.16.002 15.995c0 2.818.737 5.574 2.14 7.998L0 32l8.245-2.102a16.02 16.02 0 007.755 1.978h.004C24.838 31.876 32 24.716 32 15.995 32 7.16 24.838 0 16.004 0zm0 29.313a13.37 13.37 0 01-6.82-1.868l-.49-.29-5.076 1.33 1.355-4.95-.318-.506a13.28 13.28 0 01-2.048-7.034c0-7.378 6.006-13.38 13.393-13.38 7.39 0 13.398 6.002 13.398 13.38 0 7.378-6.008 13.318-13.394 13.318zm7.34-10.02c-.402-.202-2.38-1.174-2.75-1.31-.37-.132-.64-.2-.91.202-.27.4-1.045 1.31-1.282 1.58-.236.27-.473.304-.876.1-.402-.2-1.698-.626-3.234-1.995-1.195-1.066-2.002-2.383-2.237-2.785-.236-.402-.025-.62.177-.82.182-.18.402-.47.604-.706.2-.236.268-.404.402-.674.134-.27.067-.506-.033-.708-.1-.2-.91-2.192-1.247-3.002-.328-.788-.662-.682-.91-.694l-.774-.014c-.268 0-.706.1-1.076.506-.37.404-1.414 1.38-1.414 3.37 0 1.988 1.448 3.908 1.65 4.178.2.27 2.85 4.348 6.904 6.098.964.416 1.717.664 2.304.85.968.308 1.85.264 2.547.16.777-.116 2.38-.974 2.716-1.914.336-.94.336-1.746.236-1.914-.1-.168-.37-.268-.776-.47z"/></svg>
+    </a>
+
+    <!-- ═══ PRODUCT MODAL ═══ -->
+    <div class="modal-overlay" id="productModal" role="dialog" aria-modal="true" aria-label="Detalle del producto">
+        <div class="modal-box">
+            <button class="modal-close" id="modalClose" aria-label="Cerrar">&times;</button>
+            <div class="modal-body">
+                <div class="modal-img" id="modalImg"></div>
+                <div class="modal-info">
+                    <span class="modal-cat" id="modalCat"></span>
+                    <h2 class="modal-title" id="modalTitle"></h2>
+                    <div class="modal-details" id="modalDetails"></div>
+                    <div class="modal-desc" id="modalDesc"></div>
+                    <a href="#" class="btn btn-primary modal-wa-btn" id="modalWa" target="_blank" rel="noopener noreferrer">
+                        Consultar por WhatsApp
+                        <svg viewBox="0 0 32 32" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M16.004 0C7.166 0 .002 7.16.002 15.995c0 2.818.737 5.574 2.14 7.998L0 32l8.245-2.102a16.02 16.02 0 007.755 1.978h.004C24.838 31.876 32 24.716 32 15.995 32 7.16 24.838 0 16.004 0zm7.34 19.293c-.402-.202-2.38-1.174-2.75-1.31-.37-.132-.64-.2-.91.202-.27.4-1.045 1.31-1.282 1.58-.236.27-.473.304-.876.1-.402-.2-1.698-.626-3.234-1.995-1.195-1.066-2.002-2.383-2.237-2.785-.236-.402-.025-.62.177-.82.182-.18.402-.47.604-.706.2-.236.268-.404.402-.674.134-.27.067-.506-.033-.708-.1-.2-.91-2.192-1.247-3.002-.328-.788-.662-.682-.91-.694l-.774-.014c-.268 0-.706.1-1.076.506-.37.404-1.414 1.38-1.414 3.37 0 1.988 1.448 3.908 1.65 4.178.2.27 2.85 4.348 6.904 6.098.964.416 1.717.664 2.304.85.968.308 1.85.264 2.547.16.777-.116 2.38-.974 2.716-1.914.336-.94.336-1.746.236-1.914-.1-.168-.37-.268-.776-.47z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

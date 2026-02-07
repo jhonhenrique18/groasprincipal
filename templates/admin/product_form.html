@@ -1,0 +1,59 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<h1>{{ 'Editar' if product else 'Nuevo' }} Producto</h1>
+<form method="POST" enctype="multipart/form-data" class="admin-form">
+    <div class="form-row">
+        <div class="form-group">
+            <label>Nombre *</label>
+            <input type="text" name="name" value="{{ product.name if product else '' }}" required>
+        </div>
+        <div class="form-group">
+            <label>Categoría *</label>
+            <select name="category_id" required>
+                <option value="">Seleccionar...</option>
+                {% for c in categories %}
+                <option value="{{ c.id }}" {% if product and product.category_id == c.id %}selected{% endif %}>{{ c.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group">
+            <label>Origen (ej: India, Brasil, España)</label>
+            <input type="text" name="origin" value="{{ product.origin if product else '' }}">
+        </div>
+        <div class="form-group">
+            <label>Presentación (ej: Bolsas de 50 Kg)</label>
+            <input type="text" name="presentation" value="{{ product.presentation if product else '' }}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Descripción</label>
+        <textarea name="description" rows="4">{{ product.description if product else '' }}</textarea>
+    </div>
+    <div class="form-group">
+        <label>Imagen del producto (800x800px recomendado)</label>
+        {% if product and product.image %}
+        <div class="current-img">
+            <img src="{{ product.image }}" alt="">
+            <span>Imagen actual — suba otra para reemplazar</span>
+        </div>
+        {% endif %}
+        <input type="file" name="image" accept="image/*">
+    </div>
+    <div class="form-row">
+        <label class="checkbox-label">
+            <input type="checkbox" name="featured" {% if product and product.featured %}checked{% endif %}>
+            Producto destacado (aparece en inicio)
+        </label>
+        <label class="checkbox-label">
+            <input type="checkbox" name="active" {% if not product or product.active %}checked{% endif %}>
+            Activo (visible en el sitio)
+        </label>
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn-admin">Guardar producto</button>
+        <a href="{{ url_for('admin_products') }}" class="btn-admin btn-outline">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

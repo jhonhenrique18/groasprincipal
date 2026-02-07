@@ -1,0 +1,26 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<h1>Dashboard</h1>
+<div class="stats-grid">
+    <div class="stat-card">
+        <span class="stat-card-num">{{ total_products }}</span>
+        <span class="stat-card-label">Productos totales</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-card-num">{{ active_products }}</span>
+        <span class="stat-card-label">Productos activos</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-card-num">{{ featured_products }}</span>
+        <span class="stat-card-label">Destacados</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-card-num">{{ total_categories }}</span>
+        <span class="stat-card-label">Categorías</span>
+    </div>
+</div>
+<div class="quick-actions">
+    <a href="{{ url_for('admin_product_form') }}" class="btn-admin">+ Nuevo Producto</a>
+    <a href="{{ url_for('admin_category_form') }}" class="btn-admin btn-outline">+ Nueva Categoría</a>
+</div>
+{% endblock %}

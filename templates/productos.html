@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}{% if current_cat %}{{ current_cat.name }}{% else %}Productos{% endif %}{% endblock %}
+{% block meta_description %}{% if current_cat %}{{ current_cat.name }} al por mayor en Paraguay — Grãos S.A. Importación directa, productos certificados con entregas a todo el país.{% else %}Catálogo completo de productos naturales al por mayor: especias, condimentos, hierbas medicinales y suplementos. Importación directa con entregas a todo el Paraguay.{% endif %}{% endblock %}
+{% block meta_keywords %}{% if current_cat %}{{ current_cat.name }} al por mayor, {{ current_cat.name }} Paraguay, comprar {{ current_cat.name }}{% else %}catálogo productos naturales, especias al por mayor, condimentos mayorista Paraguay, hierbas medicinales, suplementos naturales{% endif %}{% endblock %}
+{% block og_title %}{% if current_cat %}{{ current_cat.name }}{% else %}Productos{% endif %} — Grãos S.A.{% endblock %}
+{% block og_description %}{% if current_cat %}{{ current_cat.name }} al por mayor con importación directa.{% else %}Catálogo de productos naturales al por mayor para todo el Paraguay.{% endif %}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "{% if current_cat %}{{ current_cat.name }}{% else %}Productos{% endif %} — Grãos S.A.",
+    "description": "Catálogo de productos naturales al por mayor",
+    "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": {{ products|length }},
+        "itemListElement": [
+            {% for p in products %}
+            {
+                "@type": "ListItem",
+                "position": {{ loop.index }},
+                "url": "{{ url_for('producto', slug=p.slug, _external=True) }}",
+                "name": "{{ p.name }}"
+            }{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ]
+    }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<nav class="breadcrumb" aria-label="Migas de pan">
+    <a href="{{ url_for('index') }}">Inicio</a> /
+    {% if current_cat %}
+    <a href="{{ url_for('productos') }}">Productos</a> /
+    <span aria-current="page">{{ current_cat.name }}</span>
+    {% else %}
+    <span aria-current="page">Productos</span>
+    {% endif %}
+</nav>
+
+<section class="page-header">
+    <h1>{% if current_cat %}{{ current_cat.name }}{% else %}Nuestros Productos{% endif %}</h1>
+    <p>{% if current_cat %}Productos de {{ current_cat.name|lower }} al por mayor con importación directa{% else %}Especializados en importación y distribución de productos naturales de alta calidad{% endif %}</p>
+</section>
+
+<section class="products-page">
+    <div class="container">
+        <div class="products-layout">
+            <aside class="products-sidebar reveal" aria-label="Filtrar por categoría">
+                <h3>Categorías</h3>
+                <ul class="cat-list">
+                    <li><a href="{{ url_for('productos') }}" class="{% if not current_cat %}active{% endif %}">Todos</a></li>
+                    {% for c in categories %}
+                    <li><a href="{{ url_for('productos', slug=c.slug) }}" class="{% if current_cat and current_cat.id == c.id %}active{% endif %}">{{ c.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </aside>
+            <div class="products-main">
+                {% if current_cat %}
+                <h2 class="reveal">{{ current_cat.name }}</h2>
+                {% endif %}
+                {% if products %}
+                <div class="products-grid">
+                    {% for p in products %}
+                    <a href="{{ url_for('producto', slug=p.slug) }}" class="product-card reveal" data-slug="{{ p.slug }}" title="{{ p.name }} — {{ p.category.name }}">
+                        <div class="product-img">
+                            {% if p.image %}
+                            <img src="{{ p.image }}" alt="{{ p.name }}{% if p.origin %} — Origen: {{ p.origin }}{% endif %}" loading="lazy" width="400" height="400">
+                            {% else %}
+                            <div class="product-placeholder">{{ p.name[0] }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="product-info">
+                            <h3>{{ p.name }}</h3>
+                            {% if p.origin %}<span class="product-origin">{{ p.origin }}</span>{% endif %}
+                            {% if p.presentation %}<span class="product-pres">{{ p.presentation }}</span>{% endif %}
+                            <span class="product-link">Ver producto <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-state reveal">
+                    <p>No hay productos en esta categoría aún.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

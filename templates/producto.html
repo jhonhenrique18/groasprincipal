@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block meta_description %}{{ product.name }} — {{ product.category.name }} al por mayor en Paraguay. {% if product.origin %}Origen: {{ product.origin }}. {% endif %}{% if product.presentation %}Presentación: {{ product.presentation }}. {% endif %}Importación directa por Grãos S.A.{% endblock %}
+{% block meta_keywords %}{{ product.name }}, {{ product.category.name }}, {{ product.name }} al por mayor, comprar {{ product.name }} Paraguay{% if product.origin %}, {{ product.name }} {{ product.origin }}{% endif %}{% endblock %}
+{% block og_type %}product{% endblock %}
+{% block og_title %}{{ product.name }} — Grãos S.A.{% endblock %}
+{% block og_description %}{{ product.name }} | {{ product.category.name }} al por mayor. {% if product.origin %}Origen: {{ product.origin }}.{% endif %} Importación directa.{% endblock %}
+{% block og_image %}{% if product.image %}{{ request.host_url.rstrip('/') }}{{ product.image }}{% else %}https://graosfoz.com.br/wp-content/uploads/2024/09/logo-verde.png{% endif %}{% endblock %}
+{% block tw_title %}{{ product.name }} — Grãos S.A.{% endblock %}
+{% block tw_description %}{{ product.category.name }} al por mayor. Importación directa por Grãos S.A.{% endblock %}
+
+{% block structured_data %}
+<!-- Schema.org Product -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "{{ product.name }}",
+    "description": "{{ product.description if product.description else product.name + ' — ' + product.category.name + ' al por mayor.' }}",
+    "category": "{{ product.category.name }}",
+    {% if product.image %}"image": "{{ request.host_url.rstrip('/') }}{{ product.image }}",{% endif %}
+    "brand": {
+        "@type": "Brand",
+        "name": "Grãos S.A."
+    },
+    "manufacturer": {
+        "@type": "Organization",
+        "name": "Grãos S.A."
+    }
+}
+</script>
+<!-- Schema.org BreadcrumbList -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Inicio", "item": "{{ url_for('index', _external=True) }}"},
+        {"@type": "ListItem", "position": 2, "name": "Productos", "item": "{{ url_for('productos', _external=True) }}"},
+        {"@type": "ListItem", "position": 3, "name": "{{ product.category.name }}", "item": "{{ url_for('productos', slug=product.category.slug, _external=True) }}"},
+        {"@type": "ListItem", "position": 4, "name": "{{ product.name }}"}
+    ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="product-detail">
+    <div class="container">
+        <nav class="breadcrumb" aria-label="Migas de pan">
+            <a href="{{ url_for('index') }}">Inicio</a> /
+            <a href="{{ url_for('productos') }}">Productos</a> /
+            <a href="{{ url_for('productos', slug=product.category.slug) }}">{{ product.category.name }}</a> /
+            <span aria-current="page">{{ product.name }}</span>
+        </nav>
+
+        <div class="detail-inner">
+            <div class="detail-img reveal">
+                {% if product.image %}
+                <img src="{{ product.image }}" alt="{{ product.name }}{% if product.origin %} — Origen: {{ product.origin }}{% endif %} — {{ product.category.name }}" width="600" height="600">
+                {% else %}
+                <div class="product-placeholder-lg">{{ product.name[0] }}</div>
+                {% endif %}
+            </div>
+            <div class="detail-info reveal">
+                <span class="detail-cat">{{ product.category.name }}</span>
+                <h1>{{ product.name }}</h1>
+                {% if product.origin %}
+                <div class="detail-row">
+                    <strong>Origen:</strong> {{ product.origin }}
+                </div>
+                {% endif %}
+                {% if product.presentation %}
+                <div class="detail-row">
+                    <strong>Presentación:</strong> {{ product.presentation }}
+                </div>
+                {% endif %}
+                {% if product.description %}
+                <div class="detail-desc">
+                    <h3>Descripción</h3>
+                    <p>{{ product.description }}</p>
+                </div>
+                {% endif %}
+                <a href="{{ site_whatsapp_link }}?text=Hola, me interesa el producto: {{ product.name }}" target="_blank" class="btn btn-primary btn-lg">
+                    Consultar por WhatsApp
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </a>
+            </div>
+        </div>
+
+        {% if related %}
+        <div class="related-products">
+            <h2 class="reveal">Productos relacionados</h2>
+            <div class="products-grid">
+                {% for p in related %}
+                <a href="{{ url_for('producto', slug=p.slug) }}" class="product-card reveal" title="{{ p.name }}">
+                    <div class="product-img">
+                        {% if p.image %}
+                        <img src="{{ p.image }}" alt="{{ p.name }}" loading="lazy" width="400" height="400">
+                        {% else %}
+                        <div class="product-placeholder">{{ p.name[0] }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="product-info">
+                        <h3>{{ p.name }}</h3>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

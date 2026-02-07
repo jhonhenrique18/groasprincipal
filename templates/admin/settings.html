@@ -1,0 +1,84 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<h1>Configuración del Sitio</h1>
+<p style="color:#6B7280;margin-bottom:24px;">Estos datos se actualizan en todo el sitio automáticamente.</p>
+
+<form class="admin-form" method="POST" enctype="multipart/form-data">
+
+    <!-- ── Contacto ── -->
+    <div class="settings-section">
+        <h2 class="settings-title">Datos de contacto</h2>
+        <p class="settings-desc">Se muestran en la navbar, el botón flotante, el footer y la página de Contacto.</p>
+
+        <div class="form-group">
+            <label for="whatsapp">Número de WhatsApp</label>
+            <input type="text" id="whatsapp" name="whatsapp" value="{{ whatsapp }}" placeholder="+595 981 123456">
+            <span class="form-hint">Ingrese el número completo con código de país. Ej: +595 981 123456</span>
+        </div>
+
+        <div class="form-group">
+            <label for="email">E-mail de contacto</label>
+            <input type="email" id="email" name="email" value="{{ email }}" placeholder="contacto@graossa.com">
+        </div>
+    </div>
+
+    <!-- ── Hero Image ── -->
+    <div class="settings-section">
+        <h2 class="settings-title">Imagen del Hero (Banner principal)</h2>
+        <p class="settings-desc">Esta es la imagen de fondo que aparece en la parte superior del Inicio.</p>
+
+        {% if hero_image %}
+        <div class="current-hero">
+            <img src="{{ hero_image }}" alt="Hero actual">
+            <span>Imagen actual</span>
+        </div>
+        {% endif %}
+
+        <div class="form-group">
+            <label for="hero_image">Subir nueva imagen</label>
+            <input type="file" id="hero_image" name="hero_image" accept="image/*">
+        </div>
+
+        <div class="dimensions-guide">
+            <h3>Guía de dimensiones</h3>
+            <table class="guide-table">
+                <thead>
+                    <tr>
+                        <th>Dispositivo</th>
+                        <th>Resolución recomendada</th>
+                        <th>Orientación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Desktop</strong></td>
+                        <td>1920 x 800 px</td>
+                        <td>Horizontal (paisaje)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tablet</strong></td>
+                        <td>Se adapta automáticamente</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mobile</strong></td>
+                        <td>Se adapta automáticamente</td>
+                        <td>—</td>
+                    </tr>
+                </tbody>
+            </table>
+            <ul class="guide-tips">
+                <li>Use una imagen de <strong>al menos 1920 x 800 px</strong> para que se vea nítida en pantallas grandes.</li>
+                <li>La imagen se recorta automáticamente para ajustarse a cada dispositivo (cover).</li>
+                <li>Formatos aceptados: <strong>JPG, PNG, WebP</strong>.</li>
+                <li>Peso máximo: <strong>10 MB</strong>. Se recomienda optimizar la imagen antes de subir.</li>
+                <li>Ideal: foto de almacén, productos, contenedores o algo que transmita la escala de la empresa.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn-admin">Guardar configuración</button>
+    </div>
+</form>
+{% endblock %}

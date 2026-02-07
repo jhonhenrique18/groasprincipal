@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Nosotros{% endblock %}
+{% block meta_description %}Conozca a Grãos S.A., importadora y distribuidora mayorista de productos naturales en Paraguay. Más de 600 clientes confían en nosotros. Importación directa desde 16 países con calidad garantizada.{% endblock %}
+{% block meta_keywords %}sobre Grãos SA, importadora Paraguay, distribuidora productos naturales, quiénes somos, historia Grãos SA, empresa productos naturales Paraguay{% endblock %}
+{% block og_title %}Sobre Nosotros — Grãos S.A.{% endblock %}
+{% block og_description %}Conozca nuestra historia. Más de 600 empresas confían en Grãos S.A. para sus productos naturales. Importación directa desde 16 países.{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "Sobre Grãos S.A.",
+    "description": "Importadora y distribuidora mayorista de productos naturales en Paraguay",
+    "mainEntity": {
+        "@type": "Organization",
+        "name": "Grãos S.A.",
+        "description": "Importadora y distribuidora mayorista de especias, condimentos, hierbas medicinales y productos naturales para todo el Paraguay."
+    }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<nav class="breadcrumb" aria-label="Migas de pan">
+    <a href="{{ url_for('index') }}">Inicio</a> /
+    <span aria-current="page">Nosotros</span>
+</nav>
+
+<section class="page-header">
+    <h1>Sobre Nosotros</h1>
+    <p>Conocé nuestra historia y nuestro compromiso con la calidad</p>
+</section>
+
+<section class="about-page">
+    <div class="container">
+        <div class="about-intro reveal">
+            <div class="about-intro-text">
+                <span class="section-tag">Nuestra Historia</span>
+                <h2>Llevando calidad y confianza a todo el Paraguay</h2>
+                <p>Grãos S.A. nació con una misión clara: abastecer al mercado paraguayo con los mejores productos naturales del mundo. Hoy, somos referencia en importación y distribución mayorista de especias, condimentos, hierbas medicinales y suplementos.</p>
+                <p>Más de 600 empresas confían en nosotros cada mes. Importamos directamente desde 16 países, lo que nos permite ofrecer productos certificados, frescos y a precios altamente competitivos, con entregas puntuales en todo el territorio nacional.</p>
+            </div>
+        </div>
+
+        <div class="about-values">
+            <div class="value-card reveal">
+                <div class="value-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <h3>Calidad Garantizada</h3>
+                <p>Todos nuestros productos pasan por estrictos controles de calidad, asegurando frescura y pureza en cada entrega.</p>
+            </div>
+            <div class="value-card reveal">
+                <div class="value-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                </div>
+                <h3>Importación Directa</h3>
+                <p>Importamos desde 16 países, sin intermediarios, garantizando los mejores precios del mercado.</p>
+            </div>
+            <div class="value-card reveal">
+                <div class="value-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                </div>
+                <h3>Cobertura Nacional</h3>
+                <p>Logística eficiente con entregas puntuales a todo el Paraguay.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

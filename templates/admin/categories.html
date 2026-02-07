@@ -1,0 +1,28 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="admin-header">
+    <h1>Categorías ({{ categories|length }})</h1>
+    <a href="{{ url_for('admin_category_form') }}" class="btn-admin">+ Nueva Categoría</a>
+</div>
+<table class="admin-table">
+    <thead>
+        <tr><th>Nombre</th><th>Slug</th><th>Orden</th><th>Productos</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+        {% for c in categories %}
+        <tr>
+            <td><strong>{{ c.name }}</strong></td>
+            <td>{{ c.slug }}</td>
+            <td>{{ c.order }}</td>
+            <td>{{ c.products|length }}</td>
+            <td class="actions">
+                <a href="{{ url_for('admin_category_form', id=c.id) }}" class="btn-sm">Editar</a>
+                <form method="POST" action="{{ url_for('admin_category_delete', id=c.id) }}" onsubmit="return confirm('¿Eliminar?')">
+                    <button type="submit" class="btn-sm btn-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<h1>{{ 'Editar' if cat else 'Nueva' }} Categoría</h1>
+<form method="POST" class="admin-form">
+    <div class="form-group">
+        <label>Nombre *</label>
+        <input type="text" name="name" value="{{ cat.name if cat else '' }}" required>
+    </div>
+    <div class="form-group">
+        <label>Orden (número para ordenar)</label>
+        <input type="number" name="order" value="{{ cat.order if cat else 0 }}">
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn-admin">Guardar</button>
+        <a href="{{ url_for('admin_categories') }}" class="btn-admin btn-outline">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

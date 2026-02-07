@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Contacto{% endblock %}
+{% block meta_description %}Contacte a Grãos S.A., su proveedor mayorista de productos naturales en Paraguay. Solicite cotización por WhatsApp o e-mail. Entregas a todo el país.{% endblock %}
+{% block meta_keywords %}contacto Grãos SA, cotización especias Paraguay, WhatsApp distribuidora, comprar condimentos al por mayor Paraguay, contactar proveedor productos naturales{% endblock %}
+{% block og_title %}Contacto — Grãos S.A.{% endblock %}
+{% block og_description %}Contáctenos para cotizaciones de especias, condimentos y productos naturales al por mayor. Entregas a todo el Paraguay.{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Contacto — Grãos S.A.",
+    "description": "Página de contacto de Grãos S.A. para cotizaciones de productos naturales al por mayor en Paraguay"
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<nav class="breadcrumb" aria-label="Migas de pan">
+    <a href="{{ url_for('index') }}">Inicio</a> /
+    <span aria-current="page">Contacto</span>
+</nav>
+
+<section class="page-header">
+    <h1>Contacto</h1>
+    <p>Estamos para ayudarte. Escribinos y respondemos a la brevedad.</p>
+</section>
+
+<section class="contact-page">
+    <div class="container">
+        <div class="contact-inner">
+            <div class="contact-info reveal">
+                <h2>Hablemos de negocios</h2>
+                <p class="contact-intro">Estamos listos para atenderle. Contáctenos por cualquiera de estos medios y le respondemos a la brevedad.</p>
+                <div class="contact-item">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <div>
+                        <strong>WhatsApp</strong>
+                        <p><a href="{{ site_whatsapp_link }}">{{ site_whatsapp_display }}</a></p>
+                    </div>
+                </div>
+                {% if site_email %}
+                <div class="contact-item">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    <div>
+                        <strong>E-mail</strong>
+                        <p><a href="mailto:{{ site_email }}">{{ site_email }}</a></p>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="contact-item">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    <div>
+                        <strong>Cobertura</strong>
+                        <p>Entregas a todo el Paraguay</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form-wrap reveal">
+                <h2>Envíanos un mensaje</h2>
+                <form class="contact-form" method="POST" action="{{ url_for('contacto') }}">
+                    <div class="form-group">
+                        <label for="name">Nombre / Empresa</label>
+                        <input type="text" id="name" name="name" placeholder="Su nombre o empresa" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email" placeholder="correo@ejemplo.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">WhatsApp</label>
+                        <input type="tel" id="phone" name="phone" placeholder="(+595) 9XX XXX XXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Mensaje</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Cuéntenos qué necesita..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-form">Enviar mensaje</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
