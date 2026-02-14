@@ -115,38 +115,42 @@ def api_producto(slug):
 
 @app.route('/robots.txt')
 def robots():
-    content = f"""User-agent: *
+    content = """User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 
-Sitemap: {request.host_url}sitemap.xml
+Sitemap: https://www.graos.com.py/sitemap.xml
 """
     return Response(content, mimetype='text/plain')
 
 @app.route('/sitemap.xml')
 def sitemap():
+    from datetime import datetime as dt
+    today = dt.utcnow().strftime('%Y-%m-%d')
+    base = 'https://www.graos.com.py'
     pages = []
-    base = request.host_url.rstrip('/')
     # Static pages
-    pages.append({'loc': base + '/', 'priority': '1.0', 'changefreq': 'weekly'})
-    pages.append({'loc': base + '/productos', 'priority': '0.9', 'changefreq': 'weekly'})
-    pages.append({'loc': base + '/nosotros', 'priority': '0.7', 'changefreq': 'monthly'})
-    pages.append({'loc': base + '/contacto', 'priority': '0.7', 'changefreq': 'monthly'})
+    pages.append({'loc': base + '/', 'priority': '1.0', 'changefreq': 'weekly', 'lastmod': today})
+    pages.append({'loc': base + '/productos', 'priority': '0.9', 'changefreq': 'weekly', 'lastmod': today})
+    pages.append({'loc': base + '/nosotros', 'priority': '0.7', 'changefreq': 'monthly', 'lastmod': today})
+    pages.append({'loc': base + '/contacto', 'priority': '0.7', 'changefreq': 'monthly', 'lastmod': today})
     # Category pages
     categories = Category.query.order_by(Category.order).all()
     for c in categories:
-        pages.append({'loc': base + '/productos/' + c.slug, 'priority': '0.8', 'changefreq': 'weekly'})
+        pages.append({'loc': base + '/productos/' + c.slug, 'priority': '0.8', 'changefreq': 'weekly', 'lastmod': today})
     # Product pages
     products = Product.query.filter_by(active=True).all()
     for p in products:
-        pages.append({'loc': base + '/producto/' + p.slug, 'priority': '0.8', 'changefreq': 'weekly'})
+        lastmod = p.created_at.strftime('%Y-%m-%d') if p.created_at else today
+        pages.append({'loc': base + '/producto/' + p.slug, 'priority': '0.8', 'changefreq': 'weekly', 'lastmod': lastmod})
 
     xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     for page in pages:
         xml += '  <url>\n'
         xml += f'    <loc>{page["loc"]}</loc>\n'
+        xml += f'    <lastmod>{page["lastmod"]}</lastmod>\n'
         xml += f'    <changefreq>{page["changefreq"]}</changefreq>\n'
         xml += f'    <priority>{page["priority"]}</priority>\n'
         xml += '  </url>\n'
@@ -154,6 +158,10 @@ def sitemap():
     response = make_response(xml)
     response.headers['Content-Type'] = 'application/xml'
     return response
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 @app.route('/nosotros')
 def nosotros():

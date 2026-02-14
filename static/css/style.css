@@ -486,6 +486,18 @@ main > .breadcrumb{padding-top:100px;margin-bottom:0}
     .modal-info{padding:24px}
 }
 
+/* ═══ FAQ SECTION ═══ */
+.faq-section{padding:80px 24px;background:var(--gray-50,#f9fafb)}
+.faq-list{max-width:800px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.faq-item{background:var(--white,#fff);border:1px solid var(--gray-200,#e5e7eb);border-radius:12px;overflow:hidden;transition:box-shadow .2s}
+.faq-item:hover{box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.faq-item summary{padding:20px 24px;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:'+';font-size:22px;font-weight:600;color:var(--primary,#2d6a4f);flex-shrink:0;transition:transform .2s}
+.faq-item[open] summary::after{content:'−'}
+.faq-item summary h3{font-size:16px;font-weight:600;margin:0;color:var(--text,#1a1a1a);line-height:1.5}
+.faq-item p{padding:0 24px 20px;margin:0;font-size:15px;line-height:1.7;color:var(--text-light,#555)}
+
 @media(max-width:767px){
     .nav-links{
         display:none;position:fixed;top:var(--nav-h);left:0;right:0;
@@ -507,7 +519,7 @@ main > .breadcrumb{padding-top:100px;margin-bottom:0}
     .stat{padding:24px 12px}
     .stat-num{font-size:36px}
 
-    .welcome,.featured-section,.cta-banner,.clients{padding:60px 24px}
+    .welcome,.featured-section,.cta-banner,.clients,.faq-section{padding:60px 24px}
     .welcome-text h2,.section-header h2,.cta-content h2{font-size:28px}
     .welcome-img img{height:260px}
 

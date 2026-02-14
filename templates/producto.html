@@ -5,7 +5,7 @@
 {% block og_type %}product{% endblock %}
 {% block og_title %}{{ product.name }} — Grãos S.A.{% endblock %}
 {% block og_description %}{{ product.name }} | {{ product.category.name }} al por mayor. {% if product.origin %}Origen: {{ product.origin }}.{% endif %} Importación directa.{% endblock %}
-{% block og_image %}{% if product.image %}{{ request.host_url.rstrip('/') }}{{ product.image }}{% else %}https://graosfoz.com.br/wp-content/uploads/2024/09/logo-verde.png{% endif %}{% endblock %}
+{% block og_image %}{% if product.image %}https://www.graos.com.py{{ product.image }}{% else %}https://graosfoz.com.br/wp-content/uploads/2024/09/logo-verde.png{% endif %}{% endblock %}
 {% block tw_title %}{{ product.name }} — Grãos S.A.{% endblock %}
 {% block tw_description %}{{ product.category.name }} al por mayor. Importación directa por Grãos S.A.{% endblock %}
 
@@ -16,16 +16,37 @@
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "{{ product.name }}",
-    "description": "{{ product.description if product.description else product.name + ' — ' + product.category.name + ' al por mayor.' }}",
+    "description": "{{ product.description if product.description else product.name + ' — ' + product.category.name + ' al por mayor en Paraguay. Importación directa por Grãos S.A.' }}",
     "category": "{{ product.category.name }}",
-    {% if product.image %}"image": "{{ request.host_url.rstrip('/') }}{{ product.image }}",{% endif %}
+    {% if product.image %}"image": "https://www.graos.com.py{{ product.image }}",{% endif %}
+    "url": "https://www.graos.com.py/producto/{{ product.slug }}",
     "brand": {
         "@type": "Brand",
         "name": "Grãos S.A."
     },
     "manufacturer": {
         "@type": "Organization",
-        "name": "Grãos S.A."
+        "name": "Grãos S.A.",
+        "@id": "https://www.graos.com.py/#organization"
+    },
+    {% if product.origin %}"countryOfOrigin": {"@type": "Country", "name": "{{ product.origin }}"},{% endif %}
+    "offers": {
+        "@type": "Offer",
+        "availability": "https://schema.org/InStock",
+        "priceCurrency": "PYG",
+        "price": "0",
+        "priceValidUntil": "2026-12-31",
+        "url": "https://www.graos.com.py/producto/{{ product.slug }}",
+        "seller": {
+            "@type": "Organization",
+            "name": "Grãos S.A.",
+            "@id": "https://www.graos.com.py/#organization"
+        },
+        "itemCondition": "https://schema.org/NewCondition",
+        "areaServed": {
+            "@type": "Country",
+            "name": "Paraguay"
+        }
     }
 }
 </script>
@@ -35,9 +56,9 @@
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-        {"@type": "ListItem", "position": 1, "name": "Inicio", "item": "{{ url_for('index', _external=True) }}"},
-        {"@type": "ListItem", "position": 2, "name": "Productos", "item": "{{ url_for('productos', _external=True) }}"},
-        {"@type": "ListItem", "position": 3, "name": "{{ product.category.name }}", "item": "{{ url_for('productos', slug=product.category.slug, _external=True) }}"},
+        {"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.graos.com.py/"},
+        {"@type": "ListItem", "position": 2, "name": "Productos", "item": "https://www.graos.com.py/productos"},
+        {"@type": "ListItem", "position": 3, "name": "{{ product.category.name }}", "item": "https://www.graos.com.py/productos/{{ product.category.slug }}"},
         {"@type": "ListItem", "position": 4, "name": "{{ product.name }}"}
     ]
 }

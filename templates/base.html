@@ -13,6 +13,11 @@
     <meta name="robots" content="{% block meta_robots %}index, follow{% endblock %}">
     <link rel="canonical" href="{% block canonical %}https://www.graos.com.py{{ request.path }}{% endblock %}">
 
+    <!-- ═══ SEO: Hreflang (idioma y región) ═══ -->
+    <link rel="alternate" hreflang="es-PY" href="https://www.graos.com.py{{ request.path }}">
+    <link rel="alternate" hreflang="es" href="https://www.graos.com.py{{ request.path }}">
+    <link rel="alternate" hreflang="x-default" href="https://www.graos.com.py{{ request.path }}">
+
     <!-- ═══ SEO: Open Graph (Facebook, LinkedIn, WhatsApp) ═══ -->
     <meta property="og:type" content="{% block og_type %}website{% endblock %}">
     <meta property="og:site_name" content="Grãos S.A.">
@@ -31,24 +36,66 @@
     <!-- ═══ SEO: Geographic targeting ═══ -->
     <meta name="geo.region" content="PY">
     <meta name="geo.country" content="PY">
+    <meta name="geo.placename" content="Paraguay">
     <meta name="language" content="Spanish">
-    <meta name="content-language" content="es">
+    <meta name="content-language" content="es-PY">
+    <meta http-equiv="content-language" content="es-PY">
 
     <!-- ═══ SEO: Schema.org JSON-LD (Organization) ═══ -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "Organization",
+        "@type": ["Organization", "LocalBusiness"],
+        "@id": "https://www.graos.com.py/#organization",
         "name": "Grãos S.A.",
+        "alternateName": ["Graos SA", "Grãos Paraguay", "Graos Paraguay"],
         "url": "https://www.graos.com.py/",
-        "logo": "https://graosfoz.com.br/wp-content/uploads/2024/09/logo-verde.png",
-        "description": "Importadora y distribuidora mayorista de especias, condimentos, hierbas medicinales y productos naturales para todo el Paraguay.",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://graosfoz.com.br/wp-content/uploads/2024/09/logo-verde.png",
+            "width": 600,
+            "height": 200
+        },
+        "image": "https://graosfoz.com.br/wp-content/uploads/2024/09/logo-verde.png",
+        "description": "Importadora y distribuidora mayorista de especias, condimentos, hierbas medicinales y productos naturales para todo el Paraguay. Importación directa desde 16 países sin intermediarios.",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "PY",
+            "addressRegion": "Paraguay"
+        },
         "areaServed": {
             "@type": "Country",
             "name": "Paraguay"
         },
+        "knowsLanguage": "es",
+        "numberOfEmployees": {
+            "@type": "QuantitativeValue",
+            "minValue": 10
+        },
         {% if site_email %}"email": "{{ site_email }}",{% endif %}
-        {% if site_whatsapp_raw %}"telephone": "{{ site_whatsapp_raw }}",{% endif %}
+        {% if site_whatsapp_raw %}
+        "telephone": "{{ site_whatsapp_raw }}",
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "{{ site_whatsapp_raw }}",
+            "contactType": "customer service",
+            "areaServed": "PY",
+            "availableLanguage": ["Spanish", "Portuguese"]
+        },
+        {% endif %}
+        "priceRange": "$$",
+        "currenciesAccepted": "PYG, USD",
+        "paymentAccepted": "Transferencia bancaria, Efectivo",
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Productos Naturales al por mayor",
+            "itemListElement": [
+                {"@type": "OfferCatalog", "name": "Especias"},
+                {"@type": "OfferCatalog", "name": "Condimentos"},
+                {"@type": "OfferCatalog", "name": "Hierbas Medicinales"},
+                {"@type": "OfferCatalog", "name": "Suplementos Naturales"}
+            ]
+        },
         "sameAs": []
     }
     </script>

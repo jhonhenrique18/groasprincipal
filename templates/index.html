@@ -5,6 +5,58 @@
 {% block og_title %}Grãos S.A. — El Mayor Proveedor de Productos Naturales del Paraguay{% endblock %}
 {% block og_description %}Importación directa de especias, condimentos, hierbas medicinales y suplementos desde 16 países. Distribuidora mayorista con entregas a todo el Paraguay.{% endblock %}
 
+{% block structured_data %}
+<!-- Schema.org FAQPage — Preguntas frecuentes para SEO Paraguay -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {
+            "@type": "Question",
+            "name": "¿Dónde puedo comprar especias al por mayor en Paraguay?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Grãos S.A. es el mayor proveedor de especias al por mayor en Paraguay. Realizamos importación directa desde 16 países y hacemos entregas a todo el territorio paraguayo. Contáctenos por WhatsApp para solicitar cotización."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "¿Grãos S.A. hace entregas a todo el Paraguay?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sí, Grãos S.A. realiza entregas a todo el Paraguay, incluyendo Asunción, Ciudad del Este, Encarnación, Pedro Juan Caballero y todas las ciudades del interior. Contamos con logística propia para garantizar entregas puntuales."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "¿Qué productos naturales distribuye Grãos S.A.?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Distribuimos una amplia variedad de productos naturales al por mayor: especias (pimienta, cúrcuma, canela, comino), condimentos, hierbas medicinales, suplementos naturales y más. Todos importados directamente desde 16 países con certificación de calidad."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "¿Cuál es el pedido mínimo para comprar al por mayor?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "En Grãos S.A. trabajamos exclusivamente al por mayor. Para conocer los pedidos mínimos y recibir una cotización personalizada, contáctenos por WhatsApp o a través de nuestro formulario de contacto."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "¿Por qué elegir Grãos S.A. como proveedor de especias en Paraguay?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Grãos S.A. ofrece importación directa sin intermediarios desde 16 países, lo que garantiza los mejores precios del mercado. Contamos con más de 600 clientes activos, productos certificados, y entregas puntuales a todo el Paraguay."
+            }
+        }
+    ]
+}
+</script>
+{% endblock %}
+
 {% block content %}
 
 <!-- ═══ HERO ═══ -->
@@ -96,6 +148,38 @@
 
         <div class="section-cta reveal">
             <a href="{{ url_for('productos') }}" class="btn btn-secondary">Ver todos los productos <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section class="faq-section">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-tag">Preguntas Frecuentes</span>
+            <h2>Lo que nuestros clientes quieren saber</h2>
+        </div>
+        <div class="faq-list">
+            <details class="faq-item reveal">
+                <summary><h3>¿Dónde puedo comprar especias al por mayor en Paraguay?</h3></summary>
+                <p>Grãos S.A. es el mayor proveedor de especias al por mayor en Paraguay. Realizamos importación directa desde 16 países y hacemos entregas a todo el territorio paraguayo. Contáctenos por WhatsApp para solicitar cotización.</p>
+            </details>
+            <details class="faq-item reveal">
+                <summary><h3>¿Grãos S.A. hace entregas a todo el Paraguay?</h3></summary>
+                <p>Sí, Grãos S.A. realiza entregas a todo el Paraguay, incluyendo Asunción, Ciudad del Este, Encarnación, Pedro Juan Caballero y todas las ciudades del interior. Contamos con logística propia para garantizar entregas puntuales.</p>
+            </details>
+            <details class="faq-item reveal">
+                <summary><h3>¿Qué productos naturales distribuye Grãos S.A.?</h3></summary>
+                <p>Distribuimos una amplia variedad de productos naturales al por mayor: especias (pimienta, cúrcuma, canela, comino), condimentos, hierbas medicinales, suplementos naturales y más. Todos importados directamente desde 16 países con certificación de calidad.</p>
+            </details>
+            <details class="faq-item reveal">
+                <summary><h3>¿Cuál es el pedido mínimo para comprar al por mayor?</h3></summary>
+                <p>En Grãos S.A. trabajamos exclusivamente al por mayor. Para conocer los pedidos mínimos y recibir una cotización personalizada, contáctenos por WhatsApp o a través de nuestro formulario de contacto.</p>
+            </details>
+            <details class="faq-item reveal">
+                <summary><h3>¿Por qué elegir Grãos S.A. como proveedor de especias en Paraguay?</h3></summary>
+                <p>Grãos S.A. ofrece importación directa sin intermediarios desde 16 países, lo que garantiza los mejores precios del mercado. Contamos con más de 600 clientes activos, productos certificados, y entregas puntuales a todo el Paraguay.</p>
+            </details>
         </div>
     </div>
 </section>
