@@ -11,14 +11,14 @@
     <meta name="keywords" content="{% block meta_keywords %}especias Paraguay, condimentos al por mayor, hierbas medicinales Paraguay, productos naturales, importadora Paraguay, distribuidora mayorista, Grãos SA, suplementos naturales, importación directa, proveedor especias{% endblock %}">
     <meta name="author" content="Grãos S.A.">
     <meta name="robots" content="{% block meta_robots %}index, follow{% endblock %}">
-    <link rel="canonical" href="{% block canonical %}{{ request.url }}{% endblock %}">
+    <link rel="canonical" href="{% block canonical %}https://www.graos.com.py{{ request.path }}{% endblock %}">
 
     <!-- ═══ SEO: Open Graph (Facebook, LinkedIn, WhatsApp) ═══ -->
     <meta property="og:type" content="{% block og_type %}website{% endblock %}">
     <meta property="og:site_name" content="Grãos S.A.">
     <meta property="og:title" content="{% block og_title %}Grãos S.A. — El Mayor Proveedor de Productos Naturales del Paraguay{% endblock %}">
     <meta property="og:description" content="{% block og_description %}Importadora y distribuidora mayorista de especias, condimentos, hierbas medicinales y productos naturales. Importación directa desde 16 países.{% endblock %}">
-    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:url" content="https://www.graos.com.py{{ request.path }}">
     <meta property="og:image" content="{% block og_image %}https://graosfoz.com.br/wp-content/uploads/2024/09/logo-verde.png{% endblock %}">
     <meta property="og:locale" content="es_PY">
 
@@ -40,7 +40,7 @@
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "Grãos S.A.",
-        "url": "{{ request.host_url }}",
+        "url": "https://www.graos.com.py/",
         "logo": "https://graosfoz.com.br/wp-content/uploads/2024/09/logo-verde.png",
         "description": "Importadora y distribuidora mayorista de especias, condimentos, hierbas medicinales y productos naturales para todo el Paraguay.",
         "areaServed": {
@@ -59,7 +59,7 @@
         "@context": "https://schema.org",
         "@type": "WebSite",
         "name": "Grãos S.A.",
-        "url": "{{ request.host_url }}",
+        "url": "https://www.graos.com.py/",
         "description": "El mayor proveedor de productos naturales del Paraguay",
         "inLanguage": "es"
     }
