@@ -75,6 +75,11 @@ def uploaded_file(filename):
     """Serve uploaded files from Railway persistent volume or local uploads folder."""
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon-32x32.png', mimetype='image/png')
+
 # ──────────────────── PUBLIC ROUTES ────────────────────
 
 @app.route('/')

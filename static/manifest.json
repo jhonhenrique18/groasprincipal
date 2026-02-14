@@ -1,0 +1,21 @@
+{
+    "name": "Grãos S.A. — Productos Naturales",
+    "short_name": "Grãos S.A.",
+    "description": "Importadora y distribuidora mayorista de especias, condimentos, hierbas medicinales y productos naturales en Paraguay.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#2d6a4f",
+    "icons": [
+        {
+            "src": "/static/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/static/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
