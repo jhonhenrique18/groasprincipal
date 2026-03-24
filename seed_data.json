@@ -1,0 +1,645 @@
+{
+  "categories": [
+    {
+      "name": "Especias y Condimentos",
+      "slug": "especias-y-condimentos",
+      "order": 1
+    },
+    {
+      "name": "Hierbas y Tés",
+      "slug": "hierbas-y-tes",
+      "order": 2
+    },
+    {
+      "name": "Frutas Deshidratadas",
+      "slug": "frutas-deshidratadas",
+      "order": 3
+    },
+    {
+      "name": "Semillas y Granos",
+      "slug": "semillas-y-granos",
+      "order": 4
+    },
+    {
+      "name": "Frutos Secos",
+      "slug": "frutos-secos",
+      "order": 5
+    },
+    {
+      "name": "Suplementos y Superalimentos",
+      "slug": "suplementos-y-superalimentos",
+      "order": 6
+    },
+    {
+      "name": "Derivados de Coco",
+      "slug": "derivados-de-coco",
+      "order": 7
+    },
+    {
+      "name": "Harinas Especiales",
+      "slug": "harinas-especiales",
+      "order": 8
+    },
+    {
+      "name": "Cacao",
+      "slug": "cacao",
+      "order": 9
+    }
+  ],
+  "products": [
+    {
+      "name": "Curcuma en Polvo",
+      "slug": "curcuma-en-polvo",
+      "category_slug": "especias-y-condimentos",
+      "origin": "India",
+      "description": "Cúrcuma en polvo de primera calidad, con color amarillo intenso y aroma característico. Utilizada en la industria alimentaria, gastronómica y como colorante natural. Importación directa al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg / 25 kg",
+      "image": "/static/uploads/d99600d690ae4ee194965f28587e0a5b.png",
+      "featured": true,
+      "active": true
+    },
+    {
+      "name": "Canela en Rama 6cm",
+      "slug": "canela-en-rama-6cm",
+      "category_slug": "especias-y-condimentos",
+      "origin": "Vietnã",
+      "description": "Canela en rama de 6 cm, entera y seleccionada. Aroma intenso y dulce, ideal para infusiones, repostería, gastronomía y uso industrial. Importación directa al por mayor para todo el Paraguay.",
+      "presentation": "Caja 10 kg / 20 kg",
+      "image": "/static/uploads/48f0fc1b72da4769b6115b9f5ec107ea.png",
+      "featured": true,
+      "active": true
+    },
+    {
+      "name": "Anis Estrellado",
+      "slug": "anis-estrellado",
+      "category_slug": "especias-y-condimentos",
+      "origin": "Vietnã",
+      "description": "Anís estrellado entero, seleccionado y de aroma intenso. Ampliamente utilizado en gastronomía, infusiones, licorería y medicina natural. Importación directa al por mayor para todo el Paraguay.",
+      "presentation": "Caja 10 kg",
+      "image": "/static/uploads/c6c4adf3bef14b34b67cf361fe3f8f28.png",
+      "featured": true,
+      "active": true
+    },
+    {
+      "name": "Clavo de Olor",
+      "slug": "clavo-de-olor",
+      "category_slug": "especias-y-condimentos",
+      "origin": "Brasil",
+      "description": "Clavo de olor entero de primera calidad, aroma fuerte y característico. Utilizado en gastronomía, repostería, infusiones y uso industrial. Importación directa al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 25 kg",
+      "image": "/static/uploads/f1d1e2d3e56b42eda65f8fd91f410252.png",
+      "featured": true,
+      "active": true
+    },
+    {
+      "name": "Comino en Grano",
+      "slug": "comino-en-grano",
+      "category_slug": "especias-y-condimentos",
+      "origin": "Egipto",
+      "description": "Comino en grano entero, sabor intenso y aromático. Esencial para la cocina paraguaya y latinoamericana, uso en carnes, guisos y embutidos. Importación directa al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 25 kg",
+      "image": "/static/uploads/8e4b12ad03ff4c9ab0eb95b166d12898.png",
+      "featured": true,
+      "active": true
+    },
+    {
+      "name": "Manzanilla Flor",
+      "slug": "manzanilla-flor",
+      "category_slug": "hierbas-y-tes",
+      "origin": "Brasil",
+      "description": "Flor de manzanilla deshidratada de primera calidad, ideal para infusiones, tés y uso medicinal natural. Propiedades calmantes y digestivas. Importación directa al por mayor para todo el Paraguay.",
+      "presentation": "Caja 10 kg",
+      "image": "/static/uploads/0bea983b885049539ad6e2951e018c22.png",
+      "featured": true,
+      "active": true
+    },
+    {
+      "name": "Hibisco Flor",
+      "slug": "hibisco-flor",
+      "category_slug": "hierbas-y-tes",
+      "origin": "Nigeria",
+      "description": "Flor de hibisco deshidratada de primera calidad, ideal para infusiones, tés y agua de jamaica. Rico en antioxidantes y vitamina C. Importación directa desde Nigeria, disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 25 kg",
+      "image": "/static/uploads/500c864104d64a8991ba0db728376f40.png",
+      "featured": true,
+      "active": true
+    },
+    {
+      "name": "Páprika Dulce",
+      "slug": "paprika-dulce",
+      "category_slug": "especias-y-condimentos",
+      "origin": "Brasil",
+      "description": "Páprika dulce molida de primera calidad, ideal para sazonar carnes, sopas, guisos y salsas. Color rojo intenso y sabor suave ahumado. Importación directa, disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/8cd8a8b83a8740d6afc893136e1e0740.png",
+      "featured": true,
+      "active": true
+    },
+    {
+      "name": "Cacao Alcalino en Polvo",
+      "slug": "cacao-alcalino-en-polvo",
+      "category_slug": "cacao",
+      "origin": "Brasil",
+      "description": "Cacao alcalino en polvo, procesado para obtener un sabor más suave y color oscuro intenso. Ideal para la industria de panificación, confitería y bebidas. Disponible al por mayor con importación directa.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/ba5e64582eac4edcb21e30298f4d5f58.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Castaña de Cajú W1 Cruda",
+      "slug": "castana-de-caju-w1-cruda",
+      "category_slug": "frutos-secos",
+      "origin": "Brasil",
+      "description": "Castaña de cajú entera W1 (tamaño grande), cruda y sin sal. Calidad premium del nordeste brasileño, ideal para reventa, industria alimentaria o fraccionamiento. Importación directa desde Ceará, Brasil, al por mayor para todo el Paraguay.",
+      "presentation": "Caja 10 kg",
+      "image": "/static/uploads/7a15c0d62e1d40de9356df988c55fea0.png",
+      "featured": true,
+      "active": true
+    },
+    {
+      "name": "Almendra Americana",
+      "slug": "almendra-americana",
+      "category_slug": "frutos-secos",
+      "origin": "Estados Unidos",
+      "description": "Almendra entera cruda de California, calidad Carmel. Ideal para panificación, confitería, snacks y fraccionamiento. Importación directa desde Estados Unidos, disponible al por mayor.",
+      "presentation": "Caja 11,34 kg",
+      "image": "/static/uploads/cce7bfe9e275482caac74f830cd020f2.png",
+      "featured": true,
+      "active": true
+    },
+    {
+      "name": "Semilla de Anís",
+      "slug": "semilla-de-anis",
+      "category_slug": "semillas-y-granos",
+      "origin": "Egipto",
+      "description": "Semilla de anís (erva doce) entera de Egipto, aroma dulce e intenso. Utilizada en panadería, licorería, infusiones y medicina natural. Importación directa al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 25 kg",
+      "image": "/static/uploads/462bfd9efe4a48f48b964884d6af45d3.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Gelatina sin Sabor en Polvo",
+      "slug": "gelatina-sin-sabor-en-polvo",
+      "category_slug": "harinas-especiales",
+      "origin": "Brasil",
+      "description": "Gelatina sin sabor en polvo, multiuso para la industria alimentaria, confitería y preparaciones culinarias. Disponible al por mayor con importación directa para todo el Paraguay.",
+      "presentation": "Bolsa 25 kg",
+      "image": "/static/uploads/2fbf43e4e33e42379ee5261da2c03975.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Romero",
+      "slug": "romero",
+      "category_slug": "especias-y-condimentos",
+      "origin": "Brasil",
+      "description": "Romero deshidratado de primera calidad, ideal para sazonar carnes, aves, panes y preparaciones gastronómicas. Disponible al por mayor en presentaciones de 10 kg y 25 kg.",
+      "presentation": "Bolsa 10 kg / 25 kg",
+      "image": "/static/uploads/872812a767c04d8497245acf7b7943c4.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Nuez Mariposa",
+      "slug": "nuez-mariposa",
+      "category_slug": "frutos-secos",
+      "origin": "China",
+      "description": "Nuez mariposa entera de calidad premium, ideal para reventa, panificación y snacks. Importación directa desde China, disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/47a519ff327b4c87ad37173e437c7307.png",
+      "featured": true,
+      "active": true
+    },
+    {
+      "name": "Matcha Japonés",
+      "slug": "matcha-japones",
+      "category_slug": "hierbas-y-tes",
+      "origin": "Japón",
+      "description": "Té matcha japonés en polvo, calidad premium. Ideal para preparación de bebidas, repostería y uso gastronómico. Importación directa desde Japón.",
+      "presentation": "Bolsa 1 kg",
+      "image": "/static/uploads/bca940a7dac7430880670835a5251b2c.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Pistacho sin Cáscara",
+      "slug": "pistacho-sin-cascara",
+      "category_slug": "frutos-secos",
+      "origin": "Estados Unidos",
+      "description": "Pistacho pelado sin cáscara de California, calidad premium. Ideal para confitería, heladería, panificación y fraccionamiento. Importación directa al por mayor.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/60a75f768eef4ebc9597ef4fae0f81ab.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Semilla de Calabaza",
+      "slug": "semilla-de-calabaza",
+      "category_slug": "semillas-y-granos",
+      "origin": "China",
+      "description": "Semilla de calabaza cruda y pelada, rica en zinc, magnesio y proteínas. Ideal para fraccionamiento, panificación, snacks saludables y uso gastronómico. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/aba9a2a1be6244cda961a380053be6d3.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Hinojo",
+      "slug": "hinojo",
+      "category_slug": "hierbas-y-tes",
+      "origin": "India",
+      "description": "Hinojo deshidratado de primera calidad, utilizado en infusiones digestivas, gastronomía y medicina natural. Sabor anisado suave y aromático. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 25 kg",
+      "image": "/static/uploads/f883f91c108f453f8e5927bae2d6aea1.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Cardo Mariano",
+      "slug": "cardo-mariano",
+      "category_slug": "hierbas-y-tes",
+      "origin": "China",
+      "description": "Semilla de cardo mariano, reconocida por sus propiedades hepatoprotectoras. Ampliamente utilizada en herboristerías, tiendas naturales y laboratorios. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/72ec69e9651a43809e4b09c9b44ad762.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Leche de Coco en Polvo",
+      "slug": "leche-de-coco-en-polvo",
+      "category_slug": "derivados-de-coco",
+      "origin": "Indonesia",
+      "description": "Leche de coco en polvo, práctica y versátil para uso en gastronomía, repostería, bebidas y la industria alimentaria. Fácil disolución y sabor natural. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Caja 10 kg",
+      "image": "/static/uploads/bd10f3475d78466296f621962da62ed6.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Pimienta Negra en Grano",
+      "slug": "pimienta-negra-en-grano",
+      "category_slug": "especias-y-condimentos",
+      "origin": "Brasil",
+      "description": "Pimienta negra entera en grano, aroma intenso y picante. Esencial en cualquier cocina, uso industrial y fraccionamiento. Importación directa al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg / 25 kg",
+      "image": "/static/uploads/3d97e1f0bb8a47709749e8eca68fec28.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Pimienta del Reino en Polvo",
+      "slug": "pimienta-del-reino-en-polvo",
+      "category_slug": "especias-y-condimentos",
+      "origin": "Brasil",
+      "description": "Pimienta del reino molida, sabor picante e intenso. Indispensable en la cocina profesional, industria alimentaria y fraccionamiento. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/ad39da59c3fd45279c8814679422d2b7.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Chips de Coco",
+      "slug": "chips-de-coco",
+      "category_slug": "derivados-de-coco",
+      "origin": "Indonesia",
+      "description": "Chips de coco deshidratado, crujientes y naturales. Ideales para confitería, repostería, granolas y snacks saludables. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Caja 10 kg",
+      "image": "/static/uploads/a1c9b63cd3124e288f5c2b2652d9b628.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Caléndula",
+      "slug": "calendula",
+      "category_slug": "hierbas-y-tes",
+      "origin": "Brasil",
+      "description": "Flor de caléndula deshidratada de uso comercial, utilizada en herboristerías, cosmética natural, infusiones y medicina natural. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 25 kg",
+      "image": "/static/uploads/b4939eb066084b55ae46d74cdc8d2e7c.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Orégano Peruano",
+      "slug": "oregano-peruano",
+      "category_slug": "especias-y-condimentos",
+      "origin": "Perú",
+      "description": "Orégano peruano deshidratado, aroma intenso y sabor característico. El más valorado en la gastronomía sudamericana, ideal para pizzerías, restaurantes e industria alimentaria. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 25 kg",
+      "image": "/static/uploads/f7950849095c47a79a71d8b0ad13c90a.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Cranberry",
+      "slug": "cranberry",
+      "category_slug": "frutas-deshidratadas",
+      "origin": "Estados Unidos",
+      "description": "Cranberry (arándano rojo) deshidratado, sabor agridulce natural. Ideal para panificación, confitería, granolas, snacks y fraccionamiento. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Caja 11,34 kg",
+      "image": "/static/uploads/c8572cb9fb414f68bd657804cab791a8.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Jengibre en Polvo",
+      "slug": "jengibre-en-polvo",
+      "category_slug": "especias-y-condimentos",
+      "origin": "Brasil",
+      "description": "Jengibre en polvo de primera calidad, sabor picante y aromático. Utilizado en gastronomía, bebidas, repostería y medicina natural. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/7b35ea6711064ed993fb97c20b0469d2.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Cacao en Polvo Black",
+      "slug": "cacao-en-polvo-black",
+      "category_slug": "cacao",
+      "origin": "Brasil",
+      "description": "Cacao en polvo negro alcalino, color oscuro intenso y sabor pronunciado. Ideal para confitería, repostería, bebidas e industria alimentaria. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/d09f2c546760402dacc20137e90869cb.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Comino en Polvo",
+      "slug": "comino-en-polvo",
+      "category_slug": "especias-y-condimentos",
+      "origin": "India",
+      "description": "Comino molido de primera calidad, sabor intenso y aromático. Esencial en la cocina paraguaya y latinoamericana, ideal para carnes, guisos, embutidos e industria alimentaria. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/2fe2c0df120c481cb188e8a30793ebe0.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Harina de Almendra Parmex",
+      "slug": "harina-de-almendra-parmex",
+      "category_slug": "harinas-especiales",
+      "origin": "Chile",
+      "description": "Harina de almendra marca Parmex, finamente molida. Ideal para repostería, confitería, macarons y productos sin gluten. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/09e9628098da474cb500c0d384eb35e5.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Harina de Almendra Regal",
+      "slug": "harina-de-almendra-regal",
+      "category_slug": "harinas-especiales",
+      "origin": "Estados Unidos",
+      "description": "Harina de almendra marca Regal, calidad premium. Ideal para repostería fina, confitería artesanal, macarons y productos sin gluten. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/c20f0d5083ca4cb8a40eecf7c7aa8178.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Harina de Almendra Calconut",
+      "slug": "harina-de-almendra-calconut",
+      "category_slug": "harinas-especiales",
+      "origin": "España",
+      "description": "Harina de almendra marca Calconut, procesada en España por Calconut S.L. (Alicante). Calidad europea premium para repostería, confitería, macarons y productos sin gluten. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/f253c1171eb849c09b3352993798ae48.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Ajo Granulado",
+      "slug": "ajo-granulado",
+      "category_slug": "especias-y-condimentos",
+      "origin": "Brasil",
+      "description": "Ajo granulado deshidratado de primera calidad, práctico y versátil para uso en carnes, salsas, embutidos e industria alimentaria. Sabor intenso y uniforme. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/4ab9d0c54b3b45c48802515df75f8216.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Coco Rallado Fino",
+      "slug": "coco-rallado-fino",
+      "category_slug": "derivados-de-coco",
+      "origin": "Indonesia",
+      "description": "Coco rallado fino deshidratado, textura suave y sabor natural. Ideal para confitería, repostería, panificación y uso industrial. Importación directa al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/7e53e1b10f754101a4b2f1cb054a42ce.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Damasco Turco",
+      "slug": "damasco-turco",
+      "category_slug": "frutas-deshidratadas",
+      "origin": "Turquía",
+      "description": "Damasco (albaricoque) deshidratado de Turquía, dulce y jugoso. Proveniente de la región de Malatya, la capital mundial del damasco. Ideal para snacks, confitería y fraccionamiento. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Caja 10 kg",
+      "image": "/static/uploads/e82018b8521b48d9948035284cb4cbd9.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Lavanda Flor",
+      "slug": "lavanda-flor",
+      "category_slug": "hierbas-y-tes",
+      "origin": "Francia",
+      "description": "Flor de lavanda deshidratada, aroma floral intenso y relajante. Utilizada en herboristerías, cosmética natural, aromaterapia e infusiones. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 25 kg",
+      "image": "/static/uploads/44ef313cfd804fb3ba4bbbdff3872683.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Pistacho con Cáscara",
+      "slug": "pistacho-con-cascara",
+      "category_slug": "frutos-secos",
+      "origin": "Irán",
+      "description": "Pistacho iraní con cáscara, tostado y seleccionado. Reconocido mundialmente por su sabor y tamaño superior. Ideal para reventa, snacks y fraccionamiento. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/6c6614c5588941358736a5ea162e6e97.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Lenteja Roja",
+      "slug": "lenteja-roja",
+      "category_slug": "semillas-y-granos",
+      "origin": "Canadá",
+      "description": "Lenteja roja entera de Canadá, cocción rápida y alto valor nutricional. Ideal para sopas, guisos, purés y uso industrial. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/6e9d9cb6876348908295e3fcbfa2db44.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Quinoa en Grano",
+      "slug": "quinoa-en-grano",
+      "category_slug": "semillas-y-granos",
+      "origin": "Perú",
+      "description": "Quinoa en grano blanca de Perú, superalimento rico en proteínas y aminoácidos esenciales. Ideal para reventa, gastronomía saludable y fraccionamiento. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/363be1617ae44442a607325ba9250621.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Spirulina en Polvo",
+      "slug": "spirulina-en-polvo",
+      "category_slug": "suplementos-y-superalimentos",
+      "origin": "China",
+      "description": "Spirulina en polvo, superalimento rico en proteínas, vitaminas y minerales. Utilizada en tiendas naturales, suplementación deportiva y alimentación saludable. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/13a84150054f441aab4f85e09aaa17ef.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Mix de Frutas Deshidratadas",
+      "slug": "mix-de-frutas-deshidratadas",
+      "category_slug": "frutas-deshidratadas",
+      "origin": "",
+      "description": "Mix de frutas deshidratadas variadas, combinación de sabores y colores naturales. Ideal para granolas, confitería, snacks saludables y fraccionamiento. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/b6ffe2012ec24643866197de5851b891.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Uva Pasa Negra",
+      "slug": "uva-pasa-negra",
+      "category_slug": "frutas-deshidratadas",
+      "origin": "Argentina",
+      "description": "Uva pasa negra deshidratada, dulce y jugosa. Ideal para panificación, confitería, granolas, snacks y fraccionamiento. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Caja 10 kg",
+      "image": "/static/uploads/1c27cad301aa46be9d6bd54d07b1ebc4.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Sal Rosa del Himalaya Fino",
+      "slug": "sal-rosa-del-himalaya-fino",
+      "category_slug": "especias-y-condimentos",
+      "origin": "Pakistán",
+      "description": "Sal rosa del Himalaya, extraída de las minas de Khewra en Pakistán. Rica en minerales naturales, ideal para gastronomía, fraccionamiento y uso gourmet. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 25 kg",
+      "image": "/static/uploads/f413356329c546a7bb0d70f6f6ac3ac5.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Moringa en Polvo",
+      "slug": "moringa-en-polvo",
+      "category_slug": "suplementos-y-superalimentos",
+      "origin": "India",
+      "description": "Moringa en polvo, superalimento rico en vitaminas, minerales y antioxidantes. Utilizada en tiendas naturales, suplementación y alimentación saludable. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/2e1e5fe3ee274afab1c14adb3fc66391.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Psyllium",
+      "slug": "psyllium",
+      "category_slug": "suplementos-y-superalimentos",
+      "origin": "India",
+      "description": "Psyllium (cáscara de ispágula), fibra soluble natural. Utilizado en suplementación, industria alimentaria y productos funcionales. Importación directa al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/ca417592eb6443e7ac183c2b7176cdf0.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Eritritol Cristal",
+      "slug": "eritritol-cristal",
+      "category_slug": "suplementos-y-superalimentos",
+      "origin": "China",
+      "description": "Eritritol cristalizado, endulzante natural sin calorías. Ideal para la industria alimentaria, productos dietéticos y alimentación saludable. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/c15fee7004b049a49fdb75b19d036f31.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Granola Tradicional",
+      "slug": "granola-tradicional",
+      "category_slug": "semillas-y-granos",
+      "origin": "Brasil",
+      "description": "Granola tradicional con avena, miel y frutas. Lista para reventa, fraccionamiento y uso en panificación. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/264e40010e914d109940a53c9aceed05.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Kiwi Deshidratado",
+      "slug": "kiwi-deshidratado",
+      "category_slug": "frutas-deshidratadas",
+      "origin": "China",
+      "description": "Kiwi deshidratado en rodajas, sabor agridulce natural. Ideal para snacks, confitería, granolas y fraccionamiento. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Caja 10 kg",
+      "image": "/static/uploads/63751200e2394f7e8ac584a27d0cf41a.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Azúcar de Coco",
+      "slug": "azucar-de-coco",
+      "category_slug": "derivados-de-coco",
+      "origin": "Indonesia",
+      "description": "Azúcar de coco orgánico, bajo índice glucémico y sabor acaramelado. Alternativa natural al azúcar refinado para la industria alimentaria y tiendas saludables. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/7aaaca21379e4162a8cfb465cc7fe64e.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Colágeno Hidrolizado",
+      "slug": "colageno-hidrolizado",
+      "category_slug": "suplementos-y-superalimentos",
+      "origin": "China",
+      "description": "Colágeno hidrolizado en polvo, alto grado de pureza y fácil disolución. Utilizado en suplementación, industria cosmética y productos funcionales. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg / 25 kg",
+      "image": "/static/uploads/e9efb6f9049d4d938fd757fefd2e5b5c.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Castaña de Brasil",
+      "slug": "castana-de-brasil",
+      "category_slug": "frutos-secos",
+      "origin": "Brasil (Pará)",
+      "description": "Castaña de Brasil (nuez amazónica) entera, rica en selenio y grasas saludables. Proveniente de la región amazónica del estado de Pará. Ideal para reventa, snacks y fraccionamiento. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/bb75555309c84999aae9999cac35e8c5.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Nuez Pecán",
+      "slug": "nuez-pecan",
+      "category_slug": "frutos-secos",
+      "origin": "Estados Unidos",
+      "description": "Nuez pecán pelada, sabor dulce y mantecoso. Ideal para repostería, confitería, snacks premium y fraccionamiento. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 5 kg",
+      "image": "/static/uploads/9c78fef4a5844feea0676cc5310127f8.png",
+      "featured": false,
+      "active": true
+    },
+    {
+      "name": "Creatina en Polvo",
+      "slug": "creatina-en-polvo",
+      "category_slug": "suplementos-y-superalimentos",
+      "origin": "China",
+      "description": "Creatina monohidratada en polvo, grado alimenticio de alta pureza. Utilizada en suplementación deportiva, tiendas naturales y formulación de productos. Disponible al por mayor para todo el Paraguay.",
+      "presentation": "Bolsa 10 kg",
+      "image": "/static/uploads/4afe99470b02453d8c4c21b1e4a8c5ef.png",
+      "featured": false,
+      "active": true
+    }
+  ]
+}
