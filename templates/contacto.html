@@ -27,15 +27,17 @@
 {% endblock %}
 
 {% block content %}
-<!-- Breadcrumb -->
-<nav class="breadcrumb" aria-label="Migas de pan">
-    <a href="{{ url_for('index') }}">Inicio</a> /
-    <span aria-current="page">Contacto</span>
-</nav>
-
 <section class="page-header">
-    <h1>Contacto</h1>
-    <p>Estamos para ayudarte. Escribinos y respondemos a la brevedad.</p>
+    <div class="page-header-bg"></div>
+    <div class="page-header-inner">
+        <nav class="breadcrumb-inline" aria-label="Migas de pan">
+            <a href="{{ url_for('index') }}">Inicio</a>
+            <span class="breadcrumb-sep">/</span>
+            <span aria-current="page">Contacto</span>
+        </nav>
+        <h1>Contacto</h1>
+        <p>Escribinos y respondemos a la brevedad</p>
+    </div>
 </section>
 
 <section class="contact-page">

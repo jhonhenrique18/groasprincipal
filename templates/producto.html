@@ -5,7 +5,7 @@
 {% block og_type %}product{% endblock %}
 {% block og_title %}{{ product.name }} — Grãos S.A.{% endblock %}
 {% block og_description %}{{ product.name }} | {{ product.category.name }} al por mayor. {% if product.origin %}Origen: {{ product.origin }}.{% endif %} Importación directa.{% endblock %}
-{% block og_image %}{% if product.image %}https://www.graos.com.py{{ product.image }}{% else %}https://graosfoz.com.br/wp-content/uploads/2024/09/logo-verde.png{% endif %}{% endblock %}
+{% block og_image %}{% if product.image %}https://www.graos.com.py{{ product.image }}{% else %}https://www.graos.com.py/static/img/og-image-1200x630.png{% endif %}{% endblock %}
 {% block tw_title %}{{ product.name }} — Grãos S.A.{% endblock %}
 {% block tw_description %}{{ product.category.name }} al por mayor. Importación directa por Grãos S.A.{% endblock %}
 
@@ -30,12 +30,10 @@
         "@id": "https://www.graos.com.py/#organization"
     },
     {% if product.origin %}"countryOfOrigin": {"@type": "Country", "name": "{{ product.origin }}"},{% endif %}
+    "@id": "https://www.graos.com.py/producto/{{ product.slug }}#product",
     "offers": {
         "@type": "Offer",
         "availability": "https://schema.org/InStock",
-        "priceCurrency": "PYG",
-        "price": "0",
-        "priceValidUntil": "2026-12-31",
         "url": "https://www.graos.com.py/producto/{{ product.slug }}",
         "seller": {
             "@type": "Organization",
@@ -46,6 +44,11 @@
         "areaServed": {
             "@type": "Country",
             "name": "Paraguay"
+        },
+        "priceSpecification": {
+            "@type": "PriceSpecification",
+            "priceCurrency": "PYG",
+            "description": "Solicitar cotización por WhatsApp"
         }
     }
 }
@@ -68,10 +71,13 @@
 {% block content %}
 <section class="product-detail">
     <div class="container">
-        <nav class="breadcrumb" aria-label="Migas de pan">
-            <a href="{{ url_for('index') }}">Inicio</a> /
-            <a href="{{ url_for('productos') }}">Productos</a> /
-            <a href="{{ url_for('productos', slug=product.category.slug) }}">{{ product.category.name }}</a> /
+        <nav class="breadcrumb-detail" aria-label="Migas de pan">
+            <a href="{{ url_for('index') }}">Inicio</a>
+            <span class="breadcrumb-sep">/</span>
+            <a href="{{ url_for('productos') }}">Productos</a>
+            <span class="breadcrumb-sep">/</span>
+            <a href="{{ url_for('productos', slug=product.category.slug) }}">{{ product.category.name }}</a>
+            <span class="breadcrumb-sep">/</span>
             <span aria-current="page">{{ product.name }}</span>
         </nav>
 

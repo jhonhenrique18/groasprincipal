@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+    <!-- ═══ Google Analytics 4 ═══ -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y0QKNWRX66"></script>
+    <script>
+    window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());gtag('config','G-Y0QKNWRX66');
+    </script>
+
     <!-- ═══ SEO: Title & Description ═══ -->
     <title>{% block title %}Grãos S.A.{% endblock %} | El Mayor Proveedor de Productos Naturales del Paraguay</title>
     <meta name="description" content="{% block meta_description %}Grãos S.A. — Importadora y distribuidora mayorista de especias, condimentos, hierbas medicinales y productos naturales. Importación directa desde 16 países con entregas a todo el Paraguay.{% endblock %}">
@@ -24,14 +31,16 @@
     <meta property="og:title" content="{% block og_title %}Grãos S.A. — El Mayor Proveedor de Productos Naturales del Paraguay{% endblock %}">
     <meta property="og:description" content="{% block og_description %}Importadora y distribuidora mayorista de especias, condimentos, hierbas medicinales y productos naturales. Importación directa desde 16 países.{% endblock %}">
     <meta property="og:url" content="https://www.graos.com.py{{ request.path }}">
-    <meta property="og:image" content="{% block og_image %}https://graosfoz.com.br/wp-content/uploads/2024/09/logo-verde.png{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}https://www.graos.com.py/static/img/og-image-1200x630.png{% endblock %}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:locale" content="es_PY">
 
     <!-- ═══ SEO: Twitter Cards ═══ -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{% block tw_title %}Grãos S.A. — Productos Naturales{% endblock %}">
     <meta name="twitter:description" content="{% block tw_description %}Importadora y distribuidora mayorista de productos naturales para todo el Paraguay.{% endblock %}">
-    <meta name="twitter:image" content="{% block tw_image %}https://graosfoz.com.br/wp-content/uploads/2024/09/logo-verde.png{% endblock %}">
+    <meta name="twitter:image" content="{% block tw_image %}https://www.graos.com.py/static/img/og-image-1200x630.png{% endblock %}">
 
     <!-- ═══ SEO: Geographic targeting ═══ -->
     <meta name="geo.region" content="PY">
@@ -52,11 +61,11 @@
         "url": "https://www.graos.com.py/",
         "logo": {
             "@type": "ImageObject",
-            "url": "https://graosfoz.com.br/wp-content/uploads/2024/09/logo-verde.png",
+            "url": "/static/img/logo-verde.png",
             "width": 600,
             "height": 200
         },
-        "image": "https://graosfoz.com.br/wp-content/uploads/2024/09/logo-verde.png",
+        "image": "/static/img/logo-verde.png",
         "description": "Importadora y distribuidora mayorista de especias, condimentos, hierbas medicinales y productos naturales para todo el Paraguay. Importación directa desde 16 países sin intermediarios.",
         "address": {
             "@type": "PostalAddress",
@@ -123,10 +132,12 @@
     <meta name="msapplication-TileColor" content="#2d6a4f">
 
     <!-- ═══ Performance ═══ -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" as="style">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"></noscript>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
     {% block head %}{% endblock %}
@@ -138,7 +149,7 @@
         <nav class="navbar" id="navbar" aria-label="Navegación principal">
             <div class="nav-inner">
                 <a href="{{ url_for('index') }}" class="nav-logo" aria-label="Grãos S.A. - Inicio">
-                    <img src="https://graosfoz.com.br/wp-content/uploads/2024/09/logo-verde.png" alt="Grãos S.A. — Importadora y distribuidora de productos naturales en Paraguay" width="160" height="40" loading="eager">
+                    <img src="/static/img/logo-verde.png" alt="Grãos S.A. — Importadora y distribuidora de productos naturales en Paraguay" width="160" height="40" loading="eager">
                 </a>
                 <button class="nav-toggle" id="navToggle" aria-label="Abrir menú de navegación" aria-expanded="false">
                     <span></span><span></span><span></span>
@@ -173,7 +184,7 @@
     <footer class="site-footer" role="contentinfo">
         <div class="footer-top">
             <div class="footer-col">
-                <img src="https://graosfoz.com.br/wp-content/uploads/2024/09/LOGO-GRAOS-BRANCO.svg" alt="Grãos S.A." class="footer-logo" width="140" height="40" loading="lazy">
+                <img src="/static/img/logo-branco.svg" alt="Grãos S.A." class="footer-logo" width="140" height="40" loading="lazy">
                 <p class="footer-about">Importadora y distribuidora de productos naturales, especias, condimentos y hierbas medicinales para todo el Paraguay.</p>
             </div>
             <div class="footer-col">

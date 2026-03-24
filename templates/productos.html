@@ -46,20 +46,23 @@
 {% endblock %}
 
 {% block content %}
-<!-- Breadcrumb -->
-<nav class="breadcrumb" aria-label="Migas de pan">
-    <a href="{{ url_for('index') }}">Inicio</a> /
-    {% if current_cat %}
-    <a href="{{ url_for('productos') }}">Productos</a> /
-    <span aria-current="page">{{ current_cat.name }}</span>
-    {% else %}
-    <span aria-current="page">Productos</span>
-    {% endif %}
-</nav>
-
-<section class="page-header">
-    <h1>{% if current_cat %}{{ current_cat.name }}{% else %}Nuestros Productos{% endif %}</h1>
-    <p>{% if current_cat %}Productos de {{ current_cat.name|lower }} al por mayor con importación directa{% else %}Especializados en importación y distribución de productos naturales de alta calidad{% endif %}</p>
+<section class="page-header page-header--products">
+    <div class="page-header-bg"></div>
+    <div class="page-header-inner">
+        <nav class="breadcrumb-inline" aria-label="Migas de pan">
+            <a href="{{ url_for('index') }}">Inicio</a>
+            <span class="breadcrumb-sep">/</span>
+            {% if current_cat %}
+            <a href="{{ url_for('productos') }}">Productos</a>
+            <span class="breadcrumb-sep">/</span>
+            <span aria-current="page">{{ current_cat.name }}</span>
+            {% else %}
+            <span aria-current="page">Productos</span>
+            {% endif %}
+        </nav>
+        <h1>{% if current_cat %}{{ current_cat.name }}{% else %}Nuestros Productos{% endif %}</h1>
+        <p>{% if current_cat %}{{ current_cat.name }} al por mayor — importación directa desde 16 países{% else %}Importación directa de especias, condimentos y productos naturales{% endif %}</p>
+    </div>
 </section>
 
 <section class="products-page">

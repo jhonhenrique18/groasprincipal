@@ -156,4 +156,29 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    /* ═══ GA4: TRACK WHATSAPP CLICKS ═══ */
+    document.querySelectorAll('a[href*="wa.me"], .wa-float').forEach(function (el) {
+        el.addEventListener('click', function () {
+            if (typeof gtag === 'function') {
+                gtag('event', 'whatsapp_click', {
+                    event_category: 'lead',
+                    event_label: window.location.pathname
+                });
+            }
+        });
+    });
+
+    /* ═══ GA4: TRACK CONTACT FORM ═══ */
+    var contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function () {
+            if (typeof gtag === 'function') {
+                gtag('event', 'form_submit', {
+                    event_category: 'lead',
+                    event_label: 'contacto'
+                });
+            }
+        });
+    }
+
 });

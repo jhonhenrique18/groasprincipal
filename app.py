@@ -38,6 +38,26 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated
 
+# ──────────────────── SEO: SECURITY & CACHE HEADERS ────────────────────
+
+@app.after_request
+def add_security_headers(response):
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    response.headers['Permissions-Policy'] = 'geolocation=(), microphone=(), camera=()'
+    if not app.debug:
+        response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    # Cache headers for static assets
+    if response.content_type and ('css' in response.content_type or 'javascript' in response.content_type):
+        response.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
+    elif response.content_type and 'image' in response.content_type:
+        response.headers['Cache-Control'] = 'public, max-age=2592000'
+    elif response.content_type and 'text/html' in response.content_type:
+        response.headers['Cache-Control'] = 'public, max-age=300'
+    return response
+
 def save_image(file):
     if file and allowed_file(file.filename):
         ext = file.filename.rsplit('.', 1)[1].lower()
@@ -124,8 +144,12 @@ def robots():
 Allow: /
 Disallow: /admin/
 Disallow: /api/
+Disallow: /uploads/
+
+Crawl-delay: 1
 
 Sitemap: https://www.graos.com.py/sitemap.xml
+Sitemap: https://www.graos.com.py/sitemap-products.xml
 """
     return Response(content, mimetype='text/plain')
 
@@ -158,6 +182,36 @@ def sitemap():
         xml += f'    <lastmod>{page["lastmod"]}</lastmod>\n'
         xml += f'    <changefreq>{page["changefreq"]}</changefreq>\n'
         xml += f'    <priority>{page["priority"]}</priority>\n'
+        xml += '  </url>\n'
+    xml += '</urlset>'
+    response = make_response(xml)
+    response.headers['Content-Type'] = 'application/xml'
+    return response
+
+@app.route('/sitemap-products.xml')
+def sitemap_products():
+    from datetime import datetime as dt
+    today = dt.utcnow().strftime('%Y-%m-%d')
+    base = 'https://www.graos.com.py'
+    xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n'
+    xml += '        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n'
+    products = Product.query.filter_by(active=True).all()
+    for p in products:
+        lastmod = p.created_at.strftime('%Y-%m-%d') if p.created_at else today
+        xml += '  <url>\n'
+        xml += f'    <loc>{base}/producto/{p.slug}</loc>\n'
+        xml += f'    <lastmod>{lastmod}</lastmod>\n'
+        xml += '    <changefreq>weekly</changefreq>\n'
+        xml += '    <priority>0.9</priority>\n'
+        if p.image:
+            image_url = p.image if p.image.startswith('http') else f'{base}{p.image}'
+            xml += '    <image:image>\n'
+            xml += f'      <image:loc>{image_url}</image:loc>\n'
+            xml += f'      <image:title>{p.name}</image:title>\n'
+            if p.origin:
+                xml += f'      <image:caption>{p.name} — Origen: {p.origin}</image:caption>\n'
+            xml += '    </image:image>\n'
         xml += '  </url>\n'
     xml += '</urlset>'
     response = make_response(xml)

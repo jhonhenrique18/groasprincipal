@@ -1,12 +1,25 @@
 {
-    "name": "Grãos S.A. — Productos Naturales",
+    "name": "Grãos S.A. — Importadora de Productos Naturales del Paraguay",
     "short_name": "Grãos S.A.",
-    "description": "Importadora y distribuidora mayorista de especias, condimentos, hierbas medicinales y productos naturales en Paraguay.",
+    "description": "Importadora y distribuidora mayorista de especias, condimentos, hierbas medicinales y productos naturales. Importación directa desde 16 países con entregas a todo el Paraguay.",
     "start_url": "/",
+    "scope": "/",
     "display": "standalone",
+    "orientation": "portrait-primary",
     "background_color": "#ffffff",
-    "theme_color": "#2d6a4f",
+    "theme_color": "#20A34B",
+    "categories": ["shopping", "food"],
     "icons": [
+        {
+            "src": "/static/favicon-32x32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "/static/apple-touch-icon.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        },
         {
             "src": "/static/android-chrome-192x192.png",
             "sizes": "192x192",
@@ -15,7 +28,26 @@
         {
             "src": "/static/android-chrome-512x512.png",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/static/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Ver Productos",
+            "short_name": "Productos",
+            "url": "/productos"
+        },
+        {
+            "name": "Contacto",
+            "short_name": "Contacto",
+            "url": "/contacto"
         }
     ]
 }
