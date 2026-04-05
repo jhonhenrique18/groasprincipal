@@ -107,12 +107,24 @@ def save_image(file):
 
 @app.template_filter('img_sm')
 def img_sm_filter(image_path):
-    """Return the -sm (400px thumbnail) variant of an image path.
-    /static/uploads/abc123.webp -> /static/uploads/abc123-sm.webp"""
+    """Return the -sm (400px thumbnail) variant of an image path,
+    but ONLY if the -sm file actually exists on disk. Otherwise return
+    the original path so the browser always has a working image."""
     if not image_path:
         return image_path
-    base, ext = image_path.rsplit('.', 1) if '.' in image_path else (image_path, '')
-    return f"{base}-sm.{ext}" if ext else image_path
+    if '.' not in image_path:
+        return image_path
+    base, ext = image_path.rsplit('.', 1)
+    sm_path = f"{base}-sm.{ext}"
+
+    # Resolve the filesystem path to check existence
+    sm_filename = sm_path.split('/')[-1]
+    full_path = os.path.join(app.config['UPLOAD_FOLDER'], sm_filename)
+    if os.path.isfile(full_path):
+        # Return the -sm URL using the same prefix as the original
+        prefix = image_path.rsplit('/', 1)[0]  # e.g. /static/uploads or /uploads
+        return f"{prefix}/{sm_filename}"
+    return image_path
 
 # ──────────────────── CONTEXT PROCESSOR ────────────────────
 
@@ -136,6 +148,14 @@ def inject_site_settings():
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     """Serve uploaded files from Railway persistent volume or local uploads folder."""
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+@app.route('/static/uploads/<filename>')
+def static_uploads_fallback(filename):
+    """Fallback: if DB stores /static/uploads/xxx but we're on Railway,
+    serve from the persistent volume instead of the (empty) static dir.
+    In development this route is shadowed by Flask's built-in static handler,
+    so it only activates on Railway where static/uploads/ doesn't exist."""
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 @app.route('/favicon.ico')
