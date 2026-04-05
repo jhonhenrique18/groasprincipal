@@ -254,6 +254,35 @@ def admin_logout():
     session.pop('admin_logged_in', None)
     return redirect(url_for('admin_login'))
 
+@app.route('/admin/migrate-images')
+@login_required
+def admin_migrate_images():
+    """Copy images from static/uploads/ to Railway volume and fix DB paths."""
+    volume = os.environ.get('RAILWAY_VOLUME_MOUNT_PATH')
+    if not volume:
+        flash('No Railway volume detected — not needed in development.', 'info')
+        return redirect(url_for('admin_dashboard'))
+    import shutil
+    src_dir = os.path.join(app.root_path, 'static', 'uploads')
+    dst_dir = os.path.join(volume, 'uploads')
+    os.makedirs(dst_dir, exist_ok=True)
+    copied = 0
+    if os.path.isdir(src_dir):
+        for f in os.listdir(src_dir):
+            src = os.path.join(src_dir, f)
+            dst = os.path.join(dst_dir, f)
+            if os.path.isfile(src) and not os.path.exists(dst):
+                shutil.copy2(src, dst)
+                copied += 1
+    # Fix product image paths: /static/uploads/x.png → /uploads/x.png
+    fixed = 0
+    for p in Product.query.filter(Product.image.like('/static/uploads/%')).all():
+        p.image = p.image.replace('/static/uploads/', '/uploads/')
+        fixed += 1
+    db.session.commit()
+    flash(f'Migrated {copied} images, fixed {fixed} DB paths.', 'success')
+    return redirect(url_for('admin_dashboard'))
+
 @app.route('/admin')
 @login_required
 def admin_dashboard():
