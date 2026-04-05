@@ -257,30 +257,53 @@ def admin_logout():
 @app.route('/admin/migrate-images')
 @login_required
 def admin_migrate_images():
-    """Copy images from static/uploads/ to Railway volume and fix DB paths."""
+    """Sync images from seed_data.json + static/uploads/ to production."""
+    import json, shutil
     volume = os.environ.get('RAILWAY_VOLUME_MOUNT_PATH')
-    if not volume:
-        flash('No Railway volume detected — not needed in development.', 'info')
-        return redirect(url_for('admin_dashboard'))
-    import shutil
-    src_dir = os.path.join(app.root_path, 'static', 'uploads')
-    dst_dir = os.path.join(volume, 'uploads')
-    os.makedirs(dst_dir, exist_ok=True)
+    results = []
+
+    # Step 1: Sync image paths from seed_data.json to DB for products missing images
+    data_path = os.path.join(os.path.dirname(__file__), 'seed_data.json')
+    synced = 0
+    if os.path.exists(data_path):
+        with open(data_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        seed_map = {p['slug']: p.get('image', '') for p in data['products']}
+        for p in Product.query.filter((Product.image == '') | (Product.image == None)).all():
+            seed_img = seed_map.get(p.slug, '')
+            if seed_img:
+                if volume:
+                    p.image = seed_img.replace('/static/uploads/', '/uploads/')
+                else:
+                    p.image = seed_img
+                synced += 1
+        db.session.commit()
+    results.append(f'Synced {synced} image paths from seed_data.json')
+
+    # Step 2: Copy files from static/uploads/ to Railway volume
     copied = 0
-    if os.path.isdir(src_dir):
-        for f in os.listdir(src_dir):
-            src = os.path.join(src_dir, f)
-            dst = os.path.join(dst_dir, f)
-            if os.path.isfile(src) and not os.path.exists(dst):
-                shutil.copy2(src, dst)
-                copied += 1
-    # Fix product image paths: /static/uploads/x.png → /uploads/x.png
-    fixed = 0
-    for p in Product.query.filter(Product.image.like('/static/uploads/%')).all():
-        p.image = p.image.replace('/static/uploads/', '/uploads/')
-        fixed += 1
-    db.session.commit()
-    flash(f'Migrated {copied} images, fixed {fixed} DB paths.', 'success')
+    if volume:
+        src_dir = os.path.join(app.root_path, 'static', 'uploads')
+        dst_dir = os.path.join(volume, 'uploads')
+        os.makedirs(dst_dir, exist_ok=True)
+        if os.path.isdir(src_dir):
+            for f in os.listdir(src_dir):
+                src = os.path.join(src_dir, f)
+                dst = os.path.join(dst_dir, f)
+                if os.path.isfile(src) and not os.path.exists(dst):
+                    shutil.copy2(src, dst)
+                    copied += 1
+        results.append(f'Copied {copied} images to Railway volume')
+
+        # Step 3: Fix any remaining /static/uploads/ paths in DB
+        fixed = 0
+        for p in Product.query.filter(Product.image.like('/static/uploads/%')).all():
+            p.image = p.image.replace('/static/uploads/', '/uploads/')
+            fixed += 1
+        db.session.commit()
+        results.append(f'Fixed {fixed} DB paths to /uploads/')
+
+    flash(' | '.join(results), 'success')
     return redirect(url_for('admin_dashboard'))
 
 @app.route('/admin')
