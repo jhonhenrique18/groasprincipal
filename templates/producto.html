@@ -30,27 +30,8 @@
         "@id": "https://www.graos.com.py/#organization"
     },
     {% if product.origin %}"countryOfOrigin": {"@type": "Country", "name": "{{ product.origin }}"},{% endif %}
-    "@id": "https://www.graos.com.py/producto/{{ product.slug }}#product",
-    "offers": {
-        "@type": "Offer",
-        "availability": "https://schema.org/InStock",
-        "url": "https://www.graos.com.py/producto/{{ product.slug }}",
-        "seller": {
-            "@type": "Organization",
-            "name": "Grãos S.A.",
-            "@id": "https://www.graos.com.py/#organization"
-        },
-        "itemCondition": "https://schema.org/NewCondition",
-        "areaServed": {
-            "@type": "Country",
-            "name": "Paraguay"
-        },
-        "priceSpecification": {
-            "@type": "PriceSpecification",
-            "priceCurrency": "PYG",
-            "description": "Solicitar cotización por WhatsApp"
-        }
-    }
+    "sku": "{{ product.slug }}",
+    "@id": "https://www.graos.com.py/producto/{{ product.slug }}#product"
 }
 </script>
 <!-- Schema.org BreadcrumbList -->
