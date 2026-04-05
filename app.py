@@ -300,30 +300,12 @@ def admin_logout():
 @app.route('/admin/migrate-images')
 @login_required
 def admin_migrate_images():
-    """Sync images from seed_data.json + static/uploads/ to production."""
+    """Full image migration: sync paths, copy WebP to volume, fix all DB paths."""
     import json, shutil
     volume = os.environ.get('RAILWAY_VOLUME_MOUNT_PATH')
     results = []
 
-    # Step 1: Sync image paths from seed_data.json to DB for products missing images
-    data_path = os.path.join(os.path.dirname(__file__), 'seed_data.json')
-    synced = 0
-    if os.path.exists(data_path):
-        with open(data_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        seed_map = {p['slug']: p.get('image', '') for p in data['products']}
-        for p in Product.query.filter((Product.image == '') | (Product.image == None)).all():
-            seed_img = seed_map.get(p.slug, '')
-            if seed_img:
-                if volume:
-                    p.image = seed_img.replace('/static/uploads/', '/uploads/')
-                else:
-                    p.image = seed_img
-                synced += 1
-        db.session.commit()
-    results.append(f'Synced {synced} image paths from seed_data.json')
-
-    # Step 2: Copy files from static/uploads/ to Railway volume
+    # Step 1: Copy ALL WebP files from static/uploads/ to Railway volume
     copied = 0
     if volume:
         src_dir = os.path.join(app.root_path, 'static', 'uploads')
@@ -336,15 +318,53 @@ def admin_migrate_images():
                 if os.path.isfile(src) and not os.path.exists(dst):
                     shutil.copy2(src, dst)
                     copied += 1
-        results.append(f'Copied {copied} images to Railway volume')
+        results.append(f'Copied {copied} files to volume')
 
-        # Step 3: Fix any remaining /static/uploads/ paths in DB
-        fixed = 0
-        for p in Product.query.filter(Product.image.like('/static/uploads/%')).all():
-            p.image = p.image.replace('/static/uploads/', '/uploads/')
+    # Step 2: For every product, ensure image path points to existing WebP
+    fixed = 0
+    for p in Product.query.all():
+        if not p.image:
+            continue
+        old_path = p.image
+        new_path = old_path
+        # Fix /static/uploads/ → /uploads/ on Railway
+        if volume and new_path.startswith('/static/uploads/'):
+            new_path = new_path.replace('/static/uploads/', '/uploads/')
+        # Fix .png → .webp if WebP exists
+        if new_path.endswith('.png'):
+            webp_path = new_path.rsplit('.', 1)[0] + '.webp'
+            # Check if WebP file actually exists
+            if volume:
+                check_dir = os.path.join(volume, 'uploads')
+            else:
+                check_dir = os.path.join(app.root_path, 'static', 'uploads')
+            webp_filename = webp_path.split('/')[-1]
+            if os.path.exists(os.path.join(check_dir, webp_filename)):
+                new_path = webp_path
+        if new_path != old_path:
+            p.image = new_path
             fixed += 1
+    db.session.commit()
+    results.append(f'Fixed {fixed} DB image paths')
+
+    # Step 3: Fill empty images from seed_data.json
+    data_path = os.path.join(os.path.dirname(__file__), 'seed_data.json')
+    synced = 0
+    if os.path.exists(data_path):
+        with open(data_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        seed_map = {p['slug']: p.get('image', '') for p in data['products']}
+        for p in Product.query.filter((Product.image == '') | (Product.image == None)).all():
+            seed_img = seed_map.get(p.slug, '')
+            if seed_img:
+                if volume:
+                    seed_img = seed_img.replace('/static/uploads/', '/uploads/')
+                if seed_img.endswith('.png'):
+                    seed_img = seed_img.rsplit('.', 1)[0] + '.webp'
+                p.image = seed_img
+                synced += 1
         db.session.commit()
-        results.append(f'Fixed {fixed} DB paths to /uploads/')
+    results.append(f'Synced {synced} empty products from seed')
 
     flash(' | '.join(results), 'success')
     return redirect(url_for('admin_dashboard'))
