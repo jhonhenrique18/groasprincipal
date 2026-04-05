@@ -112,6 +112,8 @@ def index():
 @app.route('/productos/<slug>')
 def productos(slug=None):
     categories = Category.query.order_by(Category.order).all()
+    cat_counts = {c.id: Product.query.filter_by(active=True, category_id=c.id).count() for c in categories}
+    total_count = Product.query.filter_by(active=True).count()
     if slug:
         cat = Category.query.filter_by(slug=slug).first_or_404()
         products = Product.query.filter_by(active=True, category_id=cat.id).order_by(Product.name).all()
@@ -119,7 +121,7 @@ def productos(slug=None):
     else:
         products = Product.query.filter_by(active=True).order_by(Product.name).all()
         current_cat = None
-    return render_template('productos.html', products=products, categories=categories, current_cat=current_cat)
+    return render_template('productos.html', products=products, categories=categories, current_cat=current_cat, cat_counts=cat_counts, total_count=total_count)
 
 @app.route('/producto/<slug>')
 def producto(slug):
@@ -411,8 +413,30 @@ def init_db():
     db.create_all()
     if Category.query.count() == 0:
         # First run — seed all data
-        from seed import seed
-        seed()
+        import json
+        data_path = os.path.join(os.path.dirname(__file__), 'seed_data.json')
+        with open(data_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        for c in data['categories']:
+            db.session.add(Category(name=c['name'], slug=c['slug'], order=c['order']))
+        db.session.commit()
+        for p in data['products']:
+            cat = Category.query.filter_by(slug=p['category_slug']).first()
+            if not cat:
+                continue
+            db.session.add(Product(
+                name=p['name'], slug=p['slug'], category_id=cat.id,
+                origin=p.get('origin', ''), description=p.get('description', ''),
+                presentation=p.get('presentation', ''), image=p.get('image', ''),
+                featured=p.get('featured', False), active=p.get('active', True),
+            ))
+        db.session.commit()
+        if not SiteSetting.get('whatsapp'):
+            SiteSetting.set('whatsapp', '+595 983002684')
+        if not SiteSetting.get('email'):
+            SiteSetting.set('email', 'jhonatan@grupo-dip.com')
+        if not SiteSetting.get('hero_image'):
+            SiteSetting.set('hero_image', '/static/uploads/6a6805d27ce146bfa9af82e53d827753.png')
 
 with app.app_context():
     init_db()

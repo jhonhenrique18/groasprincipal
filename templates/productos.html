@@ -74,20 +74,44 @@
             </div>
         </div>
 
-        <!-- Categories Filter + Counter -->
-        <div class="products-filter-bar reveal">
-            <nav class="products-filter" aria-label="Filtrar por categoría">
+        <!-- Mobile: horizontal chips -->
+        <div class="products-filter-mobile reveal">
+            <nav class="products-filter-scroll" aria-label="Filtrar por categoría">
                 <a href="{{ url_for('productos') }}" class="filter-chip {% if not current_cat %}active{% endif %}">Todos</a>
                 {% for c in categories %}
-                <a href="{{ url_for('productos', slug=c.slug) }}" class="filter-chip {% if current_cat and current_cat.id == c.id %}active{% endif %}">{{ c.name }}</a>
+                {% set short_names = {
+                    'Especias y Condimentos': 'Especias',
+                    'Hierbas y Tés': 'Hierbas',
+                    'Frutas Deshidratadas': 'Frutas',
+                    'Semillas y Granos': 'Semillas',
+                    'Frutos Secos': 'Frutos Secos',
+                    'Suplementos y Superalimentos': 'Suplementos',
+                    'Derivados de Coco': 'Coco',
+                    'Harinas Especiales': 'Harinas',
+                    'Cacao': 'Cacao'
+                } %}
+                <a href="{{ url_for('productos', slug=c.slug) }}" class="filter-chip {% if current_cat and current_cat.id == c.id %}active{% endif %}">{{ short_names.get(c.name, c.name) }}</a>
                 {% endfor %}
             </nav>
-            <div class="products-count">
-                <span>{{ products|length }} producto{{ 's' if products|length != 1 else '' }}</span>
-            </div>
         </div>
 
         <div class="products-layout">
+            <!-- Desktop: sidebar -->
+            <aside class="products-sidebar">
+                <h3 class="sidebar-title">Categorías</h3>
+                <nav class="sidebar-nav" aria-label="Filtrar por categoría">
+                    <a href="{{ url_for('productos') }}" class="sidebar-link {% if not current_cat %}active{% endif %}">
+                        <span class="sidebar-link-name">Todos los productos</span>
+                        <span class="sidebar-link-count">{{ total_count }}</span>
+                    </a>
+                    {% for c in categories %}
+                    <a href="{{ url_for('productos', slug=c.slug) }}" class="sidebar-link {% if current_cat and current_cat.id == c.id %}active{% endif %}">
+                        <span class="sidebar-link-name">{{ c.name }}</span>
+                        <span class="sidebar-link-count">{{ cat_counts.get(c.id, 0) }}</span>
+                    </a>
+                    {% endfor %}
+                </nav>
+            </aside>
             <div class="products-main">
                 {% if products %}
                 <div class="products-grid">
