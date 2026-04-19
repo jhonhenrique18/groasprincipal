@@ -163,13 +163,29 @@ Trabalho feito por **Claude** nesta sessao:
 - Checkpoint: `2026-04-19-production-deploy.md` (Owner: Codex no
   cabecalho porque herdou o template; na pratica foi escrito por Claude)
 
-### Documentation pass (este momento)
+### Documentation pass
 - Criado este `HISTORY.md` com atribuicao de autoria completa.
 - Atualizado `CONTEXT.md` com leitura final pos-deploy.
 - Atualizado `STATE.md` com posicao final.
 - Criado checkpoint `2026-04-19-full-documentation-pass.md`.
 - Criado `GPT_CATCHUP_PROMPT.md` como handoff formal para o Codex
   reassumir em paridade de contexto.
+
+### Adocao do contrato unico de agentes (este momento)
+- Criado `.planning/AGENT_RULES.md` como contrato compartilhado com 8
+  regras operacionais.
+- Criado `CLAUDE.md` na raiz do repo (auto-lido pelo Claude Code), thin
+  wrapper apontando para `AGENT_RULES.md`.
+- Criado `AGENTS.md` na raiz do repo (auto-lido pelo Codex CLI), thin
+  wrapper apontando para `AGENT_RULES.md`.
+- Criado `.planning/ACTIVITY_LOG.md` append-only com log retroativo
+  das acoes da sessao.
+- Atualizado `GPT_CATCHUP_PROMPT.md` para a versao 2, incluindo leitura
+  obrigatoria do AGENT_RULES.md e AGENTS.md.
+- Criado checkpoint `2026-04-19-agent-rules-adopted.md`.
+- Motivacao: usuario pediu que toda acao tenha responsavel atribuido
+  (Claude ou Codex), que absolutamente tudo seja documentado via GSD e
+  que exista um prompt principal seguido pelos dois agentes.
 
 ## Estado atual ao fechar esta sessao
 

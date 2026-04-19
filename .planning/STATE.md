@@ -13,7 +13,7 @@ See also: .planning/CONTEXT.md
 Phase: 1 of 4 (Catálogo Confiável)
 Plan: 0 of 2 in current phase
 Status: In review
-Last activity: 2026-04-19 - Documentation pass completa por Claude apos o deploy: HISTORY.md criado com atribuicao de autoria Codex vs Claude, GPT_CATCHUP_PROMPT.md gerado como handoff, CONTEXT.md atualizado pos-deploy, checkpoint de documentation pass criado.
+Last activity: 2026-04-19 - Adotado contrato unico de agentes (AGENT_RULES.md + CLAUDE.md + AGENTS.md + ACTIVITY_LOG.md). Toda acao agora exige responsavel atribuido (Claude ou Codex) e fica registrada via GSD.
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -80,5 +80,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-04-19 final (Claude)
-Stopped at: documentation pass completa; rebrand em producao; proximo agente (Codex ou Claude) deve ler HISTORY.md + CONTEXT.md + STATE.md + ultimo checkpoint antes de agir. Prompt de handoff para o Codex em .planning/GPT_CATCHUP_PROMPT.md.
-Resume file: .planning/checkpoints/2026-04-19-full-documentation-pass.md
+Stopped at: contrato unico de agentes adotado. Qualquer agente que entrar agora (Codex ou Claude) deve ler CLAUDE.md ou AGENTS.md na raiz, seguir .planning/AGENT_RULES.md, e usar GPT_CATCHUP_PROMPT.md para retomar em paridade.
+Resume file: .planning/checkpoints/2026-04-19-agent-rules-adopted.md
