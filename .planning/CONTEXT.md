@@ -172,3 +172,30 @@ Daqui para frente, toda mudanca relevante deve atualizar:
 - `STATE.md` para foco atual e ponto de retomada
 - `checkpoints/YYYY-MM-DD-*.md` para milestones, erros, reversoes e validacoes
 - este `CONTEXT.md` quando a leitura global do projeto mudar
+- `HISTORY.md` para a timeline completa com atribuicao de autoria
+- `GPT_CATCHUP_PROMPT.md` sempre que o Claude fechar um bloco grande de
+  trabalho, para trazer o Codex a paridade
+
+## Post-deploy status (2026-04-19, noite)
+
+- Tres commits em `origin/main`:
+  - `50e7732` feat: rebrand de superficie (Codex)
+  - `147c97f` docs(planning): consolida memoria viva do rebrand (Claude)
+  - `e3d23b8` docs(planning): registra deploy de producao (Claude)
+- Railway fez o auto-deploy apos o push.
+- O rebrand de superficie esta no ar em producao.
+- SEO tecnico continua intencionalmente ligado a `Grãos S.A.`.
+- Proximo marco: validar visualmente em producao e decidir entre
+  continuar refinamentos ou abrir a Phase 1 do roadmap (Catalogo
+  Confiavel).
+
+## Agent attribution model
+
+O projeto usa dois agentes: Codex (GPT) e Claude (Opus 4.7).
+A atribuicao e feita no campo `Owner` de cada checkpoint e rastreada em
+HISTORY.md. Convencoes:
+
+- `Owner: Codex` quando o checkpoint e escrito por sessao Codex.
+- `Owner: Claude (Opus 4.7)` quando o checkpoint e escrito por Claude.
+- Commits git tem autor `jhonatan` sempre (e a maquina local); quem
+  assistiu o commit aparece em `Co-Authored-By:`.
