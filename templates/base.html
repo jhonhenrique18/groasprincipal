@@ -16,7 +16,8 @@
     </script>
 
     <!-- ═══ SEO: Title & Description ═══ -->
-    <title>{% block title %}Grãos S.A.{% endblock %} | El Mayor Proveedor de Productos Naturales del Paraguay</title>
+    {% set page_title %}{% block title %}{% endblock %}{% endset %}
+    <title>{% if page_title|trim %}{{ page_title|trim }} | {% endif %}El Mayor Proveedor de Productos Naturales del Paraguay</title>
     <meta name="description" content="{% block meta_description %}Grãos S.A. — Importadora y distribuidora mayorista de especias, condimentos, hierbas medicinales y productos naturales. Importación directa desde 16 países con entregas a todo el Paraguay.{% endblock %}">
     <meta name="keywords" content="{% block meta_keywords %}especias Paraguay, condimentos al por mayor, hierbas medicinales Paraguay, productos naturales, importadora Paraguay, distribuidora mayorista, Grãos SA, suplementos naturales, importación directa, proveedor especias{% endblock %}">
     <meta name="author" content="Grãos S.A.">
@@ -127,12 +128,14 @@
     {% block structured_data %}{% endblock %}
 
     <!-- ═══ Favicon & App Icons ═══ -->
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+    <link rel="shortcut icon" href="{{ url_for('favicon') }}?v=20260419d">
+    <link rel="icon" href="{{ url_for('favicon') }}?v=20260419d" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-especias-32x32.png', v='20260419d') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-especias-16x16.png', v='20260419d') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon-especias.png', v='20260419d') }}">
     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-    <meta name="theme-color" content="#2d6a4f">
-    <meta name="msapplication-TileColor" content="#2d6a4f">
+    <meta name="theme-color" content="#3F2A24">
+    <meta name="msapplication-TileColor" content="#3F2A24">
 
     <!-- ═══ Performance ═══ -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
@@ -151,8 +154,8 @@
     <header>
         <nav class="navbar" id="navbar" aria-label="Navegación principal">
             <div class="nav-inner">
-                <a href="{{ url_for('index') }}" class="nav-logo" aria-label="Grãos S.A. - Inicio">
-                    <img src="/static/img/logo-verde.png" alt="Grãos S.A. — Importadora y distribuidora de productos naturales en Paraguay" width="160" height="40" loading="eager">
+                <a href="{{ url_for('index') }}" class="nav-logo" aria-label="Especias del Paraguay - Inicio">
+                    <img src="/static/img/logo-especias-primary.svg" alt="Especias del Paraguay — Importadora y distribuidora de especias y productos naturales en Paraguay" width="260" height="60" loading="eager">
                 </a>
                 <button class="nav-toggle" id="navToggle" aria-label="Abrir menú de navegación" aria-expanded="false">
                     <span></span><span></span><span></span>
@@ -187,8 +190,8 @@
     <footer class="site-footer" role="contentinfo">
         <div class="footer-top">
             <div class="footer-col">
-                <img src="/static/img/logo-branco.svg" alt="Grãos S.A." class="footer-logo" width="140" height="40" loading="lazy">
-                <p class="footer-about">Importadora y distribuidora de productos naturales, especias, condimentos y hierbas medicinales para todo el Paraguay.</p>
+                <img src="/static/img/logo-especias-reverse.svg" alt="Especias del Paraguay" class="footer-logo" width="220" height="56" loading="lazy">
+                <p class="footer-about">Especias del Paraguay conecta abastecimiento mayorista, origen confiable e importación directa para empresas de todo el país.</p>
             </div>
             <div class="footer-col">
                 <h4>Mapa del Sitio</h4>
@@ -211,7 +214,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 Grãos S.A. Todos los derechos reservados.</p>
+            <p>&copy; 2026 Especias del Paraguay. Todos los derechos reservados.</p>
         </div>
     </footer>
 

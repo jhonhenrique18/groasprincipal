@@ -161,7 +161,7 @@ def static_uploads_fallback(filename):
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
-                               'favicon-32x32.png', mimetype='image/png')
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 # ──────────────────── PUBLIC ROUTES ────────────────────
 

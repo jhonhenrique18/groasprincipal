@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 610 120" role="img" aria-labelledby="logoTitle logoDesc">
+  <title id="logoTitle">Especias del Paraguay</title>
+  <desc id="logoDesc">Monograma EP com wordmark Especias del Paraguay em versão reversa, sem sublinhado e com alinhamento institucional.</desc>
+  <defs>
+    <style>
+      .serif-main { font-family: Georgia, "Times New Roman", serif; font-weight: 700; letter-spacing: -1px; }
+      .serif-word { font-family: Georgia, "Times New Roman", serif; font-weight: 700; letter-spacing: 1px; }
+    </style>
+  </defs>
+  <text x="12" y="93" class="serif-main" font-size="96" fill="#FFF5EA">E</text>
+  <text x="78" y="93" class="serif-main" font-size="96" fill="#E16A3C">P</text>
+  <text x="182" y="49" class="serif-word" font-size="37" fill="#FFF5EA">ESPECIAS DEL</text>
+  <text x="182" y="90" class="serif-word" font-size="37" fill="#FFF5EA">PARAGUAY</text>
+</svg>

@@ -1,38 +1,38 @@
 {
-    "name": "Grãos S.A. — Importadora de Productos Naturales del Paraguay",
-    "short_name": "Grãos S.A.",
+    "name": "Especias del Paraguay",
+    "short_name": "Especias",
     "description": "Importadora y distribuidora mayorista de especias, condimentos, hierbas medicinales y productos naturales. Importación directa desde 16 países con entregas a todo el Paraguay.",
     "start_url": "/",
     "scope": "/",
     "display": "standalone",
     "orientation": "portrait-primary",
     "background_color": "#ffffff",
-    "theme_color": "#20A34B",
+    "theme_color": "#3F2A24",
     "categories": ["shopping", "food"],
     "icons": [
         {
-            "src": "/static/favicon-32x32.png",
+            "src": "/static/favicon-especias-32x32.png",
             "sizes": "32x32",
             "type": "image/png"
         },
         {
-            "src": "/static/apple-touch-icon.png",
+            "src": "/static/apple-touch-icon-especias.png",
             "sizes": "180x180",
             "type": "image/png"
         },
         {
-            "src": "/static/android-chrome-192x192.png",
+            "src": "/static/android-chrome-especias-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/static/android-chrome-512x512.png",
+            "src": "/static/android-chrome-especias-512x512.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "/static/android-chrome-512x512.png",
+            "src": "/static/android-chrome-especias-512x512.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "maskable"

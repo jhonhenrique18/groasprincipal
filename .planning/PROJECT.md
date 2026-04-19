@@ -24,6 +24,11 @@ Catálogo de produtos atualizado e acessível que converte visitantes em contato
 
 ### Active
 
+- [ ] Rebrand completo da marca pública, substituindo “Grãos S.A.” por nova identidade aprovada
+- [ ] Executar primeiro um rebrand de superfície, mudando apenas a marca visível e preservando toda a camada SEO atual ligada a “Grãos”
+- [ ] Consolidar no front os exports finais da logo já aprovada de `Especias del Paraguay`
+- [ ] Ajustar refinamentos finais da identidade visual pública de `Especias del Paraguay` após revisão no localhost
+- [ ] Planejar migração de marca, domínio, assets e dados estruturados sem perder contexto do projeto
 - [ ] Completar imagens e presentations dos 57 novos produtos
 - [ ] Otimizar imagens de produto (WebP, lazy loading)
 - [ ] Adicionar produtos restantes da Curva ABC
@@ -41,6 +46,11 @@ Catálogo de produtos atualizado e acessível que converte visitantes em contato
 - Produtos baseados na Curva ABC de vendas reais
 - Site em espanhol (público paraguaio)
 - Importação direta de 16+ países
+- A marca “Grãos S.A.” não poderá seguir no site; será necessário rebrand controlado
+- O objetivo do rebrand é trocar a marca sem quebrar SEO, catálogo nem operação comercial
+- Fase atual: manter o domínio `graos` e os sinais SEO já funcionando; trocar apenas a marca visível no site
+- Nesta fase, tudo o que é invisível para o usuário final deve permanecer intacto para não afetar indexação e continuidade comercial
+- Migração de domínio e SEO para a nova marca será tratada depois, em uma etapa separada
 
 ## Constraints
 
@@ -57,6 +67,14 @@ Catálogo de produtos atualizado e acessível que converte visitantes em contato
 | Seed inline no init_db | Evita import circular seed.py/app.py | ✓ Good |
 | Produtos da Curva ABC | Priorizar produtos de maior valor de venda real | ✓ Good |
 | Presentations pesquisadas | Cada produto com embalagem real do mercado atacadista | ✓ Good |
+| Rebrand antes de novas mudanças visuais | Evita retrabalho e garante que SEO/ativos sejam ajustados uma vez só | ✓ Good |
+| Rebrand de superfície sem tocar no invisível | Minimiza risco operacional agora; a nova marca aparece visualmente, enquanto domínio/SEO/slugs continuam intactos | ✓ Good |
+| Nome visível aprovado: Especias del Paraguay | Remove dependência imediata de `Grãos S.A.` na interface sem tocar ainda na camada técnica invisível | ✓ Good |
+| A logo já aprovada no site vira a fonte de verdade da marca | Evita retrabalho e impede desvio visual em relação ao que o usuário validou | ✓ Good |
+| Variações devem sair do asset aprovado, não de uma reinterpretação | O pacote anterior foi rejeitado por fugir da identidade escolhida | ✓ Good |
+| Browser title e favicon podem acompanhar a marca visível | O usuário pediu remover `Grãos S.A.` da aba e trocar o ícone para a identidade aprovada | ✓ Good |
+| Favicon precisa ser tratado como asset de legibilidade, não só um export do logo | O monograma horizontal original ficava escuro e pequeno demais em 16x16 | ✓ Good |
+| A logo principal pode ser refinada manualmente sem mudar de linguagem | O usuário aprovou a base, mas pediu menos cara de IA e mais presença institucional | ✓ Good |
 
 ---
-*Last updated: 2026-04-05 after catalog expansion + UI redesign*
+*Last updated: 2026-04-19 after browser surface brand update*

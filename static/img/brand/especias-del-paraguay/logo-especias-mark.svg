@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 158 120" role="img" aria-labelledby="logoTitle logoDesc">
+  <title id="logoTitle">Monograma EP</title>
+  <desc id="logoDesc">Monograma EP aprovado no site, sem sublinhado.</desc>
+  <defs>
+    <style>
+      .serif-main { font-family: Georgia, "Times New Roman", serif; font-weight: 700; letter-spacing: -1px; }
+    </style>
+  </defs>
+  <text x="10" y="92" class="serif-main" font-size="96" fill="#2E1712">E</text>
+  <text x="76" y="92" class="serif-main" font-size="96" fill="#C4542C">P</text>
+</svg>

@@ -11,3 +11,4 @@ build/
 lp-graos-foz/
 elementor-*.json
 *.sqlite3
+.codex/
