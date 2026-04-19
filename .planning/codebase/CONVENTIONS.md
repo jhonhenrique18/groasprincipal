@@ -221,6 +221,21 @@ Loads data from seed_data.json. Run once after first deploy: python seed.py
 - Standard Jinja2: `{{ value|lower }}`, `{{ list|length }}`
 - No custom filters observed
 
+## Documentation Protocol
+
+**Project memory lives in `.planning/`:**
+
+- `PROJECT.md` stores durable business rules and decisions
+- `STATE.md` stores current focus, latest activity, pending todos and resume point
+- `CONTEXT.md` stores the live project reading and critical transition context
+- `checkpoints/` stores dated milestones, validations, rejected paths and reversals
+
+**Operational rule:**
+
+- No meaningful visual, technical or product decision should live only in chat memory
+- Rejected approaches should be documented with the reason they were rejected
+- When a file becomes the source of truth for an asset or flow, that file path should be written explicitly in `.planning/`
+
 ---
 
 *Convention analysis: 2026-04-04*

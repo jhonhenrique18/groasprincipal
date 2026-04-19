@@ -1,5 +1,7 @@
 # Grãos Institucional
 
+See also: `.planning/CONTEXT.md`
+
 ## What This Is
 
 Site institucional e catálogo B2B da Grãos S.A., importadora e distribuidora de produtos naturais no Paraguai. Apresenta o catálogo de 112+ produtos organizados em 9 categorias, com integração WhatsApp para pedidos. Flask + PostgreSQL, deploy na Railway.
@@ -51,6 +53,7 @@ Catálogo de produtos atualizado e acessível que converte visitantes em contato
 - Fase atual: manter o domínio `graos` e os sinais SEO já funcionando; trocar apenas a marca visível no site
 - Nesta fase, tudo o que é invisível para o usuário final deve permanecer intacto para não afetar indexação e continuidade comercial
 - Migração de domínio e SEO para a nova marca será tratada depois, em uma etapa separada
+- A pasta `.planning/` e a memoria oficial do projeto; nenhuma decisão relevante deve depender apenas do chat
 
 ## Constraints
 
@@ -75,6 +78,7 @@ Catálogo de produtos atualizado e acessível que converte visitantes em contato
 | Browser title e favicon podem acompanhar a marca visível | O usuário pediu remover `Grãos S.A.` da aba e trocar o ícone para a identidade aprovada | ✓ Good |
 | Favicon precisa ser tratado como asset de legibilidade, não só um export do logo | O monograma horizontal original ficava escuro e pequeno demais em 16x16 | ✓ Good |
 | A logo principal pode ser refinada manualmente sem mudar de linguagem | O usuário aprovou a base, mas pediu menos cara de IA e mais presença institucional | ✓ Good |
+| A pasta `.planning/` deve guardar o contexto operacional do projeto | O usuário quer continuidade entre agentes e retomada sem perda de memória | ✓ Good |
 
 ---
-*Last updated: 2026-04-19 after browser surface brand update*
+*Last updated: 2026-04-19 after context consolidation*
