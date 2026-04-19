@@ -13,7 +13,7 @@ See also: .planning/CONTEXT.md
 Phase: 1 of 4 (Catálogo Confiável)
 Plan: 0 of 2 in current phase
 Status: In review
-Last activity: 2026-04-19 - Contexto do rebrand consolidado em arquivo vivo, checkpoints e protocolo de documentacao para retomada sem perda de memoria.
+Last activity: 2026-04-19 - Rebrand de superficie `Especias del Paraguay` enviado para producao via push direto em main; Railway faz deploy automatico. Docs do .planning tambem commitadas.
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -79,6 +79,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-04-19 15:00
-Stopped at: contexto consolidado; proxima etapa e continuar refinando a marca visivel no localhost sem desviar da logo aprovada.
-Resume file: None
+Last session: 2026-04-19 17:30
+Stopped at: rebrand de superficie shipped para producao; aguardando validacao pos-deploy na Railway e no dominio publico.
+Resume file: .planning/checkpoints/2026-04-19-production-deploy.md
