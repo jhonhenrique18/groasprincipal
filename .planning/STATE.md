@@ -13,7 +13,7 @@ See also: .planning/CONTEXT.md
 Phase: 1 of 4 (Catálogo Confiável)
 Plan: 0 of 2 in current phase
 Status: In review
-Last activity: 2026-04-19 - Security item 1 implementado: admin password agora e hash PBKDF2-SHA256 (600k iter) armazenado em SiteSetting, nunca mais plaintext em env var. Bootstrap idempotente em ensure_admin_password_hash; smoke test passou em todos os cenarios (bootstrap, idempotencia, lockout fail-closed). Aguardando commit + push + confirmacao do usuario antes de avancar pro item 2 (SECRET_KEY sem default).
+Last activity: 2026-04-19 - Security basics (V1-V7) completo em 6 commits sequenciais (27ef978 hash, 285978b secret_key, 52230df rate limit login, 8806e89 CSRF, 0b045a9 upload verify, 81946fa XSS modal, + commit pendente honeypot/rate limit contacto). SECRET_KEY random + ADMIN_PASSWORD=graos2026 setados via Railway API pre-V1 para evitar quebra de deploy. Aguardando usuario validar login em prod e executar limpezas (remover ADMIN_PASSWORD, rotar CAPI token, deletar Railway token claude).
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -80,5 +80,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-04-19 final (Claude)
-Stopped at: Security item 1 pronto pra commit/push. Apos deploy: usuario testa login (deve funcionar com a mesma senha de antes, pois bootstrap hasheia a env var ADMIN_PASSWORD uma vez), confirma, e se quiser segue pro item 2. Pode remover ADMIN_PASSWORD da Railway depois do login confirmado.
-Resume file: .planning/checkpoints/2026-04-19-security-01-admin-password-hash.md
+Stopped at: Pacote security basics fechado (V1-V7 + bonus hash admin). 7 checkpoints datados em .planning/checkpoints/2026-04-19-security-0{1..7}-*.md. Proximo milestone natural: Phase 5 "Security defense in depth" (CSP, Sentry, Dependabot, session cookies, migrations).
+Resume file: .planning/checkpoints/2026-04-19-security-07-contacto-antispam.md

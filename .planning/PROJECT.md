@@ -85,6 +85,12 @@ Catálogo de produtos atualizado e acessível que converte visitantes em contato
 | Advanced matching hasheia email/phone/name via SHA-256 antes do envio | Requisito Meta + privacidade; target EMQ 6-8 no form de contato | ✓ Good |
 | Senha de admin com hash PBKDF2-SHA256 (600k iter) armazenada na DB, nunca plaintext em env | Senha anterior tinha default inseguro em config.py; hash + bootstrap idempotente + fail-closed quando faltar credencial | ✓ Good |
 | Security hardening entregue por checkpoint (1 item por vez) | Usuario valida cada item antes de avancar; reduz risco de regressao e facilita rollback individual | ✓ Good |
+| SECRET_KEY sem default inseguro, fail-loud em prod | Default antigo 'graos-sa-secret-key-change-in-production' ficava ativo se env var sumisse; atacante forjava cookie de admin | ✓ Good |
+| Rate limit 5/15min em /admin/login via Flask-Limiter | Antes aceitava tentativas infinitas; agora bloqueia brute force trivial | ✓ Good |
+| CSRF global via Flask-WTF em todo form POST + exempt em /api/meta-capi-event | Evita exec de acao admin via site externo com sessao logada | ✓ Good |
+| Upload de imagem descarta arquivo se Pillow.load() falhar, sem fallback de escrita | Elimina vetor de drop de binario disfarcado em .jpg na pasta de uploads | ✓ Good |
+| Modal de produto renderiza com DOM API (textContent/createElement), nunca innerHTML+concat | Fecha XSS stored via produto criado no admin | ✓ Good |
+| /contacto com rate limit 3/10min + honeypot field `website` hidden off-screen | Previne flood por bot quando form passar a entregar de verdade | ✓ Good |
 
 ---
-*Last updated: 2026-04-19 after Security item 1 (admin password hash)*
+*Last updated: 2026-04-19 after security basics pack (items 1-7)*

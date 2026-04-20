@@ -76,6 +76,10 @@
                 <form class="contact-form" method="POST" action="{{ url_for('contacto') }}">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="meta_event_id" value="">
+                    <div aria-hidden="true" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;">
+                        <label for="website">No llenar este campo</label>
+                        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                    </div>
                     <div class="form-group">
                         <label for="name">Nombre / Empresa</label>
                         <input type="text" id="name" name="name" placeholder="Su nombre o empresa" required>

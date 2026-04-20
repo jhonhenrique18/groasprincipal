@@ -353,8 +353,16 @@ def nosotros():
     return render_template('nosotros.html')
 
 @app.route('/contacto', methods=['GET', 'POST'])
+@limiter.limit('3 per 10 minutes', methods=['POST'])
 def contacto():
     if request.method == 'POST':
+        # Honeypot: field is hidden from humans; only bots fill it. Silently
+        # pretend the submit worked so bots don't learn they were detected.
+        if request.form.get('website'):
+            app.logger.info('contacto: honeypot tripped from %s', request.remote_addr)
+            flash('Mensaje enviado con éxito. Nos pondremos en contacto pronto.', 'success')
+            return redirect(url_for('contacto'))
+
         event_id = request.form.get('meta_event_id') or uuid.uuid4().hex
         user_data = user_data_from_request(request, form=request.form)
         send_capi_event(
