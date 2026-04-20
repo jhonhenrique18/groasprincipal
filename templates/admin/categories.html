@@ -18,6 +18,7 @@
             <td class="actions">
                 <a href="{{ url_for('admin_category_form', id=c.id) }}" class="btn-sm">Editar</a>
                 <form method="POST" action="{{ url_for('admin_category_delete', id=c.id) }}" onsubmit="return confirm('¿Eliminar?')">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <button type="submit" class="btn-sm btn-danger">Eliminar</button>
                 </form>
             </td>

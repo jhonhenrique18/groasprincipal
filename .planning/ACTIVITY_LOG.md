@@ -47,6 +47,9 @@ Ver `.planning/AGENT_RULES.md` secao "Regra 4" para formato completo.
 | 2026-04-19 20:05 | Claude | commit | feat(security-02): SECRET_KEY sem default inseguro, fail-loud em prod | 285978b |
 | 2026-04-19 20:05 | Claude | push | push 27ef978..285978b origin/main; Railway build | - |
 | 2026-04-19 20:10 | Claude | write | Security item 3 (V3): Flask-Limiter + rate limit 5/15min em POST /admin/login | requirements.txt, app.py |
+| 2026-04-19 20:12 | Claude | commit | feat(security-03): rate limit em /admin/login | 52230df |
+| 2026-04-19 20:12 | Claude | push | push 285978b..52230df origin/main | - |
+| 2026-04-19 20:20 | Claude | write | Security item 4 (V2): Flask-WTF CSRFProtect global + csrf_token em 7 forms + exempt em /api/meta-capi-event (rate-limited 60/min) | app.py, templates/ |
 | 2026-04-19 18:00 | Codex | read | confirma SVGs oficiais da marca antes de derivar avatar social | static/img/logo-especias-primary.svg |
 | 2026-04-19 18:00 | Codex | write | cria avatars PNG oficiais para WhatsApp e Instagram a partir da logo aprovada | static/img/brand/especias-del-paraguay/ |
 | 2026-04-19 18:06 | Codex | read | usa monograma oficial do bundle da marca para refazer avatar social centralizado | static/img/brand/especias-del-paraguay/logo-especias-mark.svg |

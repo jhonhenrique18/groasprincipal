@@ -34,6 +34,7 @@
             <td class="actions">
                 <a href="{{ url_for('admin_product_form', id=p.id) }}" class="btn-sm">Editar</a>
                 <form method="POST" action="{{ url_for('admin_product_delete', id=p.id) }}" onsubmit="return confirm('¿Eliminar este producto?')">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <button type="submit" class="btn-sm btn-danger">Eliminar</button>
                 </form>
             </td>

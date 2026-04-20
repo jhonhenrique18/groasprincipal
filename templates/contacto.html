@@ -74,6 +74,7 @@
             <div class="contact-form-wrap reveal">
                 <h2>Envíanos un mensaje</h2>
                 <form class="contact-form" method="POST" action="{{ url_for('contacto') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="meta_event_id" value="">
                     <div class="form-group">
                         <label for="name">Nombre / Empresa</label>

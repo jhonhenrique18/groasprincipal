@@ -2,6 +2,7 @@
 {% block content %}
 <h1>{{ 'Editar' if cat else 'Nueva' }} Categoría</h1>
 <form method="POST" class="admin-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="form-group">
         <label>Nombre *</label>
         <input type="text" name="name" value="{{ cat.name if cat else '' }}" required>

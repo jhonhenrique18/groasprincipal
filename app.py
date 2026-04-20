@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_wtf.csrf import CSRFProtect
 from config import Config
 from models import db, Category, Product, SiteSetting
 from meta_capi import send_capi_event, user_data_from_request
@@ -31,6 +32,10 @@ limiter = Limiter(
     default_limits=[],  # no blanket limit; apply per-route explicitly
     storage_uri='memory://',
 )
+
+# CSRF protection. Active for every POST by default. sendBeacon-style
+# endpoints that cannot carry a token are exempted explicitly below.
+csrf = CSRFProtect(app)
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp', 'gif'}
 
@@ -359,6 +364,8 @@ def contacto():
     return render_template('contacto.html')
 
 @app.route('/api/meta-capi-event', methods=['POST'])
+@csrf.exempt
+@limiter.limit('60 per minute')
 def api_meta_capi_event():
     """Companion endpoint for client-side Meta events. Receives event_name,
     event_id, event_source_url and custom_data and forwards to CAPI so the

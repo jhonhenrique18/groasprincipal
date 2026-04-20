@@ -4,6 +4,7 @@
 <p style="color:#6B7280;margin-bottom:24px;">Estos datos se actualizan en todo el sitio automáticamente.</p>
 
 <form class="admin-form" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
     <!-- ── Contacto ── -->
     <div class="settings-section">
