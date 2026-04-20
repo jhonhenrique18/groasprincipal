@@ -8,12 +8,33 @@
     <!-- ═══ Google Search Console ═══ -->
     <meta name="google-site-verification" content="lcljspbV3Y0qxamB0NA-5pcytg0hB--iE1ktvrMUb38">
 
+    {% if meta_domain_verification %}
+    <!-- ═══ Meta (Facebook) Domain Verification ═══ -->
+    <meta name="facebook-domain-verification" content="{{ meta_domain_verification }}">
+    {% endif %}
+
     <!-- ═══ Google Analytics 4 ═══ -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y0QKNWRX66"></script>
     <script>
     window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
     gtag('js',new Date());gtag('config','G-Y0QKNWRX66');
     </script>
+
+    {% if meta_pixel_id %}
+    <!-- ═══ Meta Pixel (base + PageView) ═══ -->
+    <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '{{ meta_pixel_id }}');
+    fbq('track', 'PageView', {}, {eventID: '{{ meta_page_event_id }}'});
+    window.EP_META_PIXEL_ID = '{{ meta_pixel_id }}';
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id={{ meta_pixel_id }}&ev=PageView&noscript=1" alt=""/></noscript>
+    {% endif %}
 
     <!-- ═══ SEO: Title & Description ═══ -->
     {% set page_title %}{% block title %}{% endblock %}{% endset %}

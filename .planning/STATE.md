@@ -13,7 +13,7 @@ See also: .planning/CONTEXT.md
 Phase: 1 of 4 (Catálogo Confiável)
 Plan: 0 of 2 in current phase
 Status: In review
-Last activity: 2026-04-19 - Adotado contrato unico de agentes (AGENT_RULES.md + CLAUDE.md + AGENTS.md + ACTIVITY_LOG.md). Toda acao agora exige responsavel atribuido (Claude ou Codex) e fica registrada via GSD.
+Last activity: 2026-04-19 - Meta Pixel + Conversions API implementados em hybrid setup (Nivel 2). Events Contact (WhatsApp) e Lead (form) vao via Pixel + CAPI com dedup por event_id; ViewContent pixel-only. Advanced matching com email/phone/name hashados SHA-256. Aguardando usuario setar env vars na Railway (META_PIXEL_ID, META_CAPI_ACCESS_TOKEN, META_DOMAIN_VERIFICATION) e autorizar push.
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -80,5 +80,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-04-19 final (Claude)
-Stopped at: contrato unico de agentes adotado. Qualquer agente que entrar agora (Codex ou Claude) deve ler CLAUDE.md ou AGENTS.md na raiz, seguir .planning/AGENT_RULES.md, e usar GPT_CATCHUP_PROMPT.md para retomar em paridade.
-Resume file: .planning/checkpoints/2026-04-19-agent-rules-adopted.md
+Stopped at: Meta Pixel + CAPI hybrid implementado localmente, sintaxe validada. Pre-push: usuario deve (1) setar env vars META_PIXEL_ID, META_CAPI_ACCESS_TOKEN, META_DOMAIN_VERIFICATION na Railway; (2) autorizar push explicito; (3) validar eventos em Events Manager apos deploy.
+Resume file: .planning/checkpoints/2026-04-19-meta-pixel-capi-hybrid.md

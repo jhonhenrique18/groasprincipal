@@ -79,6 +79,10 @@ Catálogo de produtos atualizado e acessível que converte visitantes em contato
 | Favicon precisa ser tratado como asset de legibilidade, não só um export do logo | O monograma horizontal original ficava escuro e pequeno demais em 16x16 | ✓ Good |
 | A logo principal pode ser refinada manualmente sem mudar de linguagem | O usuário aprovou a base, mas pediu menos cara de IA e mais presença institucional | ✓ Good |
 | A pasta `.planning/` deve guardar o contexto operacional do projeto | O usuário quer continuidade entre agentes e retomada sem perda de memória | ✓ Good |
+| Meta tracking em hybrid setup (Pixel + Conversions API) com dedup por event_id | Pixel puro perde 20-40% em 2026; hybrid é o padrão profissional | ✓ Good |
+| Credenciais Meta (CAPI token) vivem apenas em env var na Railway | Token foi exposto no chat; não pode ir pro repo; rotação recomendada | ✓ Good |
+| CAPI apenas em eventos críticos (Contact, Lead); ViewContent pixel-only | Foco em conversão; minimiza latência e ruído de sinais | ✓ Good |
+| Advanced matching hasheia email/phone/name via SHA-256 antes do envio | Requisito Meta + privacidade; target EMQ 6-8 no form de contato | ✓ Good |
 
 ---
-*Last updated: 2026-04-19 after context consolidation*
+*Last updated: 2026-04-19 after Meta Pixel + CAPI implementation*

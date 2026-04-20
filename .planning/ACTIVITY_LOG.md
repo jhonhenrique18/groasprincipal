@@ -20,3 +20,21 @@ Ver `.planning/AGENT_RULES.md` secao "Regra 4" para formato completo.
 | 2026-04-19 18:20 | Claude | write | cria CLAUDE.md na raiz (entrypoint Claude Code) | CLAUDE.md |
 | 2026-04-19 18:20 | Claude | write | cria AGENTS.md na raiz (entrypoint Codex CLI) | AGENTS.md |
 | 2026-04-19 18:20 | Claude | write | cria .planning/ACTIVITY_LOG.md com log historico ate aqui | .planning/ACTIVITY_LOG.md |
+| 2026-04-19 18:25 | Claude | commit | docs: adota contrato unico de agentes (Claude + Codex) | ac2944b |
+| 2026-04-19 18:25 | Claude | push | push de dfd24f4..ac2944b em origin/main, autorizado pelo usuario | - |
+| 2026-04-19 19:00 | Claude | decision | adota Meta Pixel + CAPI hybrid (Nivel 2) com dedup por event_id e advanced matching hashado | checkpoint meta-pixel-capi-hybrid |
+| 2026-04-19 19:00 | Claude | write | cria meta_capi.py com send_capi_event, user_data_from_request, sha256_hash, normalize_phone | meta_capi.py |
+| 2026-04-19 19:00 | Claude | write | config.py ganha META_PIXEL_ID, META_CAPI_ACCESS_TOKEN, META_TEST_EVENT_CODE, META_DOMAIN_VERIFICATION | config.py |
+| 2026-04-19 19:00 | Claude | write | requirements.txt ganha requests==2.32.3 | requirements.txt |
+| 2026-04-19 19:00 | Claude | write | base.html ganha facebook-domain-verification meta + Meta Pixel base script condicionais | templates/base.html |
+| 2026-04-19 19:00 | Claude | write | app.py ganha context processor meta, cookie _ep_eid, /api/meta-capi-event e CAPI no /contacto POST | app.py |
+| 2026-04-19 19:00 | Claude | write | app.js ganha epMetaEventId + epMetaTrack + eventos Contact/Lead/ViewContent | static/js/app.js |
+| 2026-04-19 19:00 | Claude | write | contacto.html ganha hidden meta_event_id; index/productos ganham data-name nos cards | templates/ |
+| 2026-04-19 19:05 | Claude | test | ast.parse + node Function + jinja2 parse confirmam sintaxe OK em todos os arquivos modificados | - |
+| 2026-04-19 18:00 | Codex | read | confirma SVGs oficiais da marca antes de derivar avatar social | static/img/logo-especias-primary.svg |
+| 2026-04-19 18:00 | Codex | write | cria avatars PNG oficiais para WhatsApp e Instagram a partir da logo aprovada | static/img/brand/especias-del-paraguay/ |
+| 2026-04-19 18:06 | Codex | read | usa monograma oficial do bundle da marca para refazer avatar social centralizado | static/img/brand/especias-del-paraguay/logo-especias-mark.svg |
+| 2026-04-19 18:06 | Codex | write | cria avatar social centralizado em alta definicao a partir da marca oficial | static/img/brand/especias-del-paraguay/profile-avatar-ep-centered-hd.png |
+| 2026-04-19 18:06 | Codex | write | remove avatar quadrado antigo com logo horizontal por pedido do usuario | static/img/brand/especias-del-paraguay/profile-avatar-logo-oficial.png |
+| 2026-04-19 18:08 | Codex | read | usa lockup oficial completo para derivar avatar com escrita em alta definicao | static/img/logo-especias-primary.svg |
+| 2026-04-19 18:08 | Codex | write | cria avatar quadrado com logo completa centralizada em alta definicao | static/img/brand/especias-del-paraguay/profile-avatar-logo-centered-hd.png |

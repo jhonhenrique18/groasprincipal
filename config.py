@@ -19,3 +19,12 @@ class Config:
     MAX_CONTENT_LENGTH = 10 * 1024 * 1024  # 10MB max upload
     ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME', 'admin')
     ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'graos2026')
+
+    # Meta (Facebook) tracking — Pixel + Conversions API
+    META_PIXEL_ID = os.environ.get('META_PIXEL_ID', '')
+    META_CAPI_ACCESS_TOKEN = os.environ.get('META_CAPI_ACCESS_TOKEN', '')
+    META_TEST_EVENT_CODE = os.environ.get('META_TEST_EVENT_CODE', '')
+    META_DOMAIN_VERIFICATION = os.environ.get(
+        'META_DOMAIN_VERIFICATION',
+        'vxgeoxsdul1vqi8dkaws3db2fcplfp',
+    )

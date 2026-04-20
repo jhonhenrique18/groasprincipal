@@ -7,6 +7,7 @@ from flask import (Flask, render_template, request, redirect, url_for,
 from werkzeug.utils import secure_filename
 from config import Config
 from models import db, Category, Product, SiteSetting
+from meta_capi import send_capi_event, user_data_from_request
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -142,6 +143,37 @@ def inject_site_settings():
         'site_email': SiteSetting.get('email', ''),
         'site_hero_image': SiteSetting.get('hero_image', ''),
     }
+
+@app.context_processor
+def inject_meta_tracking():
+    """Expose Meta Pixel config + per-request event_id so the server-side
+    PageView CAPI and the client-side Pixel PageView can share event_id."""
+    return {
+        'meta_pixel_id': app.config.get('META_PIXEL_ID') or '',
+        'meta_domain_verification': app.config.get('META_DOMAIN_VERIFICATION') or '',
+        'meta_page_event_id': uuid.uuid4().hex,
+    }
+
+EP_EXTERNAL_ID_COOKIE = '_ep_eid'
+
+@app.after_request
+def ensure_external_id_cookie(response):
+    """Set a long-lived first-party external_id cookie for cross-session
+    matching quality. Only set on HTML responses where the cookie is absent."""
+    if request.cookies.get(EP_EXTERNAL_ID_COOKIE):
+        return response
+    ctype = response.content_type or ''
+    if 'text/html' not in ctype:
+        return response
+    response.set_cookie(
+        EP_EXTERNAL_ID_COOKIE,
+        uuid.uuid4().hex,
+        max_age=60 * 60 * 24 * 365,  # 1 year
+        httponly=False,
+        samesite='Lax',
+        secure=not app.debug,
+    )
+    return response
 
 # ──────────────────── UPLOADED FILES (Railway volume) ────────────────────
 
@@ -294,10 +326,40 @@ def nosotros():
 @app.route('/contacto', methods=['GET', 'POST'])
 def contacto():
     if request.method == 'POST':
-        # Process contact form (can integrate with webhook later)
+        event_id = request.form.get('meta_event_id') or uuid.uuid4().hex
+        user_data = user_data_from_request(request, form=request.form)
+        send_capi_event(
+            'Lead',
+            event_id,
+            request.url,
+            user_data=user_data,
+            custom_data={'content_name': 'contact_form', 'content_category': 'lead'},
+        )
         flash('Mensaje enviado con éxito. Nos pondremos en contacto pronto.', 'success')
         return redirect(url_for('contacto'))
     return render_template('contacto.html')
+
+@app.route('/api/meta-capi-event', methods=['POST'])
+def api_meta_capi_event():
+    """Companion endpoint for client-side Meta events. Receives event_name,
+    event_id, event_source_url and custom_data and forwards to CAPI so the
+    server-side copy of the event can be deduplicated against the Pixel."""
+    payload = request.get_json(silent=True) or {}
+    event_name = payload.get('event_name')
+    event_id = payload.get('event_id')
+    if not event_name or not event_id:
+        return ('', 204)
+    allowed = {'Contact', 'Lead', 'ViewContent', 'Search', 'PageView'}
+    if event_name not in allowed:
+        return ('', 204)
+    send_capi_event(
+        event_name,
+        event_id,
+        payload.get('event_source_url') or request.referrer or request.url,
+        user_data=user_data_from_request(request),
+        custom_data=payload.get('custom_data') or {},
+    )
+    return ('', 204)
 
 # ──────────────────── ADMIN ROUTES ────────────────────
 

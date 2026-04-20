@@ -1,3 +1,40 @@
+/* ═══ META PIXEL HELPERS (shared) ═══ */
+function epMetaEventId() {
+    if (window.crypto && typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+    return 'ep-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
+}
+
+function epMetaTrack(eventName, customData, opts) {
+    customData = customData || {};
+    opts = opts || {};
+    var eventId = opts.eventId || epMetaEventId();
+    if (typeof fbq === 'function') {
+        try { fbq('track', eventName, customData, { eventID: eventId }); } catch (_) {}
+    }
+    if (opts.capi !== false) {
+        try {
+            var body = JSON.stringify({
+                event_name: eventName,
+                event_id: eventId,
+                event_source_url: window.location.href,
+                custom_data: customData
+            });
+            if (navigator.sendBeacon) {
+                var blob = new Blob([body], { type: 'application/json' });
+                navigator.sendBeacon('/api/meta-capi-event', blob);
+            } else {
+                fetch('/api/meta-capi-event', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: body,
+                    keepalive: true
+                }).catch(function () {});
+            }
+        } catch (_) {}
+    }
+    return eventId;
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 
     /* ═══ NAVBAR SCROLL ═══ */
@@ -156,19 +193,23 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    /* ═══ GA4: TRACK WHATSAPP CLICKS ═══ */
-    document.querySelectorAll('a[href*="wa.me"], .wa-float').forEach(function (el) {
-        el.addEventListener('click', function () {
-            if (typeof gtag === 'function') {
-                gtag('event', 'whatsapp_click', {
-                    event_category: 'lead',
-                    event_label: window.location.pathname
-                });
-            }
+    /* ═══ TRACK WHATSAPP CLICKS (GA4 + Meta hybrid) ═══ */
+    document.addEventListener('click', function (e) {
+        var link = e.target.closest('a[href*="wa.me"], .wa-float');
+        if (!link) return;
+        if (typeof gtag === 'function') {
+            gtag('event', 'whatsapp_click', {
+                event_category: 'lead',
+                event_label: window.location.pathname
+            });
+        }
+        epMetaTrack('Contact', {
+            content_name: 'whatsapp_click',
+            content_category: window.location.pathname
         });
-    });
+    }, true);
 
-    /* ═══ GA4: TRACK CONTACT FORM ═══ */
+    /* ═══ TRACK CONTACT FORM SUBMIT (GA4 + Meta hybrid) ═══ */
     var contactForm = document.querySelector('.contact-form');
     if (contactForm) {
         contactForm.addEventListener('submit', function () {
@@ -178,7 +219,26 @@ document.addEventListener('DOMContentLoaded', function () {
                     event_label: 'contacto'
                 });
             }
+            var eventId = epMetaEventId();
+            var hidden = contactForm.querySelector('input[name="meta_event_id"]');
+            if (hidden) hidden.value = eventId;
+            // Pixel fires client-side; server reads the hidden input and fires CAPI with the same event_id for dedup
+            epMetaTrack('Lead', {
+                content_name: 'contact_form',
+                content_category: 'lead'
+            }, { eventId: eventId, capi: false });
         });
     }
+
+    /* ═══ TRACK PRODUCT MODAL OPEN (Meta ViewContent, pixel-only) ═══ */
+    document.addEventListener('click', function (e) {
+        var card = e.target.closest('.product-card[data-slug]');
+        if (!card) return;
+        epMetaTrack('ViewContent', {
+            content_type: 'product',
+            content_ids: [card.getAttribute('data-slug')],
+            content_name: card.getAttribute('data-name') || ''
+        }, { capi: false });
+    });
 
 });
