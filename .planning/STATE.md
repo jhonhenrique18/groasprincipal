@@ -13,7 +13,7 @@ See also: .planning/CONTEXT.md
 Phase: 1 of 4 (Catálogo Confiável)
 Plan: 0 of 2 in current phase
 Status: In review
-Last activity: 2026-04-19 - Meta Pixel + Conversions API implementados em hybrid setup (Nivel 2). Events Contact (WhatsApp) e Lead (form) vao via Pixel + CAPI com dedup por event_id; ViewContent pixel-only. Advanced matching com email/phone/name hashados SHA-256. Aguardando usuario setar env vars na Railway (META_PIXEL_ID, META_CAPI_ACCESS_TOKEN, META_DOMAIN_VERIFICATION) e autorizar push.
+Last activity: 2026-04-19 - Meta Pixel + CAPI shipped para producao. Env vars setadas diretamente via Railway API (Project-Access-Token, variableUpsert mutations). Dois commits pushed (4cc002c feature + f8e4dca chore). Deploy BUILDING na Railway; tracking ativa assim que SUCCESS. Proximo passo: usuario valida em Meta Events Manager apos build completar e considera rotar o CAPI access token (ficou no chat transcript).
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -80,5 +80,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-04-19 final (Claude)
-Stopped at: Meta Pixel + CAPI hybrid implementado localmente, sintaxe validada. Pre-push: usuario deve (1) setar env vars META_PIXEL_ID, META_CAPI_ACCESS_TOKEN, META_DOMAIN_VERIFICATION na Railway; (2) autorizar push explicito; (3) validar eventos em Events Manager apos deploy.
+Stopped at: Meta Pixel + CAPI em producao. Railway buildando deployment 5709914e. Usuario deve (1) aguardar SUCCESS no Railway dashboard; (2) abrir Meta Events Manager e confirmar que PageView chega (Overview > Last Activity); (3) opcional mas recomendado: rotacionar o CAPI access token via Events Manager e usar nova Project-Access-Token workflow se precisar mexer em vars de novo.
 Resume file: .planning/checkpoints/2026-04-19-meta-pixel-capi-hybrid.md

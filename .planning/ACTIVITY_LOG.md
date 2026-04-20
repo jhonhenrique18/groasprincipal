@@ -36,6 +36,8 @@ Ver `.planning/AGENT_RULES.md` secao "Regra 4" para formato completo.
 | 2026-04-19 19:20 | Claude | write | .gitignore ganha .claude/settings.local.json para nao vazar preferencias locais | .gitignore |
 | 2026-04-19 19:22 | Claude | deploy | variableUpsert Railway: META_PIXEL_ID, META_CAPI_ACCESS_TOKEN, META_DOMAIN_VERIFICATION no service web env production, via Project-Access-Token scoped | Railway API |
 | 2026-04-19 19:22 | Claude | test | query variables confirma META_* vars persistidas no service | Railway API |
+| 2026-04-19 19:30 | Claude | commit | chore: gitignore .claude/settings.local.json + ACTIVITY_LOG | f8e4dca |
+| 2026-04-19 19:30 | Claude | push | push de ac2944b..f8e4dca em origin/main; Railway iniciou deployment 5709914e (BUILDING) | - |
 | 2026-04-19 18:00 | Codex | read | confirma SVGs oficiais da marca antes de derivar avatar social | static/img/logo-especias-primary.svg |
 | 2026-04-19 18:00 | Codex | write | cria avatars PNG oficiais para WhatsApp e Instagram a partir da logo aprovada | static/img/brand/especias-del-paraguay/ |
 | 2026-04-19 18:06 | Codex | read | usa monograma oficial do bundle da marca para refazer avatar social centralizado | static/img/brand/especias-del-paraguay/logo-especias-mark.svg |
