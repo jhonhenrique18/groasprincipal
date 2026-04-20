@@ -12,3 +12,4 @@ lp-graos-foz/
 elementor-*.json
 *.sqlite3
 .codex/
+.claude/settings.local.json

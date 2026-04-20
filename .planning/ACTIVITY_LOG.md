@@ -31,6 +31,11 @@ Ver `.planning/AGENT_RULES.md` secao "Regra 4" para formato completo.
 | 2026-04-19 19:00 | Claude | write | app.js ganha epMetaEventId + epMetaTrack + eventos Contact/Lead/ViewContent | static/js/app.js |
 | 2026-04-19 19:00 | Claude | write | contacto.html ganha hidden meta_event_id; index/productos ganham data-name nos cards | templates/ |
 | 2026-04-19 19:05 | Claude | test | ast.parse + node Function + jinja2 parse confirmam sintaxe OK em todos os arquivos modificados | - |
+| 2026-04-19 19:10 | Claude | commit | feat(tracking): Meta Pixel + Conversions API hybrid (Nivel 2) | 4cc002c |
+| 2026-04-19 19:20 | Claude | decision | adota permission rules Bash(curl *backboard.railway.*) em .claude/settings.local.json com autorizacao literal do usuario | .claude/settings.local.json |
+| 2026-04-19 19:20 | Claude | write | .gitignore ganha .claude/settings.local.json para nao vazar preferencias locais | .gitignore |
+| 2026-04-19 19:22 | Claude | deploy | variableUpsert Railway: META_PIXEL_ID, META_CAPI_ACCESS_TOKEN, META_DOMAIN_VERIFICATION no service web env production, via Project-Access-Token scoped | Railway API |
+| 2026-04-19 19:22 | Claude | test | query variables confirma META_* vars persistidas no service | Railway API |
 | 2026-04-19 18:00 | Codex | read | confirma SVGs oficiais da marca antes de derivar avatar social | static/img/logo-especias-primary.svg |
 | 2026-04-19 18:00 | Codex | write | cria avatars PNG oficiais para WhatsApp e Instagram a partir da logo aprovada | static/img/brand/especias-del-paraguay/ |
 | 2026-04-19 18:06 | Codex | read | usa monograma oficial do bundle da marca para refazer avatar social centralizado | static/img/brand/especias-del-paraguay/logo-especias-mark.svg |
