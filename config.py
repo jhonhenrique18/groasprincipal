@@ -18,7 +18,9 @@ class Config:
 
     MAX_CONTENT_LENGTH = 10 * 1024 * 1024  # 10MB max upload
     ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME', 'admin')
-    ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'graos2026')
+    # ADMIN_PASSWORD is read directly from os.environ by the bootstrap in
+    # app.py::ensure_admin_password_hash. The app NEVER compares plaintext —
+    # the env var is hashed to the DB on first boot and can be removed after.
 
     # Meta (Facebook) tracking — Pixel + Conversions API
     META_PIXEL_ID = os.environ.get('META_PIXEL_ID', '')

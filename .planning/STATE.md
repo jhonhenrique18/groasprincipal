@@ -13,7 +13,7 @@ See also: .planning/CONTEXT.md
 Phase: 1 of 4 (Catálogo Confiável)
 Plan: 0 of 2 in current phase
 Status: In review
-Last activity: 2026-04-19 - Meta Pixel + CAPI shipped para producao. Env vars setadas diretamente via Railway API (Project-Access-Token, variableUpsert mutations). Dois commits pushed (4cc002c feature + f8e4dca chore). Deploy BUILDING na Railway; tracking ativa assim que SUCCESS. Proximo passo: usuario valida em Meta Events Manager apos build completar e considera rotar o CAPI access token (ficou no chat transcript).
+Last activity: 2026-04-19 - Security item 1 implementado: admin password agora e hash PBKDF2-SHA256 (600k iter) armazenado em SiteSetting, nunca mais plaintext em env var. Bootstrap idempotente em ensure_admin_password_hash; smoke test passou em todos os cenarios (bootstrap, idempotencia, lockout fail-closed). Aguardando commit + push + confirmacao do usuario antes de avancar pro item 2 (SECRET_KEY sem default).
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -80,5 +80,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-04-19 final (Claude)
-Stopped at: Meta Pixel + CAPI em producao. Railway buildando deployment 5709914e. Usuario deve (1) aguardar SUCCESS no Railway dashboard; (2) abrir Meta Events Manager e confirmar que PageView chega (Overview > Last Activity); (3) opcional mas recomendado: rotacionar o CAPI access token via Events Manager e usar nova Project-Access-Token workflow se precisar mexer em vars de novo.
-Resume file: .planning/checkpoints/2026-04-19-meta-pixel-capi-hybrid.md
+Stopped at: Security item 1 pronto pra commit/push. Apos deploy: usuario testa login (deve funcionar com a mesma senha de antes, pois bootstrap hasheia a env var ADMIN_PASSWORD uma vez), confirma, e se quiser segue pro item 2. Pode remover ADMIN_PASSWORD da Railway depois do login confirmado.
+Resume file: .planning/checkpoints/2026-04-19-security-01-admin-password-hash.md

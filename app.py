@@ -5,6 +5,7 @@ from functools import wraps
 from flask import (Flask, render_template, request, redirect, url_for,
                    flash, session, jsonify, send_from_directory, Response, make_response)
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 from config import Config
 from models import db, Category, Product, SiteSetting
 from meta_capi import send_capi_event, user_data_from_request
@@ -368,7 +369,10 @@ def admin_login():
     if request.method == 'POST':
         username = request.form.get('username', '')
         password = request.form.get('password', '')
-        if username == app.config['ADMIN_USERNAME'] and password == app.config['ADMIN_PASSWORD']:
+        stored_hash = SiteSetting.get('admin_password_hash')
+        if (username == app.config['ADMIN_USERNAME']
+                and stored_hash
+                and check_password_hash(stored_hash, password)):
             session['admin_logged_in'] = True
             return redirect(url_for('admin_dashboard'))
         flash('Credenciales incorrectas', 'error')
@@ -605,6 +609,31 @@ def admin_settings():
 
 # ──────────────────── INIT DB ────────────────────
 
+def ensure_admin_password_hash():
+    """Bootstrap admin auth: on first boot, hash the ADMIN_PASSWORD env var
+    and persist it in SiteSetting. After this runs once, the env var can
+    (and should) be removed from Railway — all logins use the stored hash.
+
+    Idempotent: only seeds when no hash is present in DB.
+    """
+    if SiteSetting.get('admin_password_hash'):
+        return
+    bootstrap_password = os.environ.get('ADMIN_PASSWORD', '')
+    if not bootstrap_password:
+        app.logger.warning(
+            'admin_password_hash missing in DB and ADMIN_PASSWORD env var empty; '
+            'admin login is disabled until ADMIN_PASSWORD is set on this service'
+        )
+        return
+    SiteSetting.set(
+        'admin_password_hash',
+        generate_password_hash(bootstrap_password, method='pbkdf2:sha256:600000'),
+    )
+    app.logger.info(
+        'Admin password hashed and persisted; ADMIN_PASSWORD env var may now be removed'
+    )
+
+
 def init_db():
     """Create tables and run seed if database is empty."""
     db.create_all()
@@ -634,6 +663,7 @@ def init_db():
             SiteSetting.set('email', 'jhonatan@grupo-dip.com')
         if not SiteSetting.get('hero_image'):
             SiteSetting.set('hero_image', '/static/uploads/6a6805d27ce146bfa9af82e53d827753.png')
+    ensure_admin_password_hash()
 
 with app.app_context():
     init_db()

@@ -83,6 +83,8 @@ Catálogo de produtos atualizado e acessível que converte visitantes em contato
 | Credenciais Meta (CAPI token) vivem apenas em env var na Railway | Token foi exposto no chat; não pode ir pro repo; rotação recomendada | ✓ Good |
 | CAPI apenas em eventos críticos (Contact, Lead); ViewContent pixel-only | Foco em conversão; minimiza latência e ruído de sinais | ✓ Good |
 | Advanced matching hasheia email/phone/name via SHA-256 antes do envio | Requisito Meta + privacidade; target EMQ 6-8 no form de contato | ✓ Good |
+| Senha de admin com hash PBKDF2-SHA256 (600k iter) armazenada na DB, nunca plaintext em env | Senha anterior tinha default inseguro em config.py; hash + bootstrap idempotente + fail-closed quando faltar credencial | ✓ Good |
+| Security hardening entregue por checkpoint (1 item por vez) | Usuario valida cada item antes de avancar; reduz risco de regressao e facilita rollback individual | ✓ Good |
 
 ---
-*Last updated: 2026-04-19 after Meta Pixel + CAPI implementation*
+*Last updated: 2026-04-19 after Security item 1 (admin password hash)*
