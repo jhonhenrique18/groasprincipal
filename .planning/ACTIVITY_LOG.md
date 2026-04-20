@@ -54,6 +54,9 @@ Ver `.planning/AGENT_RULES.md` secao "Regra 4" para formato completo.
 | 2026-04-19 20:25 | Claude | push | push 52230df..8806e89 origin/main | - |
 | 2026-04-19 20:35 | Claude | write | Security item 5 (V5): save_image agora forca img.load() e descarta arquivo em falha sem fallback de escrita bruta | app.py |
 | 2026-04-19 20:36 | Claude | test | 4 cenarios smoke-tested: fake binary / real PNG / .exe / truncated PNG — comportamento correto em todos | - |
+| 2026-04-19 20:40 | Claude | commit | feat(security-05): upload aceita apenas imagens parseaveis | 0b045a9 |
+| 2026-04-19 20:40 | Claude | push | push 8806e89..0b045a9 origin/main | - |
+| 2026-04-19 20:50 | Claude | write | Security item 6 (V4): modal de produto reescrito com DOM API (textContent, createElement) em vez de innerHTML+concat; fix XSS no renderer + tabnabbing no WhatsApp link | static/js/app.js |
 | 2026-04-19 18:00 | Codex | read | confirma SVGs oficiais da marca antes de derivar avatar social | static/img/logo-especias-primary.svg |
 | 2026-04-19 18:00 | Codex | write | cria avatars PNG oficiais para WhatsApp e Instagram a partir da logo aprovada | static/img/brand/especias-del-paraguay/ |
 | 2026-04-19 18:06 | Codex | read | usa monograma oficial do bundle da marca para refazer avatar social centralizado | static/img/brand/especias-del-paraguay/logo-especias-mark.svg |

@@ -141,54 +141,114 @@ document.addEventListener('DOMContentLoaded', function () {
             document.body.style.overflow = '';
         }
 
+        function isSafeImageUrl(url) {
+            // Accept only relative paths (/static/... or /uploads/...) or explicit https URLs.
+            if (typeof url !== 'string' || !url) return false;
+            return url.charAt(0) === '/' || /^https:\/\//i.test(url);
+        }
+
+        function setLoading(box, text) {
+            var div = document.createElement('div');
+            div.className = 'modal-loading';
+            div.textContent = text;
+            box.replaceChildren(div);
+        }
+
+        function buildDetailRow(label, value) {
+            var row = document.createElement('div');
+            row.className = 'modal-detail-row';
+            var s = document.createElement('strong');
+            s.textContent = label;
+            var span = document.createElement('span');
+            span.textContent = value;
+            row.appendChild(s);
+            row.appendChild(span);
+            return row;
+        }
+
         function openProductModal(slug) {
             var box = modal.querySelector('.modal-body');
-            box.innerHTML = '<div class="modal-loading">Cargando...</div>';
+            setLoading(box, 'Cargando...');
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
 
-            fetch('/api/producto/' + slug)
+            fetch('/api/producto/' + encodeURIComponent(slug))
                 .then(function (r) { return r.json(); })
                 .then(function (p) {
-                    var imgHtml = p.image
-                        ? '<img src="' + p.image + '" alt="' + p.name + '">'
-                        : '<span class="modal-placeholder">' + p.name.charAt(0) + '</span>';
+                    // All user-provided fields below are inserted via textContent or
+                    // attribute setters that are XSS-safe. Do NOT switch back to innerHTML.
+                    var imgWrap = document.createElement('div');
+                    imgWrap.className = 'modal-img';
+                    if (p.image && isSafeImageUrl(p.image)) {
+                        var img = document.createElement('img');
+                        img.src = p.image;
+                        img.alt = p.name || '';
+                        imgWrap.appendChild(img);
+                    } else {
+                        var ph = document.createElement('span');
+                        ph.className = 'modal-placeholder';
+                        ph.textContent = (p.name || '?').charAt(0);
+                        imgWrap.appendChild(ph);
+                    }
 
-                    var detailsHtml = '';
-                    if (p.origin) {
-                        detailsHtml += '<div class="modal-detail-row"><strong>Origen</strong><span>' + p.origin + '</span></div>';
-                    }
-                    if (p.presentation) {
-                        detailsHtml += '<div class="modal-detail-row"><strong>Presentación</strong><span>' + p.presentation + '</span></div>';
-                    }
+                    var info = document.createElement('div');
+                    info.className = 'modal-info';
+
                     if (p.category_name) {
-                        detailsHtml += '<div class="modal-detail-row"><strong>Categoría</strong><span>' + p.category_name + '</span></div>';
+                        var catSpan = document.createElement('span');
+                        catSpan.className = 'modal-cat';
+                        catSpan.textContent = p.category_name;
+                        info.appendChild(catSpan);
                     }
 
-                    var descHtml = '';
+                    var h2 = document.createElement('h2');
+                    h2.className = 'modal-title';
+                    h2.textContent = p.name || '';
+                    info.appendChild(h2);
+
+                    var rows = [];
+                    if (p.origin) rows.push(buildDetailRow('Origen', p.origin));
+                    if (p.presentation) rows.push(buildDetailRow('Presentación', p.presentation));
+                    if (p.category_name) rows.push(buildDetailRow('Categoría', p.category_name));
+                    if (rows.length) {
+                        var details = document.createElement('div');
+                        details.className = 'modal-details';
+                        rows.forEach(function (r) { details.appendChild(r); });
+                        info.appendChild(details);
+                    }
+
                     if (p.description) {
-                        descHtml = '<div class="modal-desc"><h3>Descripción</h3><p>' + p.description + '</p></div>';
+                        var desc = document.createElement('div');
+                        desc.className = 'modal-desc';
+                        var h3 = document.createElement('h3');
+                        h3.textContent = 'Descripción';
+                        var pEl = document.createElement('p');
+                        pEl.textContent = p.description;
+                        desc.appendChild(h3);
+                        desc.appendChild(pEl);
+                        info.appendChild(desc);
                     }
 
-                    // Build WhatsApp link with dynamic number
-                    var waDigits = document.querySelector('.wa-float') ? document.querySelector('.wa-float').href.replace('https://wa.me/', '') : '';
-                    var waLink = 'https://wa.me/' + waDigits + '?text=' + encodeURIComponent('Hola, me interesa el producto: ' + p.name);
+                    var waFloat = document.querySelector('.wa-float');
+                    var waDigits = waFloat ? waFloat.href.replace('https://wa.me/', '') : '';
+                    var waLink = document.createElement('a');
+                    waLink.href = 'https://wa.me/' + encodeURIComponent(waDigits) + '?text=' + encodeURIComponent('Hola, me interesa el producto: ' + (p.name || ''));
+                    waLink.target = '_blank';
+                    waLink.rel = 'noopener noreferrer';
+                    waLink.className = 'btn btn-primary modal-wa-btn';
+                    waLink.appendChild(document.createTextNode('Consultar por WhatsApp '));
+                    // Static SVG icon — safe to use innerHTML on a fresh span containing
+                    // only trusted markup (no user data concatenated into it).
+                    var icon = document.createElement('span');
+                    icon.setAttribute('aria-hidden', 'true');
+                    icon.innerHTML = '<svg viewBox="0 0 32 32" width="18" height="18" fill="currentColor"><path d="M16.004 0C7.166 0 .002 7.16.002 15.995c0 2.818.737 5.574 2.14 7.998L0 32l8.245-2.102a16.02 16.02 0 007.755 1.978h.004C24.838 31.876 32 24.716 32 15.995 32 7.16 24.838 0 16.004 0zm7.34 19.293c-.402-.202-2.38-1.174-2.75-1.31-.37-.132-.64-.2-.91.202-.27.4-1.045 1.31-1.282 1.58-.236.27-.473.304-.876.1-.402-.2-1.698-.626-3.234-1.995-1.195-1.066-2.002-2.383-2.237-2.785-.236-.402-.025-.62.177-.82.182-.18.402-.47.604-.706.2-.236.268-.404.402-.674.134-.27.067-.506-.033-.708-.1-.2-.91-2.192-1.247-3.002-.328-.788-.662-.682-.91-.694l-.774-.014c-.268 0-.706.1-1.076.506-.37.404-1.414 1.38-1.414 3.37 0 1.988 1.448 3.908 1.65 4.178.2.27 2.85 4.348 6.904 6.098.964.416 1.717.664 2.304.85.968.308 1.85.264 2.547.16.777-.116 2.38-.974 2.716-1.914.336-.94.336-1.746.236-1.914-.1-.168-.37-.268-.776-.47z"/></svg>';
+                    waLink.appendChild(icon);
+                    info.appendChild(waLink);
 
-                    box.innerHTML =
-                        '<div class="modal-img">' + imgHtml + '</div>' +
-                        '<div class="modal-info">' +
-                            (p.category_name ? '<span class="modal-cat">' + p.category_name + '</span>' : '') +
-                            '<h2 class="modal-title">' + p.name + '</h2>' +
-                            (detailsHtml ? '<div class="modal-details">' + detailsHtml + '</div>' : '') +
-                            descHtml +
-                            '<a href="' + waLink + '" target="_blank" class="btn btn-primary modal-wa-btn">' +
-                                'Consultar por WhatsApp ' +
-                                '<svg viewBox="0 0 32 32" width="18" height="18" fill="currentColor"><path d="M16.004 0C7.166 0 .002 7.16.002 15.995c0 2.818.737 5.574 2.14 7.998L0 32l8.245-2.102a16.02 16.02 0 007.755 1.978h.004C24.838 31.876 32 24.716 32 15.995 32 7.16 24.838 0 16.004 0zm7.34 19.293c-.402-.202-2.38-1.174-2.75-1.31-.37-.132-.64-.2-.91.202-.27.4-1.045 1.31-1.282 1.58-.236.27-.473.304-.876.1-.402-.2-1.698-.626-3.234-1.995-1.195-1.066-2.002-2.383-2.237-2.785-.236-.402-.025-.62.177-.82.182-.18.402-.47.604-.706.2-.236.268-.404.402-.674.134-.27.067-.506-.033-.708-.1-.2-.91-2.192-1.247-3.002-.328-.788-.662-.682-.91-.694l-.774-.014c-.268 0-.706.1-1.076.506-.37.404-1.414 1.38-1.414 3.37 0 1.988 1.448 3.908 1.65 4.178.2.27 2.85 4.348 6.904 6.098.964.416 1.717.664 2.304.85.968.308 1.85.264 2.547.16.777-.116 2.38-.974 2.716-1.914.336-.94.336-1.746.236-1.914-.1-.168-.37-.268-.776-.47z"/></svg>' +
-                            '</a>' +
-                        '</div>';
+                    box.replaceChildren(imgWrap, info);
                 })
                 .catch(function () {
-                    box.innerHTML = '<div class="modal-loading">Error al cargar el producto.</div>';
+                    setLoading(box, 'Error al cargar el producto.');
                 });
         }
     }
