@@ -6,6 +6,8 @@ from flask import (Flask, render_template, request, redirect, url_for,
                    flash, session, jsonify, send_from_directory, Response, make_response)
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from config import Config
 from models import db, Category, Product, SiteSetting
 from meta_capi import send_capi_event, user_data_from_request
@@ -20,6 +22,15 @@ if not app.config.get('SECRET_KEY'):
         'Set it in Railway Variables.'
     )
 db.init_app(app)
+
+# Rate limiter. In-memory is OK for single-instance deploys; move to Redis
+# later if scaling out. `get_remote_address` reads X-Forwarded-For-aware IP.
+limiter = Limiter(
+    key_func=get_remote_address,
+    app=app,
+    default_limits=[],  # no blanket limit; apply per-route explicitly
+    storage_uri='memory://',
+)
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp', 'gif'}
 
@@ -372,6 +383,7 @@ def api_meta_capi_event():
 # ──────────────────── ADMIN ROUTES ────────────────────
 
 @app.route('/admin/login', methods=['GET', 'POST'])
+@limiter.limit('5 per 15 minutes', methods=['POST'])
 def admin_login():
     if request.method == 'POST':
         username = request.form.get('username', '')
