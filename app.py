@@ -12,6 +12,13 @@ from meta_capi import send_capi_event, user_data_from_request
 
 app = Flask(__name__)
 app.config.from_object(Config)
+# Fail loud if SECRET_KEY is missing in production. Config.py auto-generates
+# in local dev only; in production (DATABASE_URL set) the env var is required.
+if not app.config.get('SECRET_KEY'):
+    raise RuntimeError(
+        'SECRET_KEY environment variable is required in production. '
+        'Set it in Railway Variables.'
+    )
 db.init_app(app)
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp', 'gif'}

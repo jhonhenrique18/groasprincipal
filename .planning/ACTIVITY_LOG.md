@@ -41,6 +41,9 @@ Ver `.planning/AGENT_RULES.md` secao "Regra 4" para formato completo.
 | 2026-04-19 19:45 | Claude | decision | aprovado plano de seguranca basica em 6 itens; usuario pediu ship por checkpoint (1 por vez) | - |
 | 2026-04-19 19:50 | Claude | write | Security item 1: hash do admin password via werkzeug pbkdf2:sha256:600000, bootstrap idempotente em ensure_admin_password_hash | config.py, app.py |
 | 2026-04-19 19:52 | Claude | test | smoke test cobre bootstrap + idempotencia + lockout fail-closed; 3/3 passaram | - |
+| 2026-04-19 20:00 | Claude | deploy | Railway variableUpsert SECRET_KEY=<random 64 hex> + ADMIN_PASSWORD=graos2026 (prep para item 2, evita lock de admin) | Railway API |
+| 2026-04-19 20:02 | Claude | write | Security item 2 (V1): config.py sem default inseguro; app.py levanta RuntimeError se vazio em prod | config.py, app.py |
+| 2026-04-19 20:03 | Claude | test | 3 cenarios passaram: prod fail-loud, dev auto-gen, explicit env var | - |
 | 2026-04-19 18:00 | Codex | read | confirma SVGs oficiais da marca antes de derivar avatar social | static/img/logo-especias-primary.svg |
 | 2026-04-19 18:00 | Codex | write | cria avatars PNG oficiais para WhatsApp e Instagram a partir da logo aprovada | static/img/brand/especias-del-paraguay/ |
 | 2026-04-19 18:06 | Codex | read | usa monograma oficial do bundle da marca para refazer avatar social centralizado | static/img/brand/especias-del-paraguay/logo-especias-mark.svg |

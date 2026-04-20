@@ -1,7 +1,15 @@
 import os
+import secrets
 
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY', 'graos-sa-secret-key-change-in-production')
+    # SECRET_KEY must be set via env in every environment. Empty or missing
+    # value in production is refused at app import time (see app.py below).
+    # In local dev (SQLite fallback, no DATABASE_URL) we auto-generate a
+    # random key per-process so the developer doesn't need to set it manually.
+    _secret = os.environ.get('SECRET_KEY', '')
+    if not _secret and not os.environ.get('DATABASE_URL'):
+        _secret = secrets.token_hex(32)
+    SECRET_KEY = _secret
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'sqlite:///graos.db')
     # Railway uses postgres:// but SQLAlchemy needs postgresql://
     if SQLALCHEMY_DATABASE_URI and SQLALCHEMY_DATABASE_URI.startswith('postgres://'):
