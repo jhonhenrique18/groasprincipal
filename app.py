@@ -84,49 +84,54 @@ def add_security_headers(response):
     return response
 
 def save_image(file):
-    if file and allowed_file(file.filename):
-        from PIL import Image as PILImage
-        unique = uuid.uuid4().hex
-        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    """Save an uploaded image as optimized WebP (with a -sm thumbnail).
 
-        # Open with Pillow, convert to optimized WebP
-        try:
-            img = PILImage.open(file)
-            if img.mode == 'RGBA':
-                bg = PILImage.new('RGB', img.size, (255, 255, 255))
-                bg.paste(img, mask=img.split()[3])
-                img = bg
-            elif img.mode != 'RGB':
-                img = img.convert('RGB')
+    Security: we force a real decode via Image.load() before accepting the
+    file. If decode fails, the upload is refused and nothing is written.
+    There is NO fallback to write raw bytes — an attacker with admin access
+    cannot use this function to drop a non-image file into the uploads dir.
+    """
+    if not file or not allowed_file(file.filename):
+        return ''
 
-            # Save main version (600px max for detail page)
-            sizes = {'': 600, '-sm': 400}
-            for suffix, size in sizes.items():
-                resized = img.copy()
-                w, h = resized.size
-                if w != h:
-                    side = min(w, h)
-                    left = (w - side) // 2
-                    top = (h - side) // 2
-                    resized = resized.crop((left, top, left + side, top + side))
-                if max(w, h) > size:
-                    resized = resized.resize((size, size), PILImage.LANCZOS)
-                out_path = os.path.join(app.config['UPLOAD_FOLDER'], f"{unique}{suffix}.webp")
-                resized.save(out_path, format='WEBP', quality=85, method=4)
+    from PIL import Image as PILImage
 
-            filename = f"{unique}.webp"
-        except Exception:
-            # Fallback: save original file as-is if Pillow fails
-            ext = file.filename.rsplit('.', 1)[1].lower()
-            filename = f"{unique}.{ext}"
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.seek(0)
-            file.save(filepath)
+    unique = uuid.uuid4().hex
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-        if os.environ.get('RAILWAY_VOLUME_MOUNT_PATH'):
-            return f"/uploads/{filename}"
-        return f"/static/uploads/{filename}"
-    return ''
+    try:
+        img = PILImage.open(file)
+        img.load()  # force decode — raises on fake/corrupt images
+
+        if img.mode == 'RGBA':
+            bg = PILImage.new('RGB', img.size, (255, 255, 255))
+            bg.paste(img, mask=img.split()[3])
+            img = bg
+        elif img.mode != 'RGB':
+            img = img.convert('RGB')
+
+        sizes = {'': 600, '-sm': 400}
+        for suffix, size in sizes.items():
+            resized = img.copy()
+            w, h = resized.size
+            if w != h:
+                side = min(w, h)
+                left = (w - side) // 2
+                top = (h - side) // 2
+                resized = resized.crop((left, top, left + side, top + side))
+            if max(w, h) > size:
+                resized = resized.resize((size, size), PILImage.LANCZOS)
+            out_path = os.path.join(app.config['UPLOAD_FOLDER'], f"{unique}{suffix}.webp")
+            resized.save(out_path, format='WEBP', quality=85, method=4)
+
+        filename = f"{unique}.webp"
+    except Exception:
+        app.logger.warning('save_image: rejected upload %r', file.filename)
+        return ''
+
+    if os.environ.get('RAILWAY_VOLUME_MOUNT_PATH'):
+        return f"/uploads/{filename}"
+    return f"/static/uploads/{filename}"
 
 # ──────────────────── TEMPLATE FILTERS ────────────────────
 
