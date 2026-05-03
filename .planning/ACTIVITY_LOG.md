@@ -67,3 +67,15 @@ Ver `.planning/AGENT_RULES.md` secao "Regra 4" para formato completo.
 | 2026-04-19 18:06 | Codex | write | remove avatar quadrado antigo com logo horizontal por pedido do usuario | static/img/brand/especias-del-paraguay/profile-avatar-logo-oficial.png |
 | 2026-04-19 18:08 | Codex | read | usa lockup oficial completo para derivar avatar com escrita em alta definicao | static/img/logo-especias-primary.svg |
 | 2026-04-19 18:08 | Codex | write | cria avatar quadrado com logo completa centralizada em alta definicao | static/img/brand/especias-del-paraguay/profile-avatar-logo-centered-hd.png |
+| 2026-04-19 23:16 | Codex | read | reanalisa contexto obrigatorio e revisa o codigo atual de seguranca apos mudancas recentes do usuario | .planning/, app.py, config.py, static/js/app.js, templates/ |
+| 2026-04-19 23:16 | Codex | test | confirma runtime config atual (csrf ativo; session cookie sem flags explicitas) e valida que flask_limiter usa apenas request.remote_addr | app runtime |
+| 2026-04-19 23:16 | Codex | write | registra reauditoria de seguranca com scores, checkpoint, history, state e handoff para Claude | .planning/ |
+| 2026-04-19 23:16 | Codex | other | handoff para Claude com resumo da reauditoria post-hardening | .planning/CLAUDE_CATCHUP_PROMPT.md |
+| 2026-05-02 14:00 | Claude | read | lê STATE/CONTEXT/PROJECT/AGENT_RULES + app.py/models.py/templates para diagnóstico SEO | .planning/, app.py, models.py, templates/ |
+| 2026-05-02 14:05 | Claude | decision | abre bloco SEO Fase A (additive, preserva grãos SEO baseline). Doc em PROJECT.md + checkpoint dedicado | .planning/PROJECT.md, .planning/checkpoints/2026-05-02-seo-optimization-kickoff.md |
+| 2026-05-02 14:30 | Claude | write | adiciona campos aliases/scientific_name/seo_title_override/seo_description_override em Product model + propriedades alias_list/search_corpus | models.py |
+| 2026-05-02 14:35 | Claude | write | cria seo_aliases.py com 112/112 produtos curados (sinônimos PT/ES/EN + nomes científicos) | seo_aliases.py |
+| 2026-05-02 14:45 | Claude | write | adiciona _ensure_seo_columns + _backfill_seo_aliases idempotentes em init_db (cross-DB SQLite/Postgres) + seeder fresh aplica aliases | app.py |
+| 2026-05-02 14:55 | Claude | write | reescreve producto.html com title 50-60 chars, meta com aliases, JSON-LD Product enriquecido (alternateName/keywords/additionalProperty/audience), novo JSON-LD WebPage com mentions[], seção visível "También conocido como" | templates/producto.html, templates/base.html |
+| 2026-05-02 15:05 | Claude | write | reescreve productos.html: alias_pool agregado em Python featured-first, JSON-LD CollectionPage com mentions[] e ItemList com alternateName por item, JS de busca com NFD normalize | app.py, templates/productos.html |
+| 2026-05-02 15:15 | Claude | test | smoke test 11 páginas: todas 200, 36 blocos JSON-LD válidos, títulos de produto 47-53 chars, aliases backfilled em SQLite local | http://localhost:5050 |

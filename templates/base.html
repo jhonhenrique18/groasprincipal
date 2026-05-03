@@ -38,7 +38,10 @@
 
     <!-- ═══ SEO: Title & Description ═══ -->
     {% set page_title %}{% block title %}{% endblock %}{% endset %}
-    <title>{% if page_title|trim %}{{ page_title|trim }} | {% endif %}El Mayor Proveedor de Productos Naturales del Paraguay</title>
+    {# Pages that need 50-60 char title control (e.g. product detail) override
+       full_title directly. Others fall back to the legacy "{title} | {brand
+       suffix}" pattern so existing rankings stay stable. #}
+    <title>{% block full_title %}{% if page_title|trim %}{{ page_title|trim }} | {% endif %}El Mayor Proveedor de Productos Naturales del Paraguay{% endblock %}</title>
     <meta name="description" content="{% block meta_description %}Grãos S.A. — Importadora y distribuidora mayorista de especias, condimentos, hierbas medicinales y productos naturales. Importación directa desde 16 países con entregas a todo el Paraguay.{% endblock %}">
     <meta name="keywords" content="{% block meta_keywords %}especias Paraguay, condimentos al por mayor, hierbas medicinales Paraguay, productos naturales, importadora Paraguay, distribuidora mayorista, Grãos SA, suplementos naturales, importación directa, proveedor especias{% endblock %}">
     <meta name="author" content="Grãos S.A.">

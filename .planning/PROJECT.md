@@ -91,6 +91,9 @@ Catálogo de produtos atualizado e acessível que converte visitantes em contato
 | Upload de imagem descarta arquivo se Pillow.load() falhar, sem fallback de escrita | Elimina vetor de drop de binario disfarcado em .jpg na pasta de uploads | ✓ Good |
 | Modal de produto renderiza com DOM API (textContent/createElement), nunca innerHTML+concat | Fecha XSS stored via produto criado no admin | ✓ Good |
 | /contacto com rate limit 3/10min + honeypot field `website` hidden off-screen | Previne flood por bot quando form passar a entregar de verdade | ✓ Good |
+| SEO optimization é additive: preserva 100% do que ranqueia hoje (`graos.com.py`, `Grãos S.A.`, slugs, canonicals, sitemap) e empilha keyword breadth por cima | Site já ranqueia bem para queries exatas; o gap é breadth (queries genéricas tipo "manzanilla", "canela"). Trocar marca SEO agora geraria dip de 2-8 semanas sem ganho compensatório | ✓ Active |
+| Cada produto ganha campos `aliases`, `scientific_name`, `seo_title_override`, `seo_description_override` para alimentar variações de keyword sem mudar slug nem canonical | Nome do produto fica preservado (ex: "Manzanilla Flor"); aliases adicionam camadas ("manzanilla", "camomila", "chamomile", "Matricaria chamomilla") que entram em title, meta, JSON-LD `alternateName`/`keywords` e search interno | ✓ Active |
+| Search interno migra de `name.includes(q)` client-side para `/buscar` server-side com accent-strip e match em name+aliases+scientific_name | Hoje "manzanilha" (PT) ou "camomila" não acham "Manzanilla Flor"; com normalização e aliases, todas variações convergem para o produto certo | ✓ Active |
 
 ---
-*Last updated: 2026-04-19 after security basics pack (items 1-7)*
+*Last updated: 2026-05-02 — added SEO optimization scope (additive over preserved Grãos SEO baseline)*

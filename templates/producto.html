@@ -1,23 +1,55 @@
 {% extends "base.html" %}
-{% block title %}{{ product.name }}{% endblock %}
-{% block meta_description %}{{ product.name }} — {{ product.category.name }} al por mayor en Paraguay. {% if product.origin %}Origen: {{ product.origin }}. {% endif %}{% if product.presentation %}Presentación: {{ product.presentation }}. {% endif %}Importación directa por Grãos S.A.{% endblock %}
-{% block meta_keywords %}{{ product.name }}, {{ product.category.name }}, {{ product.name }} al por mayor, comprar {{ product.name }} Paraguay{% if product.origin %}, {{ product.name }} {{ product.origin }}{% endif %}{% endblock %}
+
+{# ─────────── SEO BREADTH (additive over Grãos baseline) ───────────
+   Each product page already ranks for its canonical name (e.g. "Manzanilla
+   Flor"). The blocks below extend the page so generic queries ("manzanilla",
+   "camomila", "chamomile") also match this same URL. Slug, canonical and
+   sitemap entry are unchanged on purpose — we are stacking breadth, not
+   migrating the page. The brand SEO (`Grãos S.A.`) stays as the publisher.
+
+   `product.alias_list` is a Python property on the model that returns a list
+   of clean strings parsed from the comma-separated `aliases` column. When a
+   product was not yet curated, the list is empty and this template falls
+   back to the legacy single-name pattern.
+#}
+{% set _aliases = product.alias_list %}
+{% set _alias_primary = _aliases[0] if _aliases else '' %}
+{% set _alias_secondary = _aliases[1] if _aliases|length > 1 else '' %}
+{% set _scientific = product.scientific_name or '' %}
+
+{# Title override: aim for 55-60 chars, lead with canonical name to preserve
+   existing ranking signal, then add the broadest alias and the brand suffix.
+   Pages without curated aliases keep the original short title. #}
+{% block full_title %}{% if product.seo_title_override %}{{ product.seo_title_override }}{% elif _alias_primary and _alias_primary != product.name %}{{ product.name }} — {{ _alias_primary }} | Grãos S.A. Paraguay{% else %}{{ product.name }} | {{ product.category.name }} al por mayor en Paraguay{% endif %}{% endblock %}
+
+{# Meta description: blend canonical name, top aliases and category in a
+   sentence a human would actually read. Keeps "Grãos S.A." as the publisher
+   signal so brand-related queries keep their authority. #}
+{% block meta_description %}{% if product.seo_description_override %}{{ product.seo_description_override }}{% else %}{{ product.name }}{% if _alias_primary and _alias_primary != product.name %} ({{ _alias_primary }}{% if _alias_secondary %}, {{ _alias_secondary }}{% endif %}){% endif %} — {{ product.category.name }} al por mayor en Paraguay. {% if product.origin %}Origen: {{ product.origin }}. {% endif %}{% if product.presentation %}Presentación: {{ product.presentation }}. {% endif %}Importación directa por Grãos S.A.{% endif %}{% endblock %}
+
+{# Meta keywords: compound name + every alias + scientific name + category.
+   Modern search engines weight this lightly, but it still feeds Bing,
+   internal site search engines and a few aggregators. Cheap to include. #}
+{% block meta_keywords %}{{ product.name }}, {{ product.category.name }}, {{ product.name }} al por mayor, comprar {{ product.name }} Paraguay{% if product.origin %}, {{ product.name }} {{ product.origin }}{% endif %}{% for a in _aliases %}, {{ a }}{% endfor %}{% if _scientific %}, {{ _scientific }}{% endif %}{% endblock %}
+
 {% block og_type %}product{% endblock %}
-{% block og_title %}{{ product.name }} — Grãos S.A.{% endblock %}
-{% block og_description %}{{ product.name }} | {{ product.category.name }} al por mayor. {% if product.origin %}Origen: {{ product.origin }}.{% endif %} Importación directa.{% endblock %}
+{% block og_title %}{{ product.name }}{% if _alias_primary and _alias_primary != product.name %} — {{ _alias_primary }}{% endif %} | Grãos S.A.{% endblock %}
+{% block og_description %}{{ product.name }}{% if _alias_primary and _alias_primary != product.name %} ({{ _alias_primary }}){% endif %} | {{ product.category.name }} al por mayor. {% if product.origin %}Origen: {{ product.origin }}.{% endif %} Importación directa.{% endblock %}
 {% block og_image %}{% if product.image %}https://www.graos.com.py{{ product.image }}{% else %}https://www.graos.com.py/static/img/og-image-1200x630.png{% endif %}{% endblock %}
-{% block tw_title %}{{ product.name }} — Grãos S.A.{% endblock %}
-{% block tw_description %}{{ product.category.name }} al por mayor. Importación directa por Grãos S.A.{% endblock %}
+{% block tw_title %}{{ product.name }}{% if _alias_primary and _alias_primary != product.name %} — {{ _alias_primary }}{% endif %} | Grãos S.A.{% endblock %}
+{% block tw_description %}{{ product.category.name }} al por mayor — Grãos S.A. Paraguay.{% endblock %}
 
 {% block structured_data %}
-<!-- Schema.org Product -->
+<!-- Schema.org Product (enriched: alternateName, keywords, scientific name) -->
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "{{ product.name }}",
-    "description": "{{ product.description if product.description else product.name + ' — ' + product.category.name + ' al por mayor en Paraguay. Importación directa por Grãos S.A.' }}",
+    {% if _aliases %}"alternateName": [{% for a in _aliases %}"{{ a|replace('"','\\"') }}"{% if not loop.last %},{% endif %}{% endfor %}],{% endif %}
+    "description": "{{ (product.description if product.description else product.name + ' — ' + product.category.name + ' al por mayor en Paraguay. Importación directa por Grãos S.A.')|replace('"','\\"') }}",
     "category": "{{ product.category.name }}",
+    {% if _aliases or _scientific %}"keywords": "{% if _scientific %}{{ _scientific }}, {% endif %}{{ product.name }}{% for a in _aliases %}, {{ a|replace('"','\\"') }}{% endfor %}",{% endif %}
     {% if product.image %}"image": "https://www.graos.com.py{{ product.image }}",{% endif %}
     "url": "https://www.graos.com.py/producto/{{ product.slug }}",
     "brand": {
@@ -31,6 +63,14 @@
     },
     {% if product.origin %}"countryOfOrigin": {"@type": "Country", "name": "{{ product.origin }}"},{% endif %}
     "sku": "{{ product.slug }}",
+    "additionalProperty": [
+        {% if _scientific %}{"@type": "PropertyValue", "name": "Nombre científico", "value": "{{ _scientific }}"}{% if product.presentation %},{% endif %}{% endif %}
+        {% if product.presentation %}{"@type": "PropertyValue", "name": "Presentación", "value": "{{ product.presentation|replace('"','\\"') }}"}{% endif %}
+    ],
+    "audience": {
+        "@type": "BusinessAudience",
+        "audienceType": "Importadores, distribuidores, mayoristas, fábricas y restaurantes en Paraguay"
+    },
     "@id": "https://www.graos.com.py/producto/{{ product.slug }}#product"
 }
 </script>
@@ -47,6 +87,25 @@
     ]
 }
 </script>
+{# WebPage with `mentions` of the alias terms — gives search engines an
+   explicit hint that this URL is a relevant answer for each alias query. #}
+{% if _aliases %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": "https://www.graos.com.py/producto/{{ product.slug }}#webpage",
+    "url": "https://www.graos.com.py/producto/{{ product.slug }}",
+    "name": "{{ product.name }}{% if _alias_primary and _alias_primary != product.name %} — {{ _alias_primary }}{% endif %}",
+    "inLanguage": "es-PY",
+    "isPartOf": {"@id": "https://www.graos.com.py/#website"},
+    "about": {"@id": "https://www.graos.com.py/producto/{{ product.slug }}#product"},
+    "mentions": [
+        {% for a in _aliases %}{"@type": "Thing", "name": "{{ a|replace('"','\\"') }}"}{% if not loop.last %},{% endif %}{% endfor %}
+    ]
+}
+</script>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -65,7 +124,7 @@
         <div class="detail-inner">
             <div class="detail-img reveal">
                 {% if product.image %}
-                <img src="{{ product.image }}" alt="{{ product.name }}{% if product.origin %} — Origen: {{ product.origin }}{% endif %} — {{ product.category.name }}" width="600" height="600" fetchpriority="high">
+                <img src="{{ product.image }}" alt="{{ product.name }}{% if _alias_primary and _alias_primary != product.name %} ({{ _alias_primary }}){% endif %}{% if product.origin %} — Origen: {{ product.origin }}{% endif %} — {{ product.category.name }}" width="600" height="600" fetchpriority="high">
                 {% else %}
                 <div class="product-placeholder-lg">{{ product.name[0] }}</div>
                 {% endif %}
@@ -73,6 +132,16 @@
             <div class="detail-info reveal">
                 <span class="detail-cat">{{ product.category.name }}</span>
                 <h1>{{ product.name }}</h1>
+                {% if _aliases and _alias_primary != product.name|lower %}
+                <p class="detail-aka" aria-label="También conocido como">
+                    <strong>También conocido como:</strong>
+                    {{ _aliases[:5]|join(', ') }}{% if _scientific %} <em>({{ _scientific }})</em>{% endif %}.
+                </p>
+                {% elif _scientific %}
+                <p class="detail-aka" aria-label="Nombre científico">
+                    <strong>Nombre científico:</strong> <em>{{ _scientific }}</em>.
+                </p>
+                {% endif %}
                 {% if product.origin %}
                 <div class="detail-row">
                     <strong>Origen:</strong> {{ product.origin }}

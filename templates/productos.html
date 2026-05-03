@@ -1,17 +1,34 @@
 {% extends "base.html" %}
-{% block title %}{% if current_cat %}{{ current_cat.name }}{% else %}Productos{% endif %}{% endblock %}
-{% block meta_description %}{% if current_cat %}{{ current_cat.name }} al por mayor en Paraguay — Grãos S.A. Importación directa, productos certificados con entregas a todo el país.{% else %}Catálogo completo de productos naturales al por mayor: especias, condimentos, hierbas medicinales y suplementos. Importación directa con entregas a todo el Paraguay.{% endif %}{% endblock %}
-{% block meta_keywords %}{% if current_cat %}{{ current_cat.name }} al por mayor, {{ current_cat.name }} Paraguay, comprar {{ current_cat.name }}{% else %}catálogo productos naturales, especias al por mayor, condimentos mayorista Paraguay, hierbas medicinales, suplementos naturales{% endif %}{% endblock %}
-{% block og_title %}{% if current_cat %}{{ current_cat.name }}{% else %}Productos{% endif %} — Grãos S.A.{% endblock %}
-{% block og_description %}{% if current_cat %}{{ current_cat.name }} al por mayor con importación directa.{% else %}Catálogo de productos naturales al por mayor para todo el Paraguay.{% endif %}{% endblock %}
+
+{# ─────────── SEO BREADTH (additive over Grãos baseline) ───────────
+   Listing pages need to rank for both the canonical category name
+   ("Hierbas y Tés") and for generic terms users actually type
+   ("té de manzanilla", "infusiones", "hierbas medicinales"). The route
+   precomputes `alias_pool`: deduped, capped, first-seen-order list of
+   aliases across the visible products. We surface a slice of it in the
+   header copy and feed the rest into meta tags + JSON-LD `mentions`.
+#}
+{% set _alias_pool = alias_pool %}
+
+{% block title %}{% if current_cat %}{{ current_cat.name }} al por mayor en Paraguay{% else %}Catálogo Productos Naturales al por Mayor{% endif %}{% endblock %}
+{% block meta_description %}{% if current_cat %}{{ current_cat.name }} al por mayor en Paraguay{% if _alias_pool %} — incluye {{ _alias_pool[:5]|join(', ') }} y más{% endif %}. Importación directa por Grãos S.A. con entregas a todo el país.{% else %}Catálogo completo de productos naturales al por mayor: especias, condimentos, hierbas medicinales, frutos secos, semillas, harinas y suplementos. Importación directa de 16 países por Grãos S.A. Paraguay.{% endif %}{% endblock %}
+{% block meta_keywords %}{% if current_cat %}{{ current_cat.name }} al por mayor, {{ current_cat.name }} Paraguay, comprar {{ current_cat.name }}{% for a in _alias_pool[:15] %}, {{ a }}{% endfor %}{% else %}catálogo productos naturales, especias al por mayor, condimentos mayorista Paraguay, hierbas medicinales, suplementos naturales, frutos secos importados, harinas especiales, importadora paraguay{% endif %}{% endblock %}
+{% block og_title %}{% if current_cat %}{{ current_cat.name }} al por mayor{% else %}Productos{% endif %} — Grãos S.A.{% endblock %}
+{% block og_description %}{% if current_cat %}{{ current_cat.name }} al por mayor con importación directa{% if _alias_pool %} — {{ _alias_pool[:3]|join(', ') }} y más{% endif %}.{% else %}Catálogo de productos naturales al por mayor para todo el Paraguay.{% endif %}{% endblock %}
 
 {% block structured_data %}
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "{% if current_cat %}{{ current_cat.name }}{% else %}Productos{% endif %} — Grãos S.A.",
+    "name": "{% if current_cat %}{{ current_cat.name }} al por mayor en Paraguay{% else %}Catálogo de Productos Naturales al por Mayor{% endif %} — Grãos S.A.",
     "description": "{% if current_cat %}{{ current_cat.name }} al por mayor en Paraguay — importación directa por Grãos S.A.{% else %}Catálogo completo de productos naturales al por mayor en Paraguay: especias, condimentos, hierbas medicinales y suplementos.{% endif %}",
+    "inLanguage": "es-PY",
+    "isPartOf": {"@id": "https://www.graos.com.py/#website"},
+    {% if _alias_pool %}"keywords": "{% if current_cat %}{{ current_cat.name }}, {% endif %}{{ _alias_pool[:20]|join(', ') }}",{% endif %}
+    {% if _alias_pool %}"mentions": [
+        {% for a in _alias_pool[:15] %}{"@type": "Thing", "name": "{{ a|replace('"','\\"') }}"}{% if not loop.last %},{% endif %}{% endfor %}
+    ],{% endif %}
     "mainEntity": {
         "@type": "ItemList",
         "numberOfItems": {{ products|length }},
@@ -21,7 +38,14 @@
                 "@type": "ListItem",
                 "position": {{ loop.index }},
                 "url": "https://www.graos.com.py/producto/{{ p.slug }}",
-                "name": "{{ p.name }}"
+                "name": "{{ p.name }}"{% if p.alias_list %},
+                "item": {
+                    "@type": "Product",
+                    "name": "{{ p.name }}",
+                    "alternateName": [{% for a in p.alias_list[:6] %}"{{ a|replace('"','\\"') }}"{% if not loop.last %},{% endif %}{% endfor %}],
+                    "url": "https://www.graos.com.py/producto/{{ p.slug }}"{% if p.image %},
+                    "image": "https://www.graos.com.py{{ p.image }}"{% endif %}
+                }{% endif %}
             }{% if not loop.last %},{% endif %}
             {% endfor %}
         ]
@@ -62,6 +86,11 @@
         </nav>
         <h1>{% if current_cat %}{{ current_cat.name }}{% else %}Nuestros Productos{% endif %}</h1>
         <p>{% if current_cat %}{{ current_cat.name }} al por mayor — importación directa desde 16 países{% else %}Importación directa de especias, condimentos y productos naturales{% endif %}</p>
+        {% if current_cat and _alias_pool %}
+        <p class="page-header-aka" aria-label="Términos relacionados">
+            Incluye: {{ _alias_pool[:8]|join(' · ') }}
+        </p>
+        {% endif %}
     </div>
 </section>
 
@@ -70,7 +99,7 @@
         <div class="products-toolbar">
             <div class="products-search reveal">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                <input type="text" id="productSearch" placeholder="Buscar producto por nombre..." aria-label="Buscar producto">
+                <input type="text" id="productSearch" placeholder="Buscar producto, sinónimo o nombre científico..." aria-label="Buscar producto">
             </div>
         </div>
 
@@ -116,7 +145,12 @@
                 {% if products %}
                 <div class="products-grid">
                     {% for p in products %}
-                    <a href="{{ url_for('producto', slug=p.slug) }}" class="product-card reveal" data-slug="{{ p.slug }}" data-name="{{ p.name }}" title="{{ p.name }} — {{ p.category.name }}">
+                    {# Build a search-friendly title attribute that includes the
+                       canonical name plus a couple of aliases so the on-page
+                       JS filter (substring match on `title`) can find a card
+                       for queries that don't use the canonical wording. #}
+                    {% set _card_title %}{{ p.name }} — {{ p.category.name }}{% if p.alias_list %} | {{ p.alias_list[:4]|join(', ') }}{% endif %}{% if p.scientific_name %} | {{ p.scientific_name }}{% endif %}{% endset %}
+                    <a href="{{ url_for('producto', slug=p.slug) }}" class="product-card reveal" data-slug="{{ p.slug }}" data-name="{{ p.name }}" data-aliases="{{ p.alias_list|join(', ') }}" title="{{ _card_title }}">
                         <div class="product-img">
                             {% if p.image %}
                             <img src="{{ p.image|img_sm }}" alt="{{ p.name }}{% if p.origin %} — Origen: {{ p.origin }}{% endif %}" loading="lazy" width="400" height="400">
@@ -144,18 +178,36 @@
 
 {% block scripts %}
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+(function(){
     var search = document.getElementById('productSearch');
-    if (search) {
-        search.addEventListener('input', function() {
-            var q = this.value.toLowerCase();
-            document.querySelectorAll('.product-card').forEach(function(card) {
-                var name = card.getAttribute('title').toLowerCase();
-                card.style.display = name.includes(q) ? '' : 'none';
-            });
+    if (!search) return;
+
+    // Strip diacritics so "manzanilha" matches "manzanilla", "camomila"
+    // matches "camômila", etc. The previous filter used a literal
+    // substring match on the title attribute and missed accent variants.
+    function normalize(s) {
+        // NFD splits accented chars into base+combining mark; the regex then
+        // strips the combining marks (Unicode block U+0300..U+036F).
+        return (s || '')
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[̀-ͯ]/g, '');
+    }
+
+    function filterCards() {
+        var q = normalize(search.value.trim());
+        document.querySelectorAll('.product-card').forEach(function(card) {
+            if (!q) { card.style.display = ''; return; }
+            var hay = normalize(
+                (card.getAttribute('title') || '') + ' ' +
+                (card.getAttribute('data-aliases') || '')
+            );
+            card.style.display = hay.indexOf(q) >= 0 ? '' : 'none';
         });
     }
-});
+
+    search.addEventListener('input', filterCards);
+})();
 </script>
 {% endblock %}
 {% endblock %}

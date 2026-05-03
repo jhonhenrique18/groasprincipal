@@ -230,3 +230,98 @@ Trabalho feito por **Claude** nesta sessao:
    Key Decisions.
 5. `GPT_CATCHUP_PROMPT.md` e atualizado sempre que o Claude fechar um
    bloco grande de trabalho, para o Codex reentrar em paridade.
+
+### Hardening de seguranca basica (Claude)
+
+- `27ef978` feat(security-01): hash admin password com PBKDF2-SHA256
+- `285978b` feat(security-02): SECRET_KEY sem default inseguro, fail-loud em prod
+- `52230df` feat(security-03): rate limit em `/admin/login`
+- `8806e89` feat(security-04): CSRF global via Flask-WTF
+- `0b045a9` feat(security-05): upload aceita apenas imagens parseaveis
+- `81946fa` feat(security-06): fix de XSS no modal de produto via DOM API
+- `1e2f511` feat(security-07): anti-spam no `/contacto` com rate limit + honeypot
+- Checkpoints relacionados:
+  - `2026-04-19-security-01-admin-password-hash.md`
+  - `2026-04-19-security-07-contacto-antispam.md` (fecha o pacote)
+
+### Reaudit pos-hardening (Codex)
+
+- O usuario pediu uma nova analise depois das mudancas recentes.
+- Codex revisou o codigo atual e confirmou que os antigos achados
+  criticos/altos do audit basico deixaram de ser reproduziveis.
+- Riscos residuais identificados: session cookies sem flags explicitas,
+  ausencia de CSP, `/api/meta-capi-event` ainda sujeito a abuse de
+  analytics e rate limiting dependente do comportamento do proxy.
+- Checkpoint: `2026-04-19-security-reaudit-post-hardening.md`
+
+## Fase 4 — SEO breadth optimization (2026-05-02, Claude)
+
+Sessao de otimizacao de SEO avancada. Decisao estrategica explicita do
+usuario na conversa: preservar 100% do SEO atual ligado a `graos.com.py` /
+`Grãos S.A.` (dominio, slugs, canonicals, sitemap, brand) e empilhar
+camadas de keyword breadth por cima. Nada do que ranqueia hoje muda;
+queries genericas como "manzanilla", "canela" passam a competir junto
+com as exatas.
+
+### Diagnostico inicial
+
+- Cada produto ranqueava bem para o nome canonico exato ("Manzanilla
+  Flor") e mal para o termo generico ("manzanilla").
+- Causa raiz: `<title>`, `<h1>`, JSON-LD `Product.name` espelhavam apenas
+  a variacao especifica.
+- Falta de aliases / sinonimos / nomes cientificos / variacoes PT-BR.
+- Search interno era `name.includes(q)` cru, sem normalizacao.
+
+### O que foi feito (Fase A — Foundation)
+
+- Novos campos no modelo `Product`:
+  `aliases`, `scientific_name`, `seo_title_override`, `seo_description_override`.
+- `seo_aliases.py`: 112/112 produtos curados com sinonimos PT/ES/EN +
+  nome cientifico onde aplicavel (Matricaria chamomilla, Cinnamomum
+  verum, Curcuma longa, etc.).
+- Migration idempotente em `app.py`:
+  - `_ensure_seo_columns()` faz ALTER TABLE cross-DB (SQLite + Postgres).
+  - `_backfill_seo_aliases()` preenche aliases para produtos existentes.
+- `templates/base.html`: novo block `full_title` permite override
+  completo do `<title>` em paginas de produto sem mexer nas outras.
+- `templates/producto.html`:
+  - Title 50-60 chars: "Canonical — broader keyword | Grãos S.A. Paraguay".
+  - Meta description com aliases tecidos naturalmente.
+  - JSON-LD `Product` enriquecido: `alternateName[]`, `keywords`,
+    `additionalProperty[scientific_name, presentation]`,
+    `audience: BusinessAudience`.
+  - Novo bloco JSON-LD `WebPage` com `mentions[]` apontando para cada
+    alias como `Thing` — sinaliza relevancia para queries dessas frases.
+  - Secao visivel "Tambien conocido como: ..." abaixo do H1, com aliases
+    + nome cientifico em italico.
+- `templates/productos.html`:
+  - `alias_pool` agregado em Python (route handler), featured-first,
+    deduped, capped em 30 termos.
+  - JSON-LD `CollectionPage` com `keywords` + `mentions[]` agregando os
+    aliases da categoria atual.
+  - Cada item da `ItemList` agora carrega `alternateName[]` proprio.
+  - JS de busca interna usa NFD + strip de combining marks (accent-strip).
+  - Card title agora inclui canonical + categoria + 4 aliases + nome
+    cientifico, alimentando a busca client-side.
+
+### Por que additive e nao substituicao
+
+- `Grãos S.A.` permanece como brand SEO em titles, OG, Organization
+  schema. O usuario decidiu manter o ranking historico.
+- Aliases entram como `alternateName`/`mentions`/`keywords`, nao como
+  rewrite do `Product.name`.
+- Slugs intactos: `/producto/manzanilla-flor` continua canonical.
+- Sitemap nao mudou.
+
+### Validacao
+
+- 11 paginas testadas localmente: todas retornam 200 e todos os blocos
+  JSON-LD parseiam sem erro (3-5 schemas por pagina, 36 schemas no
+  total).
+- Spot check de 5 produtos: title 47-53 chars, alternateName 7-8
+  entradas por produto.
+- Migration roda em SQLite local sem perda de dados.
+
+### Checkpoints
+
+- `2026-05-02-seo-optimization-kickoff.md` (decisao estrategica + plano de 4 fases)

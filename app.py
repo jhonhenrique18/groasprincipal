@@ -12,6 +12,7 @@ from flask_wtf.csrf import CSRFProtect
 from config import Config
 from models import db, Category, Product, SiteSetting
 from meta_capi import send_capi_event, user_data_from_request
+from seo_aliases import PRODUCT_ALIASES, lookup as seo_lookup
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -245,7 +246,30 @@ def productos(slug=None):
     else:
         products = Product.query.filter_by(active=True).order_by(Product.name).all()
         current_cat = None
-    return render_template('productos.html', products=products, categories=categories, current_cat=current_cat, cat_counts=cat_counts, total_count=total_count)
+    # Aggregated, deduped alias pool for the listing page's SEO blocks.
+    # Featured products contribute their aliases first so the head-of-list
+    # in meta tags and the "Incluye:" header surfaces the highest-volume
+    # search terms (manzanilla, canela, etc.) ahead of alphabetical noise.
+    # Cap at 30 keeps meta tags within reasonable size limits.
+    products_for_aliases = sorted(products, key=lambda p: (not p.featured, p.name))
+    alias_pool: list[str] = []
+    seen: set[str] = set()
+    for p in products_for_aliases:
+        for a in p.alias_list:
+            key = a.lower()
+            if key in seen:
+                continue
+            seen.add(key)
+            alias_pool.append(a)
+            if len(alias_pool) >= 30:
+                break
+        if len(alias_pool) >= 30:
+            break
+    return render_template(
+        'productos.html',
+        products=products, categories=categories, current_cat=current_cat,
+        cat_counts=cat_counts, total_count=total_count, alias_pool=alias_pool,
+    )
 
 @app.route('/producto/<slug>')
 def producto(slug):
@@ -673,9 +697,64 @@ def ensure_admin_password_hash():
     )
 
 
+def _ensure_seo_columns():
+    """Idempotent ALTER TABLE — adds the SEO breadth columns to `products`
+    if they are missing. Works on both SQLite (dev) and PostgreSQL (prod)
+    because the column adds use a syntax both engines accept and we gate
+    each ADD with an inspector check, so re-running is a no-op.
+
+    Why not Alembic: the project never adopted a migration framework and
+    using one for four columns would be over-engineering. Keeping the
+    bootstrap path single-file lets a fresh Railway deploy come up with
+    only `db.create_all()` + this helper running once on boot.
+    """
+    from sqlalchemy import inspect, text
+    inspector = inspect(db.engine)
+    existing_cols = {c['name'] for c in inspector.get_columns('products')}
+
+    new_cols = {
+        'aliases': "TEXT DEFAULT ''",
+        'scientific_name': "VARCHAR(200) DEFAULT ''",
+        'seo_title_override': "VARCHAR(200) DEFAULT ''",
+        'seo_description_override': "TEXT DEFAULT ''",
+    }
+
+    added = []
+    with db.engine.begin() as conn:
+        for col, ddl in new_cols.items():
+            if col in existing_cols:
+                continue
+            conn.execute(text(f"ALTER TABLE products ADD COLUMN {col} {ddl}"))
+            added.append(col)
+    if added:
+        app.logger.info('SEO migration: added columns %s to products', added)
+
+
+def _backfill_seo_aliases():
+    """For every product whose aliases column is empty, look up the curated
+    aliases in seo_aliases.PRODUCT_ALIASES and write them in. Runs on every
+    boot so newly-curated entries flow into prod automatically; existing
+    aliases are left untouched (admin overrides win).
+    """
+    backfilled = 0
+    for p in Product.query.filter((Product.aliases == '') | (Product.aliases.is_(None))).all():
+        entry = seo_lookup(p.slug)
+        if not entry['aliases'] and not entry['scientific_name']:
+            continue
+        if entry['aliases']:
+            p.aliases = entry['aliases']
+        if entry['scientific_name'] and not p.scientific_name:
+            p.scientific_name = entry['scientific_name']
+        backfilled += 1
+    if backfilled:
+        db.session.commit()
+        app.logger.info('SEO migration: backfilled aliases on %d products', backfilled)
+
+
 def init_db():
     """Create tables and run seed if database is empty."""
     db.create_all()
+    _ensure_seo_columns()
     if Category.query.count() == 0:
         # First run — seed all data
         import json
@@ -689,11 +768,13 @@ def init_db():
             cat = Category.query.filter_by(slug=p['category_slug']).first()
             if not cat:
                 continue
+            seo = seo_lookup(p['slug'])
             db.session.add(Product(
                 name=p['name'], slug=p['slug'], category_id=cat.id,
                 origin=p.get('origin', ''), description=p.get('description', ''),
                 presentation=p.get('presentation', ''), image=p.get('image', ''),
                 featured=p.get('featured', False), active=p.get('active', True),
+                aliases=seo['aliases'], scientific_name=seo['scientific_name'],
             ))
         db.session.commit()
         if not SiteSetting.get('whatsapp'):
@@ -702,6 +783,9 @@ def init_db():
             SiteSetting.set('email', 'jhonatan@grupo-dip.com')
         if not SiteSetting.get('hero_image'):
             SiteSetting.set('hero_image', '/static/uploads/6a6805d27ce146bfa9af82e53d827753.png')
+    else:
+        # Existing DB — backfill aliases for products that don't have them yet
+        _backfill_seo_aliases()
     ensure_admin_password_hash()
 
 with app.app_context():

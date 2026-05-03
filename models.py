@@ -30,6 +30,38 @@ class Product(db.Model):
     active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    # SEO breadth layer — additive over the existing graos.com.py / Grãos S.A.
+    # baseline. None of these fields change the slug, canonical or sitemap
+    # entry; they expand keyword coverage in title, meta and JSON-LD so generic
+    # queries (e.g. "manzanilla") match a product whose canonical name is a
+    # specific variant ("Manzanilla Flor"). Empty string == not curated yet.
+    aliases = db.Column(db.Text, default='')
+    scientific_name = db.Column(db.String(200), default='')
+    seo_title_override = db.Column(db.String(200), default='')
+    seo_description_override = db.Column(db.Text, default='')
+
+    @property
+    def alias_list(self):
+        """Return aliases as a normalized list of trimmed, non-empty strings."""
+        if not self.aliases:
+            return []
+        return [a.strip() for a in self.aliases.split(',') if a.strip()]
+
+    @property
+    def search_corpus(self):
+        """Concatenated, lowercased text used for matching this product
+        against a search query. Includes name, aliases, scientific name,
+        category name and origin. The corpus is rebuilt on every access so it
+        always reflects current values; no caching means no staleness when an
+        admin edits a product."""
+        parts = [
+            self.name or '',
+            self.scientific_name or '',
+            self.category.name if self.category else '',
+            self.origin or '',
+        ] + self.alias_list
+        return ' '.join(parts).lower()
+
     def to_dict(self):
         return {
             'id': self.id,
@@ -43,6 +75,8 @@ class Product(db.Model):
             'image': self.image,
             'featured': self.featured,
             'active': self.active,
+            'aliases': self.alias_list,
+            'scientific_name': self.scientific_name,
         }
 
 

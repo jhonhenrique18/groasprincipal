@@ -6,14 +6,14 @@ See: .planning/PROJECT.md (updated 2026-04-05)
 See also: .planning/CONTEXT.md
 
 **Core value:** Catálogo de produtos atualizado e acessível que converte visitantes em contatos de WhatsApp para vendas B2B ao por mayor.
-**Current focus:** Manter a memoria do rebrand consolidada e seguir refinando a camada visual publica sem perder contexto
+**Current focus:** SEO Fase A — Keyword breadth additive (preserva graos.com.py + Grãos S.A.; empilha aliases, scientific_name, JSON-LD enriquecido)
 
 ## Current Position
 
 Phase: 1 of 4 (Catálogo Confiável)
 Plan: 0 of 2 in current phase
 Status: In review
-Last activity: 2026-04-19 - Security basics (V1-V7) completo em 6 commits sequenciais (27ef978 hash, 285978b secret_key, 52230df rate limit login, 8806e89 CSRF, 0b045a9 upload verify, 81946fa XSS modal, + commit pendente honeypot/rate limit contacto). SECRET_KEY random + ADMIN_PASSWORD=graos2026 setados via Railway API pre-V1 para evitar quebra de deploy. Aguardando usuario validar login em prod e executar limpezas (remover ADMIN_PASSWORD, rotar CAPI token, deletar Railway token claude).
+Last activity: 2026-04-19 - Codex refez a auditoria de seguranca apos as mudancas recentes e confirmou que o pacote basico (hash admin, SECRET_KEY fail-loud, rate limit login, CSRF, validacao real de upload, XSS modal e antispam no contacto) esta refletido no codigo atual. Nota consolidada desta reavaliacao: seguranca 7.5/10; exposicao a vulnerabilidades 3/10. Riscos residuais priorizados: cookies de sessao sem flags explicitas, ausencia de CSP, endpoint /api/meta-capi-event ainda abusavel para poluir analytics e rate limiting dependente do comportamento de proxy.
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -57,17 +57,19 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-- Consolidar no front os exports finais da logo ja aprovada.
-- Revisar visualmente o favicon e a logo no localhost apos cache refresh completo.
-- Seguir refinamentos visuais apenas a partir da fonte de verdade atual da marca.
+- Fixar flags explicitas para cookie de sessao em producao (`SESSION_COOKIE_SECURE`, `SESSION_COOKIE_SAMESITE`, opcionalmente nome propio e lifetime).
+- Adicionar Content-Security-Policy compativel com os scripts inline atuais de GA4 e Meta.
+- Tornar o rate limit realmente proxy-aware em Railway em vez de depender de `request.remote_addr`.
+- Endurecer `/api/meta-capi-event` com validacao adicional de origem/esquema para reduzir pollution de analytics.
+- Fazer a higiene operacional pendente em prod: remover `ADMIN_PASSWORD` da Railway apos login validado e rotacionar o token da Meta/CAPI se ainda nao foi feito.
 
 ### Blockers/Concerns
 
-- `config.py` usa defaults inseguros para segredo e admin.
-- Formulário de contato ainda não tem integração real de entrega.
-- `robots.txt` e serving de imagens podem conflitar na Railway.
-- A marca pública atual precisa ser substituída sem perder SEO nem coerência institucional.
-- Haverá um período intencional em que SEO/domínio continuam `graos`, mas a marca exibida ao usuário será outra.
+- O runtime atual ainda nao define flags explicitas para o cookie de sessao do Flask; no check local, `SESSION_COOKIE_SECURE=False` e `SESSION_COOKIE_SAMESITE=None`.
+- `add_security_headers()` ainda nao envia `Content-Security-Policy`, entao o site segue sem uma camada forte de mitigacao caso um XSS futuro reapareca.
+- O endpoint `/api/meta-capi-event` esta CSRF-exempt por necessidade funcional e tem rate limit, mas continua publico e pode ser usado para poluir sinais da Meta.
+- O comentario em `app.py` diz que `get_remote_address` e X-Forwarded-For-aware, mas a funcao instalada le apenas `request.remote_addr`; em Railway isso pode colapsar o rate limit por IP se a app estiver atras de proxy sem ajuste adicional.
+- `/admin/logout` continua em GET, entao logout forcado cross-site segue possivel (baixo impacto).
 
 ## Deferred Items
 
@@ -79,6 +81,10 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-04-19 final (Claude)
-Stopped at: Pacote security basics fechado (V1-V7 + bonus hash admin). 7 checkpoints datados em .planning/checkpoints/2026-04-19-security-0{1..7}-*.md. Proximo milestone natural: Phase 5 "Security defense in depth" (CSP, Sentry, Dependabot, session cookies, migrations).
-Resume file: .planning/checkpoints/2026-04-19-security-07-contacto-antispam.md
+Last session: 2026-05-02 (Claude — em andamento)
+Stopped at: Abertura do bloco de SEO optimization. Plano de 4 fases travado; documentação de decisão estratégica feita em PROJECT.md + checkpoint dedicado. Próximo passo imediato: FASE A1 (schema columns no Product) + A2 (aliases curados) + A4-A5 (template rewrite) + smoke test local antes de commit.
+Resume file: .planning/checkpoints/2026-05-02-seo-optimization-kickoff.md
+
+Pacote anterior (security defense in depth, ainda pendente):
+- Última sessão: 2026-04-19 (Codex). Reaudit confirmou hardening básico (items 1-7) refletido no código. Riscos residuais: cookie flags, CSP, proxy-aware rate limit, tightening de /api/meta-capi-event.
+- Resume file alternativo: .planning/checkpoints/2026-04-19-security-reaudit-post-hardening.md
