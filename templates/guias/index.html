@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{# ─────────── EDITORIAL INDEX — long-form content hub ───────────
+   This is a content cluster signal: 10 deep guides, each linking to
+   a canonical product page. Together they form a topic authority hub
+   that lifts the whole product catalog in Spanish-speaking SEO. The
+   index itself targets queries like "guía de especias paraguay",
+   "guías productos naturales mayorista", etc.
+#}
+
+{% block title %}Guías Especializadas{% endblock %}
+{% block meta_description %}Guías editoriales sobre los productos naturales que importamos: beneficios, usos industriales, recetas y dónde comprar al por mayor en Paraguay. Conocimiento real, sin marketing vacío.{% endblock %}
+{% block meta_keywords %}guía manzanilla, guía canela, guía cúrcuma, guía hibisco, guía spirulina, guía quinoa, guía chía, productos naturales paraguay, guía mayorista paraguay, especias guía{% endblock %}
+
+{% block og_title %}Guías Especializadas — Grãos S.A.{% endblock %}
+{% block og_description %}Conocimiento real sobre los productos naturales más buscados de Paraguay. Para industria, restaurantes, herboristerías y consumo familiar.{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": "https://www.graos.com.py/guias#collection",
+    "name": "Guías Especializadas — Grãos S.A.",
+    "description": "Guías editoriales sobre productos naturales al por mayor en Paraguay: beneficios, usos industriales, recetas y compra mayorista.",
+    "inLanguage": "es-PY",
+    "isPartOf": {"@id": "https://www.graos.com.py/#website"},
+    "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": {{ guides|length }},
+        "itemListElement": [
+            {% for g in guides %}
+            {
+                "@type": "ListItem",
+                "position": {{ loop.index }},
+                "url": "https://www.graos.com.py/guias/{{ g.slug }}",
+                "name": "{{ g.title|replace('"','\\"') }}"
+            }{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ]
+    }
+}
+</script>
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.graos.com.py/"},
+        {"@type": "ListItem", "position": 2, "name": "Guías"}
+    ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="guias-hero">
+    <div class="guias-hero-inner">
+        <nav class="breadcrumb-inline" aria-label="Migas de pan">
+            <a href="{{ url_for('index') }}">Inicio</a>
+            <span class="breadcrumb-sep">/</span>
+            <span aria-current="page">Guías</span>
+        </nav>
+        <p class="guias-eyebrow">Conocimiento editorial · Grãos S.A.</p>
+        <h1>Guías especializadas para industria, gastronomía y comercio mayorista</h1>
+        <p class="guias-lead">Diez productos, diez lecturas profundas. Lo que necesitás saber para elegir bien, comprar mejor y posicionar tu negocio en la categoría saludable de Paraguay.</p>
+    </div>
+</section>
+
+<section class="guias-grid-section">
+    <div class="container">
+        <div class="guias-grid">
+            {% for g in guides %}
+            <a href="{{ url_for('guia_detail', slug=g.slug) }}" class="guia-card guia-card--{{ g.hero_treatment }} reveal">
+                <div class="guia-card-img" data-treatment="{{ g.hero_treatment }}">
+                    {% if g.product and g.product.image %}
+                    <img src="{{ g.product.image|img_sm }}" alt="{{ g.product.name }} — guía editorial" loading="lazy" width="400" height="400">
+                    {% else %}
+                    <div class="guia-card-placeholder">{{ g.title[0] }}</div>
+                    {% endif %}
+                    <div class="guia-card-overlay"></div>
+                </div>
+                <div class="guia-card-body">
+                    <span class="guia-card-cat">{{ g.category }} · {{ g.reading_time }} min</span>
+                    <h2 class="guia-card-title">{{ g.title }}</h2>
+                    <p class="guia-card-dek">{{ g.dek }}</p>
+                    <span class="guia-card-cta">Leer guía completa
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="guias-cta-band">
+    <div class="container">
+        <div class="guias-cta-inner">
+            <div>
+                <h2>¿Necesita un proveedor mayorista de confianza?</h2>
+                <p>Importación directa, sin intermediarios. Factura legal y entrega a todo el Paraguay.</p>
+            </div>
+            <a href="{{ site_whatsapp_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">
+                Hablar por WhatsApp
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

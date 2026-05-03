@@ -28,6 +28,8 @@ When adding a new product:
   plausibly type into search.
 """
 
+from __future__ import annotations
+
 # Comma-separated aliases per product slug. Ordered roughly by search volume
 # (most common variant first). Includes Spanish (canonical), English (for
 # cross-border searches), Portuguese (Brazilian-border traffic) and regional

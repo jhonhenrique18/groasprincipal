@@ -6,7 +6,7 @@ See: .planning/PROJECT.md (updated 2026-04-05)
 See also: .planning/CONTEXT.md
 
 **Core value:** Catálogo de produtos atualizado e acessível que converte visitantes em contatos de WhatsApp para vendas B2B ao por mayor.
-**Current focus:** SEO Fase A — Keyword breadth additive (preserva graos.com.py + Grãos S.A.; empilha aliases, scientific_name, JSON-LD enriquecido)
+**Current focus:** SEO Fase D entregue (10 guias editoriais long-form com Article+FAQPage+HowTo schema). Próximo: validação visual local + push (aguardando autorização) + Fase B/C.
 
 ## Current Position
 

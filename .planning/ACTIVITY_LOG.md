@@ -79,3 +79,11 @@ Ver `.planning/AGENT_RULES.md` secao "Regra 4" para formato completo.
 | 2026-05-02 14:55 | Claude | write | reescreve producto.html com title 50-60 chars, meta com aliases, JSON-LD Product enriquecido (alternateName/keywords/additionalProperty/audience), novo JSON-LD WebPage com mentions[], seção visível "También conocido como" | templates/producto.html, templates/base.html |
 | 2026-05-02 15:05 | Claude | write | reescreve productos.html: alias_pool agregado em Python featured-first, JSON-LD CollectionPage com mentions[] e ItemList com alternateName por item, JS de busca com NFD normalize | app.py, templates/productos.html |
 | 2026-05-02 15:15 | Claude | test | smoke test 11 páginas: todas 200, 36 blocos JSON-LD válidos, títulos de produto 47-53 chars, aliases backfilled em SQLite local | http://localhost:5050 |
+| 2026-05-03 00:05 | Claude | decision | abre Fase D (10 guias editoriais long-form) por solicitacao do usuario; preserva grãos SEO baseline; topic clusters hub-and-spoke | conversa |
+| 2026-05-03 00:10 | Claude | write | cria guias_data.py com 10 guias curadas (~12k palavras): Manzanilla, Canela, Cúrcuma, Hibisco, Spirulina, Quinoa, Chía, Cacao, Anís Estrellado, Clavo | guias_data.py |
+| 2026-05-03 00:15 | Claude | write | adiciona rotas /guias + /guias/<slug> + sitemap inclui 10 guias com priority 0.85 | app.py |
+| 2026-05-03 00:18 | Claude | write | cria templates/guias/index.html (listing editorial) + article.html (Article+FAQPage+HowTo schema, drop cap, sticky TOC, reading progress) | templates/guias/ |
+| 2026-05-03 00:20 | Claude | write | adiciona ~420 linhas CSS editorial: hero treatments por categoria (warm/berry/green/earth), FAQ accordion, HowTo numbered steps, mix-blend-mode | static/css/style.css |
+| 2026-05-03 00:22 | Claude | write | adiciona link Guías no navbar e footer | templates/base.html |
+| 2026-05-03 00:25 | Claude | test | smoke test 10 guides: 10/10 200 OK, 60 blocos JSON-LD válidos, Manzanilla guide com title 49 chars + 1304 palavras body + 7 FAQ + 4 HowTo steps + internal link pro produto | http://localhost:5050 |
+| 2026-05-03 00:28 | Claude | write | checkpoint Fase D + atualiza HISTORY/STATE/PROJECT | .planning/ |

@@ -187,6 +187,7 @@
                 <ul class="nav-links" id="navLinks" role="navigation">
                     <li><a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Inicio</a></li>
                     <li><a href="{{ url_for('productos') }}" class="{% if request.endpoint in ('productos', 'producto') %}active{% endif %}">Productos</a></li>
+                    <li><a href="{{ url_for('guias_index') }}" class="{% if request.endpoint in ('guias_index', 'guia_detail') %}active{% endif %}">Guías</a></li>
                     <li><a href="{{ url_for('nosotros') }}" class="{% if request.endpoint == 'nosotros' %}active{% endif %}">Nosotros</a></li>
                     <li><a href="{{ url_for('contacto') }}" class="{% if request.endpoint == 'contacto' %}active{% endif %}">Contacto</a></li>
                     <li><a href="{{ site_whatsapp_link }}" target="_blank" rel="noopener noreferrer" class="nav-cta" aria-label="Contactar por WhatsApp">WhatsApp</a></li>
@@ -223,6 +224,7 @@
                     <ul>
                         <li><a href="{{ url_for('index') }}">Inicio</a></li>
                         <li><a href="{{ url_for('productos') }}">Productos</a></li>
+                        <li><a href="{{ url_for('guias_index') }}">Guías</a></li>
                         <li><a href="{{ url_for('nosotros') }}">Nosotros</a></li>
                         <li><a href="{{ url_for('contacto') }}">Contacto</a></li>
                     </ul>

@@ -13,6 +13,7 @@ from config import Config
 from models import db, Category, Product, SiteSetting
 from meta_capi import send_capi_event, user_data_from_request
 from seo_aliases import PRODUCT_ALIASES, lookup as seo_lookup
+from guias_data import GUIDES, get_guide, list_guides
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -286,6 +287,59 @@ def api_producto(slug):
     product = Product.query.filter_by(slug=slug, active=True).first_or_404()
     return jsonify(product.to_dict())
 
+# ──────────────────── GUÍAS / EDITORIAL CONTENT ────────────────────
+
+@app.route('/guias')
+@app.route('/guias/')
+def guias_index():
+    """Editorial index page: listing of all curated long-form guides.
+
+    Each card links to /guias/<slug>. The slug always mirrors a product
+    slug so the related product can be resolved cheaply on the detail
+    page. We hydrate the related Product (when it exists) for image and
+    aliases so cards can show the same product photo treated editorially.
+    """
+    guides = list_guides()
+    # Hydrate each guide summary with its related product (image, aliases)
+    # so the index can render with editorial treatment.
+    enriched = []
+    for g in guides:
+        product = Product.query.filter_by(slug=g['product_slug'], active=True).first()
+        enriched.append({
+            **g,
+            'product': product,
+        })
+    return render_template('guias/index.html', guides=enriched)
+
+
+@app.route('/guias/<slug>')
+def guia_detail(slug):
+    """Single editorial guide. Falls back to 404 if the slug isn't curated.
+
+    The template expects:
+    - guide: the full dict from GUIDES[slug]
+    - product: the related Product object (for image, aliases, CTA link)
+    - related_guides: short summaries of guides linked from `related_slugs`
+    """
+    guide = get_guide(slug)
+    if not guide:
+        return render_template('404.html'), 404
+    product = Product.query.filter_by(slug=guide['product_slug'], active=True).first()
+    related_guides = []
+    for rs in guide.get('related_slugs', []):
+        rg = get_guide(rs)
+        if rg:
+            related_guides.append({
+                'slug': rs,
+                'title': rg['title'],
+                'dek': rg['dek'],
+                'category': rg['category'],
+                'product_slug': rg['product_slug'],
+                'reading_time': rg['reading_time'],
+                'product': Product.query.filter_by(slug=rg['product_slug'], active=True).first(),
+            })
+    return render_template('guias/article.html', guide=guide, product=product, related_guides=related_guides, slug=slug)
+
 # ──────────────────── SEO ROUTES ────────────────────
 
 @app.route('/robots.txt')
@@ -312,6 +366,7 @@ def sitemap():
     # Static pages
     pages.append({'loc': base + '/', 'priority': '1.0', 'changefreq': 'weekly', 'lastmod': today})
     pages.append({'loc': base + '/productos', 'priority': '0.9', 'changefreq': 'weekly', 'lastmod': today})
+    pages.append({'loc': base + '/guias', 'priority': '0.85', 'changefreq': 'weekly', 'lastmod': today})
     pages.append({'loc': base + '/nosotros', 'priority': '0.7', 'changefreq': 'monthly', 'lastmod': today})
     pages.append({'loc': base + '/contacto', 'priority': '0.7', 'changefreq': 'monthly', 'lastmod': today})
     # Category pages
@@ -323,6 +378,14 @@ def sitemap():
     for p in products:
         lastmod = p.created_at.strftime('%Y-%m-%d') if p.created_at else today
         pages.append({'loc': base + '/producto/' + p.slug, 'priority': '0.8', 'changefreq': 'weekly', 'lastmod': lastmod})
+    # Editorial guides (long-form content, high SEO priority for topic clusters)
+    for guide_slug, guide in GUIDES.items():
+        pages.append({
+            'loc': f"{base}/guias/{guide_slug}",
+            'priority': '0.85',
+            'changefreq': 'monthly',
+            'lastmod': guide.get('updated', guide.get('published', today)),
+        })
 
     xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

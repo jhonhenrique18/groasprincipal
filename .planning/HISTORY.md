@@ -325,3 +325,63 @@ com as exatas.
 ### Checkpoints
 
 - `2026-05-02-seo-optimization-kickoff.md` (decisao estrategica + plano de 4 fases)
+
+## Fase 4.D — Guias editoriais (10 produtos, 2026-05-03, Claude)
+
+Continuação da otimização de SEO. Usuario solicitou criar páginas tipo
+blog para os 10 produtos principais com copy estratégica focada em
+benefícios + receitas + B2B + ranking dominante para Paraguay.
+
+### Estratégia executada
+
+- Topic clusters: cada guia (/guias/<slug>) é hub editorial que
+  internamente linka para a página de produto canônica.
+- Conteúdo dual-intent: cobre queries informacionais ("para qué sirve")
+  E B2B ("al por mayor en paraguay") na mesma URL.
+- Sales funnel embutido: cada guia termina com CTA pro produto + WhatsApp.
+- Marca SEO `Grãos S.A.` preservada como autor/publisher em Article schema.
+
+### Top 10 produtos selecionados
+
+1. Manzanilla Flor — alto volume "manzanilla", base do uso digestivo.
+2. Canela en Rama 6cm — panificação industrial, cassia vietnamita.
+3. Cúrcuma en Polvo — superalimento trending, leche dorada.
+4. Hibisco Flor — bebidas funcionais, coctelería premium.
+5. Spirulina en Polvo — suplementação, polvos proteicos.
+6. Quinoa en Grano — sin gluten, proteína completa.
+7. Chía en Semillas — omega-3 vegetal, panificação funcional.
+8. Cacao Alcalino en Polvo — repostería industrial, heladería.
+9. Anís Estrellado — repostería tradicional, licorería.
+10. Clavo de Olor — embutidos, conservas, vino caliente.
+
+### Entregáveis
+
+- `guias_data.py` (1325 linhas) — conteúdo curado, ~12k palavras totais.
+- `app.py` — rotas `/guias`, `/guias/<slug>` + sitemap atualizado.
+- `templates/guias/index.html` — listing editorial com hero brand.
+- `templates/guias/article.html` — single guide com Article+FAQPage+HowTo
+  schema, drop cap, sticky TOC, reading progress, FAQ accordion.
+- `static/css/style.css` (+420 linhas) — estilo editorial magazine
+  com hero treatments por categoria.
+- Link "Guías" adicionado ao navbar e footer.
+
+### Validação
+
+- 10/10 guides retornam 200 localmente.
+- 60 blocos JSON-LD válidos (6 por página: Article + FAQPage + HowTo +
+  BreadcrumbList + Organization + WebSite).
+- Word count médio: 1304 palavras por guide (target 1100-1500).
+- Title 49-58 chars (sweet spot SEO).
+- Internal link pro produto canônico em cada guide.
+- Sitemap.xml inclui 10 entradas /guias/<slug> com priority 0.85.
+
+### Imagens
+
+- Decisão: reaproveitar fotos de produto existentes com tratamento
+  CSS dramático (mix-blend-mode luminosity + gradient overlay + 4
+  treatments por categoria). Sem dependência de geração via IA nesta
+  sessão. Substituível depois quando user gerar heroes via fal-ai.
+
+### Checkpoint
+
+- `2026-05-03-seo-fase-d-guias-editoriales.md` (decisões, rejeições, validação).
