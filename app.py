@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import re
 import uuid
@@ -14,6 +16,83 @@ from models import db, Category, Product, SiteSetting
 from meta_capi import send_capi_event, user_data_from_request
 from seo_aliases import PRODUCT_ALIASES, lookup as seo_lookup
 from guias_data import GUIDES, get_guide, list_guides
+from categories_data import CATEGORY_CONTENT, get_category_content
+
+
+def default_product_faq(product) -> list[dict]:
+    """Generic high-quality B2B FAQ template for products without dedicated
+    guides. Parameterized by product attributes so each product gets a
+    coherent FAQ that actually relates to itself, not boilerplate.
+
+    Used by the producto() route to populate FAQPage schema on every
+    canonical /producto/<slug> page. Products that DO have a dedicated
+    guide pull the richer FAQ from that guide instead.
+    """
+    aliases = product.alias_list[:4] if product.alias_list else []
+    aliases_str = ', '.join(aliases) if aliases else ''
+    cat_lower = product.category.name.lower() if product.category else ''
+    return [
+        {
+            'q': f'¿Qué es {product.name}?',
+            'a': (
+                f'{product.name}'
+                + (f' (también conocido como {aliases_str})' if aliases_str else '')
+                + f' es un producto de la categoría {product.category.name} importado al por mayor por Especias del Paraguay '
+                + (f'desde {product.origin}. ' if product.origin else 'con calidad estable lote a lote. ')
+                + (product.description if product.description else f'Ideal para industria, gastronomía profesional y reventa.')
+            ),
+        },
+        {
+            'q': f'¿De dónde es el origen de {product.name}?',
+            'a': (
+                f'Origen: {product.origin}. Importación directa con certificado de origen y análisis bromatológico básico.'
+                if product.origin else
+                'Importación directa con certificado de origen disponible bajo pedido. Cada lote viene con análisis bromatológico básico.'
+            ),
+        },
+        {
+            'q': '¿Cuál es la presentación al por mayor disponible?',
+            'a': (
+                f'Presentación estándar: {product.presentation}. Para volúmenes mayores se cotiza por proyecto.'
+                if product.presentation else
+                'Presentación según volumen requerido. Consulte por WhatsApp para cotización al volumen específico.'
+            ),
+        },
+        {
+            'q': '¿Hacen entregas a todo el Paraguay?',
+            'a': 'Sí. Despachamos a todo el territorio nacional con factura legal. Para volúmenes mayoristas trabajamos transferencia bancaria y coordinamos logística según destino.',
+        },
+        {
+            'q': '¿Trabajan con factura legal y crédito fiscal IVA?',
+            'a': 'Sí. Toda venta lleva factura legal con IVA discriminado, apta para crédito fiscal y registro contable. Sin factura no operamos.',
+        },
+        {
+            'q': f'¿Cuál es el pedido mínimo para mayoristas de {product.name}?',
+            'a': (
+                f'El formato mayorista de {product.name} es {product.presentation}. Para volúmenes menores y reventa al por menor también atendemos por consulta directa por WhatsApp.'
+                if product.presentation else
+                f'Atendemos cualquier volumen serio. Para consultar disponibilidad y cotización para {product.name}, contactar por WhatsApp.'
+            ),
+        },
+    ]
+
+
+def product_faq_and_howto(product, slug: str) -> tuple[list[dict], dict | None]:
+    """Resolve the FAQ and HowTo data for a product page. If a dedicated
+    editorial guide exists for this product slug, use the curated FAQ +
+    first HowTo from the guide. Otherwise fall back to the generic
+    template. Returns (faq_list, howto_dict_or_None).
+    """
+    guide = get_guide(slug)
+    if guide:
+        faq = guide.get('faq', []) or default_product_faq(product)
+        howto = None
+        for section in guide.get('sections', []):
+            if section.get('howto'):
+                howto = section['howto']
+                break
+        return faq, howto
+    return default_product_faq(product), None
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -266,10 +345,15 @@ def productos(slug=None):
                 break
         if len(alias_pool) >= 30:
             break
+    # Editorial intro + FAQ for category hub pages. None when on the
+    # all-products page (no current_cat) or when the category was not
+    # curated yet — the template gates the render with `if`.
+    category_content = get_category_content(current_cat.slug) if current_cat else None
     return render_template(
         'productos.html',
         products=products, categories=categories, current_cat=current_cat,
         cat_counts=cat_counts, total_count=total_count, alias_pool=alias_pool,
+        category_content=category_content,
     )
 
 @app.route('/producto/<slug>')
@@ -280,7 +364,17 @@ def producto(slug):
         Product.id != product.id,
         Product.active == True
     ).limit(4).all()
-    return render_template('producto.html', product=product, related=related)
+    # FAQPage and HowTo schema population. If the product has a dedicated
+    # guide we reuse the curated FAQ and HowTo; otherwise the helper
+    # synthesizes a high-quality B2B FAQ from the product's own attributes.
+    faq, howto = product_faq_and_howto(product, slug)
+    # If a dedicated guide exists, expose the URL so the product page can
+    # promote it as an authoritative deep dive related to this product.
+    has_guide = bool(get_guide(slug))
+    return render_template(
+        'producto.html', product=product, related=related,
+        faq=faq, howto=howto, has_guide=has_guide,
+    )
 
 @app.route('/api/producto/<slug>')
 def api_producto(slug):

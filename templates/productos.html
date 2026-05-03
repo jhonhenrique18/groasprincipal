@@ -17,6 +17,28 @@
 {% block og_description %}{% if current_cat %}{{ current_cat.name }} al por mayor con importación directa{% if _alias_pool %} — {{ _alias_pool[:3]|join(', ') }} y más{% endif %}.{% else %}Catálogo de productos naturales al por mayor para todo el Paraguay.{% endif %}{% endblock %}
 
 {% block structured_data %}
+{# FAQPage schema for the category hub — only when category_content exists #}
+{% if category_content and category_content.faq %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": "https://www.graos.com.py/productos/{{ current_cat.slug }}#faq",
+    "mainEntity": [
+        {% for item in category_content.faq %}
+        {
+            "@type": "Question",
+            "name": "{{ item.q|replace('"','\\"') }}",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "{{ item.a|replace('"','\\"') }}"
+            }
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ]
+}
+</script>
+{% endif %}
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
@@ -93,6 +115,22 @@
         {% endif %}
     </div>
 </section>
+
+{# Editorial intro — only on category-specific pages, never on /productos
+   all-products view. Adds 250-400 words of real content that turns each
+   category into a real SEO ranking surface beyond the bare grid. #}
+{% if current_cat and category_content %}
+<section class="category-intro">
+    <div class="container">
+        <div class="category-intro-inner">
+            <h2 class="category-intro-h2">{{ category_content.h2 }}</h2>
+            <div class="category-intro-body">
+                {{ category_content.intro|safe }}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
 
 <section class="products-page">
         <!-- Search Bar -->
@@ -183,6 +221,27 @@
             </div>
         </div>
 </section>
+
+{# Visible FAQ for the category — same content as FAQPage schema. Only
+   shown when a category-specific FAQ is curated; otherwise omitted to
+   avoid bloating the all-products view. #}
+{% if current_cat and category_content and category_content.faq %}
+<section class="category-faq">
+    <div class="container">
+        <div class="category-faq-inner">
+            <h2 class="category-faq-title">Preguntas frecuentes sobre {{ current_cat.name }}</h2>
+            <div class="category-faq-list">
+                {% for item in category_content.faq %}
+                <details class="category-faq-item">
+                    <summary>{{ item.q }}</summary>
+                    <div class="category-faq-answer"><p>{{ item.a }}</p></div>
+                </details>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
 
 {% block scripts %}
 <script>

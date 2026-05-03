@@ -1562,3 +1562,127 @@ p.callout{
     color:rgba(232,216,194,.78);margin-top:6px;
 }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   CATEGORY INTRO HUB + CATEGORY/PRODUCT FAQ
+   Phase C: enrich /productos/<slug> and /producto/<slug> with editorial
+   intro + visible FAQ that backs up FAQPage/HowTo schema. Real on-page
+   text is what Google trusts for ranking.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Category intro band (above the product grid) ─── */
+.category-intro{
+    background:linear-gradient(180deg, var(--brand-ivory) 0%, #FAF4EB 100%);
+    padding:64px 0 56px;
+    border-bottom:1px solid var(--brand-sand);
+    position:relative;
+}
+.category-intro::before{
+    content:'';position:absolute;top:0;left:50%;
+    width:60px;height:4px;background:var(--brand-paprika);
+    transform:translateX(-50%);border-radius:2px;
+}
+.category-intro-inner{max-width:820px;margin:0 auto;padding:0 24px}
+.category-intro-h2{
+    font-family:'Fraunces',Georgia,serif;
+    font-size:clamp(26px, 3vw, 36px);line-height:1.2;font-weight:600;
+    color:var(--brand-clove);margin-bottom:24px;letter-spacing:-.02em;
+    text-wrap:balance;
+}
+.category-intro-body{
+    font-size:17px;line-height:1.7;color:var(--gray-800);
+}
+.category-intro-body p{margin-bottom:1.2em}
+.category-intro-body p:last-child{margin-bottom:0}
+.category-intro-body strong{color:var(--brand-clove);font-weight:700}
+.category-intro-body em{font-style:italic}
+
+/* ─── Category FAQ (below the product grid) ─── */
+.category-faq{padding:64px 0;background:#fff;border-top:1px solid var(--brand-sand)}
+.category-faq-inner{max-width:820px;margin:0 auto;padding:0 24px}
+.category-faq-title{
+    font-family:'Fraunces',Georgia,serif;
+    font-size:clamp(24px, 2.6vw, 32px);font-weight:600;
+    color:var(--brand-clove);margin-bottom:32px;letter-spacing:-.015em;
+    text-align:center;
+}
+.category-faq-list{display:flex;flex-direction:column;gap:12px}
+.category-faq-item{
+    border:1px solid var(--brand-sand);border-radius:var(--radius);
+    background:var(--brand-ivory);overflow:hidden;
+}
+.category-faq-item summary{
+    padding:18px 24px;font-size:16px;font-weight:600;
+    color:var(--brand-clove);cursor:pointer;list-style:none;
+    display:flex;justify-content:space-between;align-items:center;gap:16px;
+}
+.category-faq-item summary::-webkit-details-marker{display:none}
+.category-faq-item summary::after{
+    content:'+';font-size:24px;font-weight:300;color:var(--brand-paprika);
+    transition:transform .3s;
+}
+.category-faq-item[open] summary::after{transform:rotate(45deg)}
+.category-faq-item summary:hover{background:#fff}
+.category-faq-answer{
+    padding:0 24px 20px;font-size:15px;line-height:1.65;
+    color:var(--gray-700, #5a4f47);
+}
+.category-faq-answer p{margin:0}
+
+/* ─── Product detail FAQ (same accordion pattern, on /producto/<slug>) ─── */
+.detail-faq{
+    margin:64px auto 32px;max-width:820px;
+    padding:0 24px;
+}
+.detail-faq-title{
+    font-family:'Fraunces',Georgia,serif;
+    font-size:clamp(22px, 2.4vw, 28px);font-weight:600;
+    color:var(--brand-clove);margin-bottom:24px;letter-spacing:-.01em;
+    text-wrap:balance;position:relative;padding-top:8px;
+}
+.detail-faq-title::before{
+    content:'';display:block;width:48px;height:3px;
+    background:var(--brand-paprika);margin-bottom:16px;
+}
+.detail-faq-list{display:flex;flex-direction:column;gap:10px}
+.detail-faq-item{
+    border:1px solid var(--brand-sand);border-radius:var(--radius);
+    background:#fff;overflow:hidden;
+}
+.detail-faq-item summary{
+    padding:16px 22px;font-size:15.5px;font-weight:600;
+    color:var(--brand-clove);cursor:pointer;list-style:none;
+    display:flex;justify-content:space-between;align-items:center;gap:16px;
+}
+.detail-faq-item summary::-webkit-details-marker{display:none}
+.detail-faq-item summary::after{
+    content:'+';font-size:22px;font-weight:300;color:var(--brand-paprika);
+    transition:transform .3s;
+}
+.detail-faq-item[open] summary::after{transform:rotate(45deg)}
+.detail-faq-item summary:hover{background:var(--brand-ivory)}
+.detail-faq-answer{
+    padding:0 22px 18px;font-size:14.5px;line-height:1.6;
+    color:var(--gray-700, #5a4f47);
+}
+.detail-faq-answer p{margin:0}
+
+/* ─── Link from product page to its full editorial guide ─── */
+.detail-guide-link{
+    display:inline-flex;align-items:center;gap:6px;
+    margin-top:14px;font-size:14px;font-weight:600;
+    color:var(--brand-paprika);
+    border-bottom:1.5px solid transparent;
+    transition:border-color .25s, color .25s;
+    text-decoration:none;
+}
+.detail-guide-link:hover{
+    color:var(--brand-paprika-dark);
+    border-bottom-color:var(--brand-paprika);
+}
+
+@media (max-width:760px){
+    .category-intro{padding:44px 0 40px}
+    .category-faq{padding:48px 0}
+    .detail-faq{margin:48px auto 24px}
+}

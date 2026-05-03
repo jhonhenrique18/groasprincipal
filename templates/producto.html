@@ -106,6 +106,54 @@
 }
 </script>
 {% endif %}
+
+{# FAQPage schema — populated either from a dedicated guide's FAQ or from
+   the default B2B template synthesized in app.py. Every product page now
+   has FAQPage schema for Google rich results in SERPs. #}
+{% if faq %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": "https://www.graos.com.py/producto/{{ product.slug }}#faq",
+    "mainEntity": [
+        {% for item in faq %}
+        {
+            "@type": "Question",
+            "name": "{{ item.q|replace('"','\\"') }}",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "{{ item.a|replace('"','\\"') }}"
+            }
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ]
+}
+</script>
+{% endif %}
+
+{# HowTo schema — only present when a dedicated guide exists with at least
+   one HowTo section. Adds richness without inventing fake content. #}
+{% if howto %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "{{ howto.name|replace('"','\\"') }}",
+    "totalTime": "{{ howto.total_time }}",
+    "step": [
+        {% for step in howto.steps %}
+        {
+            "@type": "HowToStep",
+            "position": {{ loop.index }},
+            "name": "{{ step.name|replace('"','\\"') }}",
+            "text": "{{ step.text|replace('"','\\"') }}"
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ]
+}
+</script>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -162,8 +210,30 @@
                     Consultar por WhatsApp
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                 </a>
+                {% if has_guide %}
+                <a href="{{ url_for('guia_detail', slug=product.slug) }}" class="detail-guide-link">
+                    Leer guía completa de {{ product.name }} →
+                </a>
+                {% endif %}
             </div>
         </div>
+
+        {# Visible FAQ — same content as FAQPage schema. Real on-page text
+           is what Google trusts; structured data alone without visible
+           content is a Google manual-action risk. #}
+        {% if faq %}
+        <section class="detail-faq reveal">
+            <h2 class="detail-faq-title">Preguntas frecuentes sobre {{ product.name }}</h2>
+            <div class="detail-faq-list">
+                {% for item in faq %}
+                <details class="detail-faq-item">
+                    <summary>{{ item.q }}</summary>
+                    <div class="detail-faq-answer"><p>{{ item.a }}</p></div>
+                </details>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
 
         {% if related %}
         <div class="related-products">
