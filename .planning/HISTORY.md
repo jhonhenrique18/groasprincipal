@@ -385,3 +385,78 @@ benefícios + receitas + B2B + ranking dominante para Paraguay.
 ### Checkpoint
 
 - `2026-05-03-seo-fase-d-guias-editoriales.md` (decisões, rejeições, validação).
+
+## Fase 4.D-extended — 16 guias adicionais + UX polish (2026-05-03, Claude)
+
+Continuação imediata do bloco SEO. Total escalou de 10 para 26 guias após
+feedback iterativo do usuário e entrega de pillars estratégicos.
+
+### O que foi adicionado nesta extensão
+
+#### 11 produto-guias adicionais (#11 a #21)
+- Comino en Grano (asado paraguayo, chimichurri tradicional)
+- Comino en Polvo (industrial chacinas)
+- Pimienta del Reino en Polvo
+- Semilla de Anís ★ killer pra chipa paraguaya (42 menções a chipa, 5 variantes detalhadas, receita HowTo completa)
+- Castaña de Cajú W1 Cruda (plant-based, leche vegetal)
+- Almendra Americana (California, repostería, leche)
+- Nuez Mariposa (alfajores, panificação navideña)
+- Pistacho sin Cáscara (heladería, pastelería autor)
+- Harina de Almendra Parmex (macarons, sin gluten, keto)
+- Curry (cocina internacional, fusión)
+- Paprika Dulce / Pimentón (chacinas, asado, cocina española)
+
+#### 5 guias estratégicas (pillars + institucional, #22-#26)
+- Pillar A: Insumos para Chipa Industrial (lista operativa, dosis, cadena fornecedores)
+- Pillar B: 7 Especias del Asado Paraguayo (sal+comino+ajo+pimentón+orégano+pimienta+romero, conecta 7 produtos)
+- Colorífico/Colorau (locro, sopa paraguaya, mbeyú, chacinas — substituto natural tartrazina)
+- Sal Rosa del Himalaya Fino (gourmet premium, restaurantes, dietéticas, gimnasios)
+- Pillar C: Cómo Elegir Importador de Especias en Paraguay (institucional B2B, vende a empresa, 10 critérios + bandeiras vermelhas)
+
+### UX polish entregue
+
+- Marca SEO visível trocada por "Especias del Paraguay" (prosa, hero, meta, title);
+  schema JSON-LD preservou Grãos S.A. para continuidade de Organization @id.
+- Hero /guias completamente redesenhado: 2 fotos overlapping magazine-cover,
+  Fraunces serif, padding compacto, sem stats numéricos.
+- Gallery "Otros productos" fix de CSS specificity (estava empilhando como links sem estilo).
+- Filter saturate(.78-.85) brightness(1.04) em fotos de cards/hero/gallery
+  para suavizar backdrops coloridos studio (hibisco red, spirulina green,
+  quinoa earth) que ficavam pesados visualmente. Hover restaura cor cheia.
+- Productos: separação modal vs navigation. Click na imagem → Vista Rápida
+  (modal com hint "Vista Rápida" na hover). Click no pill "Ver Producto"
+  (data-go-to-page) → navega para /producto/{slug}. JS atualizado para
+  preservar default behavior do <a> em elementos com data-go-to-page.
+- Cards .product-card flex column + .product-info flex column + pill
+  margin-top:auto para alinhar todos os cards independente de quantidade
+  de metadata (origin, presentation).
+- Botões CTA inline (Ver producto + Cotizar WhatsApp) com override de
+  alta especificidade contra .guia-body a (estava deixando texto paprika
+  invisível sobre fundo paprika do gradient).
+
+### Validação local
+
+- 26 guias, todas 200 OK.
+- 6 blocos JSON-LD válidos por guia.
+- Sitemap.xml inclui 26 entries com priority 0.85.
+- Word count médio: ~1200 palavras por guia. Pillars 1700-1850 palavras.
+- Total: ~30k palavras de conteúdo curado em SEO PY.
+
+### Topic clusters formados
+
+- **Chipa**: Pillar Insumos + Anís + Sal Rosa + Comino + Orégano + Colorífico
+- **Asado**: Pillar 7 Especias + Comino + Pimentón + Orégano + Sal + Pimienta + Ajo + Romero
+- **Plant-based**: Spirulina + Cajú + Almendra + Chía + Quinoa + Maca + Moringa + Linaza
+- **Repostería premium**: Pistacho + Cacao Alcalino + Harina Almendra + Almendra + Nuez Mariposa
+- **Industrial chacinas**: Comino polvo + Pimienta polvo + Pimentón + Colorífico + Sal
+- **Hierbas digestivas**: Manzanilla + Hibisco + Boldo + Cedrón + Melissa + Cardo Mariano
+
+### Deploy
+
+- 2026-05-03 03:20: usuário autoriza push para produção ("agora coloque em producao faca fit").
+- Railway auto-deploy on push to main.
+- Próximos sinais a monitorar:
+  - GSC: aparição em queries genéricas (manzanilla, canela, comino, cúrcuma, anís).
+  - GSC: novas URLs /guias/* indexadas.
+  - GA4: tráfego orgânico para /guias/.
+  - Conversão para WhatsApp via /guias/ vs baseline.

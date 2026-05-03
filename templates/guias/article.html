@@ -137,14 +137,14 @@
 <div class="reading-progress" aria-hidden="true"><div class="reading-progress-bar" id="readingProgress"></div></div>
 
 <article class="guia-article">
-    <!-- ═══ HERO ═══ -->
-    <header class="guia-hero guia-hero--{{ guide.hero_treatment }}">
+    <!-- ═══ HERO (real photo full-bleed, dramatic editorial) ═══ -->
+    <header class="guia-hero" data-treatment="{{ guide.hero_treatment }}">
         <div class="guia-hero-bg" data-treatment="{{ guide.hero_treatment }}">
             {% if product and product.image %}
             <img src="{{ product.image }}" alt="" class="guia-hero-img" loading="eager" fetchpriority="high">
             {% endif %}
-            <div class="guia-hero-overlay"></div>
         </div>
+        <div class="guia-hero-overlay"></div>
         <div class="guia-hero-content">
             <nav class="breadcrumb-inline breadcrumb-on-dark" aria-label="Migas de pan">
                 <a href="{{ url_for('index') }}">Inicio</a>
@@ -159,7 +159,7 @@
             <div class="guia-meta">
                 <span>Actualizado {{ guide.updated }}</span>
                 <span>·</span>
-                <span>Por Grãos S.A.</span>
+                <span>Por Especias del Paraguay</span>
             </div>
         </div>
     </header>
@@ -195,7 +195,7 @@
                 {{ guide.intro|safe }}
             </div>
 
-            <!-- Sections -->
+            <!-- Sections — interleaved with feature image and products gallery -->
             {% for section in guide.sections %}
             <section class="guia-section" id="{{ section.id }}">
                 <h2 class="guia-section-heading">{{ section.heading }}</h2>
@@ -219,6 +219,44 @@
                 </div>
                 {% endif %}
             </section>
+            {# After the 2nd section (¿Qué es? + Beneficios), insert a large
+               cinematic feature image of the canonical product. Adds visual
+               rhythm and breaks up long-form text exactly where the reader
+               might lose momentum. #}
+            {% if loop.index == 2 and product and product.image %}
+            <figure class="guia-feature-image">
+                <img src="{{ product.image }}" alt="{{ product.name }} — vista editorial" loading="lazy">
+                <figcaption class="guia-feature-image-caption">
+                    <span class="eyebrow">{{ product.name }}</span>
+                    <span class="text">{% if _scientific %}<em>{{ _scientific }}</em> · {% endif %}{% if product.origin %}Origen: {{ product.origin }}{% endif %}</span>
+                </figcaption>
+            </figure>
+            {% endif %}
+            {# After the 3rd section (Usos industria), insert a gallery of
+               other products in the same category. Real photos, real links,
+               adds color and discovery without inventing imagery. #}
+            {% if loop.index == 3 and category_products %}
+            <aside class="guia-products-mentioned">
+                <p class="guia-products-mentioned-eyebrow">Otros productos de {{ guide.category }}</p>
+                <h3 class="guia-products-mentioned-title">El catálogo completo de {{ guide.category|lower }} al por mayor</h3>
+                <div class="guia-mentioned-grid">
+                    {% for cp in category_products %}
+                    <a href="{{ url_for('producto', slug=cp.slug) }}" class="guia-mentioned-card">
+                        <div class="guia-mentioned-card-img">
+                            <img src="{{ cp.image|img_sm }}" alt="{{ cp.name }}" loading="lazy" width="200" height="200">
+                        </div>
+                        <div class="guia-mentioned-card-body">
+                            <p class="guia-mentioned-card-name">{{ cp.name }}</p>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </aside>
+            {% endif %}
+            {# Decorative section divider after the 4th section #}
+            {% if loop.index == 4 %}
+            <div class="guia-divider" aria-hidden="true"><span></span></div>
+            {% endif %}
             {% endfor %}
 
             <!-- Inline strong CTA -->

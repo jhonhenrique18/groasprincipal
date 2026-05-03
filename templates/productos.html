@@ -150,6 +150,10 @@
                        JS filter (substring match on `title`) can find a card
                        for queries that don't use the canonical wording. #}
                     {% set _card_title %}{{ p.name }} — {{ p.category.name }}{% if p.alias_list %} | {{ p.alias_list[:4]|join(', ') }}{% endif %}{% if p.scientific_name %} | {{ p.scientific_name }}{% endif %}{% endset %}
+                    {# The card itself opens the product modal (image area).
+                       The "Ver producto" pill carries data-go-to-page so the
+                       JS lets the click bubble to the <a> normally and the
+                       browser navigates to the full product page. #}
                     <a href="{{ url_for('producto', slug=p.slug) }}" class="product-card reveal" data-slug="{{ p.slug }}" data-name="{{ p.name }}" data-aliases="{{ p.alias_list|join(', ') }}" title="{{ _card_title }}">
                         <div class="product-img">
                             {% if p.image %}
@@ -157,12 +161,16 @@
                             {% else %}
                             <div class="product-placeholder">{{ p.name[0] }}</div>
                             {% endif %}
+                            <span class="product-img-hint" aria-hidden="true">Vista rápida</span>
                         </div>
                         <div class="product-info">
                             <h3>{{ p.name }}</h3>
                             {% if p.origin %}<span class="product-origin">{{ p.origin }}</span>{% endif %}
                             {% if p.presentation %}<span class="product-pres">{{ p.presentation }}</span>{% endif %}
-                            <span class="product-link">Ver producto <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+                            <span class="product-link product-link--cta" data-go-to-page>
+                                Ver producto
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                            </span>
                         </div>
                     </a>
                     {% endfor %}

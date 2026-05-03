@@ -6,7 +6,7 @@ See: .planning/PROJECT.md (updated 2026-04-05)
 See also: .planning/CONTEXT.md
 
 **Core value:** Catálogo de produtos atualizado e acessível que converte visitantes em contatos de WhatsApp para vendas B2B ao por mayor.
-**Current focus:** SEO Fase D entregue (10 guias editoriais long-form com Article+FAQPage+HowTo schema). Próximo: validação visual local + push (aguardando autorização) + Fase B/C.
+**Current focus:** SEO Fase D consolidada e deployada — 26 guias totais (16 novas: Comino grano/polvo, Pimienta polvo, Anís semilla CHIPA, Castaña Cajú, Almendra, Nuez Mariposa, Pistacho, Harina Almendra, Curry, Paprika Dulce + 2 Pillars Chipa+Asado + Colorífico + Sal Rosa + Pillar Importador B2B). Polish UX completo (Fraunces serif, hero redesign, gallery fix, button fixes, Vista rápida modal vs Ver producto navigation).
 
 ## Current Position
 
@@ -81,9 +81,9 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-05-02 (Claude — em andamento)
-Stopped at: Abertura do bloco de SEO optimization. Plano de 4 fases travado; documentação de decisão estratégica feita em PROJECT.md + checkpoint dedicado. Próximo passo imediato: FASE A1 (schema columns no Product) + A2 (aliases curados) + A4-A5 (template rewrite) + smoke test local antes de commit.
-Resume file: .planning/checkpoints/2026-05-02-seo-optimization-kickoff.md
+Last session: 2026-05-03 (Claude)
+Stopped at: SEO Fase A + Fase D completas e deployadas em produção. 26 guias editoriais long-form ranqueando (12k+ palavras de conteúdo curado). Topic clusters formados (chipa, asado, plant-based, repostería premium). Marca "Especias del Paraguay" no visível, "Grãos S.A." preservada no schema/SEO. Próximo natural: monitorar GSC para ver impacto em ranking dos termos genéricos, considerar Fase B (search server-side) e Fase C (FAQPage/HowTo nas páginas de produto canônicas).
+Resume file: .planning/checkpoints/2026-05-03-seo-fase-d-guias-editoriales.md
 
 Pacote anterior (security defense in depth, ainda pendente):
 - Última sessão: 2026-04-19 (Codex). Reaudit confirmou hardening básico (items 1-7) refletido no código. Riscos residuais: cookie flags, CSP, proxy-aware rate limit, tightening de /api/meta-capi-event.

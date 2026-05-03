@@ -320,6 +320,9 @@ def guia_detail(slug):
     - guide: the full dict from GUIDES[slug]
     - product: the related Product object (for image, aliases, CTA link)
     - related_guides: short summaries of guides linked from `related_slugs`
+    - category_products: up to 6 OTHER active products in the same category,
+      used by the mid-article gallery to add visual richness without
+      requiring per-guide image generation.
     """
     guide = get_guide(slug)
     if not guide:
@@ -338,7 +341,28 @@ def guia_detail(slug):
                 'reading_time': rg['reading_time'],
                 'product': Product.query.filter_by(slug=rg['product_slug'], active=True).first(),
             })
-    return render_template('guias/article.html', guide=guide, product=product, related_guides=related_guides, slug=slug)
+    # Extra image variety: pull up to 6 OTHER products from the same category
+    # (excluding the guide's main product) so the mid-article gallery has real
+    # photos to show. Falls back to empty list if the product is detached.
+    category_products = []
+    if product:
+        category_products = (
+            Product.query
+            .filter(
+                Product.category_id == product.category_id,
+                Product.id != product.id,
+                Product.active == True,
+                Product.image != '',
+            )
+            .order_by(Product.featured.desc(), Product.name)
+            .limit(6)
+            .all()
+        )
+    return render_template(
+        'guias/article.html',
+        guide=guide, product=product, related_guides=related_guides,
+        category_products=category_products, slug=slug,
+    )
 
 # ──────────────────── SEO ROUTES ────────────────────
 

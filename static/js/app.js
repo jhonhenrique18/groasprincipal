@@ -118,10 +118,16 @@ document.addEventListener('DOMContentLoaded', function () {
     var modal = document.getElementById('productModal');
     var modalClose = document.getElementById('modalClose');
     if (modal) {
-        // Open modal on product card click
+        // Open modal on product card click — but explicitly LET THROUGH any
+        // click that lands on an element marked with data-go-to-page (the
+        // "Ver producto" button), so users have a deliberate path to the
+        // full product page when they want it.
         document.addEventListener('click', function (e) {
             var card = e.target.closest('.product-card[data-slug]');
             if (!card) return;
+            // Click landed on the explicit "go to page" button → let the
+            // browser follow the <a href> normally.
+            if (e.target.closest('[data-go-to-page]')) return;
             e.preventDefault();
             var slug = card.getAttribute('data-slug');
             openProductModal(slug);
