@@ -8,7 +8,7 @@ venv/
 *.egg-info/
 dist/
 build/
-lp-graos-foz/
+lp-legacy-foz/
 elementor-*.json
 *.sqlite3
 .codex/

@@ -55,15 +55,13 @@ def seed():
             print(f"Seeded {len(data['products'])} products.")
 
         # ── Site Settings ──
+        # Contact defaults intentionally empty. Set via admin/settings after reactivation.
         if not SiteSetting.get('whatsapp'):
-            SiteSetting.set('whatsapp', '+595 983002684')
-            print("Set default WhatsApp.")
+            SiteSetting.set('whatsapp', '')
         if not SiteSetting.get('email'):
-            SiteSetting.set('email', 'jhonatan@grupo-dip.com')
-            print("Set default email.")
+            SiteSetting.set('email', '')
         if not SiteSetting.get('hero_image'):
-            SiteSetting.set('hero_image', '/static/uploads/6a6805d27ce146bfa9af82e53d827753.png')
-            print("Set default hero image.")
+            SiteSetting.set('hero_image', '')
 
         print("\nSeed completed!")
 

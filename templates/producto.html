@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{# ─────────── SEO BREADTH (additive over Grãos baseline) ───────────
+{# ─────────── SEO BREADTH (alias-aware product schema) ───────────
    Each product page already ranks for its canonical name (e.g. "Manzanilla
    Flor"). The blocks below extend the page so generic queries ("manzanilla",
    "camomila", "chamomile") also match this same URL. Slug, canonical and
    sitemap entry are unchanged on purpose — we are stacking breadth, not
-   migrating the page. The brand SEO (`Grãos S.A.`) stays as the publisher.
+   migrating the page. The brand SEO (`Especias del Paraguay`) stays as the publisher.
 
    `product.alias_list` is a Python property on the model that returns a list
    of clean strings parsed from the comma-separated `aliases` column. When a
@@ -20,12 +20,12 @@
 {# Title override: aim for 55-60 chars, lead with canonical name to preserve
    existing ranking signal, then add the broadest alias and the brand suffix.
    Pages without curated aliases keep the original short title. #}
-{% block full_title %}{% if product.seo_title_override %}{{ product.seo_title_override }}{% elif _alias_primary and _alias_primary != product.name %}{{ product.name }} — {{ _alias_primary }} | Grãos S.A. Paraguay{% else %}{{ product.name }} | {{ product.category.name }} al por mayor en Paraguay{% endif %}{% endblock %}
+{% block full_title %}{% if product.seo_title_override %}{{ product.seo_title_override }}{% elif _alias_primary and _alias_primary != product.name %}{{ product.name }} — {{ _alias_primary }} | Especias del Paraguay{% else %}{{ product.name }} | {{ product.category.name }} al por mayor en Paraguay{% endif %}{% endblock %}
 
 {# Meta description: blend canonical name, top aliases and category in a
-   sentence a human would actually read. Keeps "Grãos S.A." as the publisher
+   sentence a human would actually read. Keeps "Especias del Paraguay" as the publisher
    signal so brand-related queries keep their authority. #}
-{% block meta_description %}{% if product.seo_description_override %}{{ product.seo_description_override }}{% else %}{{ product.name }}{% if _alias_primary and _alias_primary != product.name %} ({{ _alias_primary }}{% if _alias_secondary %}, {{ _alias_secondary }}{% endif %}){% endif %} — {{ product.category.name }} al por mayor en Paraguay. {% if product.origin %}Origen: {{ product.origin }}. {% endif %}{% if product.presentation %}Presentación: {{ product.presentation }}. {% endif %}Importación directa por Grãos S.A.{% endif %}{% endblock %}
+{% block meta_description %}{% if product.seo_description_override %}{{ product.seo_description_override }}{% else %}{{ product.name }}{% if _alias_primary and _alias_primary != product.name %} ({{ _alias_primary }}{% if _alias_secondary %}, {{ _alias_secondary }}{% endif %}){% endif %} — {{ product.category.name }} al por mayor en Paraguay. {% if product.origin %}Origen: {{ product.origin }}. {% endif %}{% if product.presentation %}Presentación: {{ product.presentation }}. {% endif %}Importación directa por Especias del Paraguay{% endif %}{% endblock %}
 
 {# Meta keywords: compound name + every alias + scientific name + category.
    Modern search engines weight this lightly, but it still feeds Bing,
@@ -33,11 +33,11 @@
 {% block meta_keywords %}{{ product.name }}, {{ product.category.name }}, {{ product.name }} al por mayor, comprar {{ product.name }} Paraguay{% if product.origin %}, {{ product.name }} {{ product.origin }}{% endif %}{% for a in _aliases %}, {{ a }}{% endfor %}{% if _scientific %}, {{ _scientific }}{% endif %}{% endblock %}
 
 {% block og_type %}product{% endblock %}
-{% block og_title %}{{ product.name }}{% if _alias_primary and _alias_primary != product.name %} — {{ _alias_primary }}{% endif %} | Grãos S.A.{% endblock %}
+{% block og_title %}{{ product.name }}{% if _alias_primary and _alias_primary != product.name %} — {{ _alias_primary }}{% endif %} | Especias del Paraguay{% endblock %}
 {% block og_description %}{{ product.name }}{% if _alias_primary and _alias_primary != product.name %} ({{ _alias_primary }}){% endif %} | {{ product.category.name }} al por mayor. {% if product.origin %}Origen: {{ product.origin }}.{% endif %} Importación directa.{% endblock %}
-{% block og_image %}{% if product.image %}https://www.graos.com.py{{ product.image }}{% else %}https://www.graos.com.py/static/img/og-image-1200x630.png{% endif %}{% endblock %}
-{% block tw_title %}{{ product.name }}{% if _alias_primary and _alias_primary != product.name %} — {{ _alias_primary }}{% endif %} | Grãos S.A.{% endblock %}
-{% block tw_description %}{{ product.category.name }} al por mayor — Grãos S.A. Paraguay.{% endblock %}
+{% block og_image %}{% if product.image %}{{ product.image }}{% else %}/static/img/og-image-1200x630.png{% endif %}{% endblock %}
+{% block tw_title %}{{ product.name }}{% if _alias_primary and _alias_primary != product.name %} — {{ _alias_primary }}{% endif %} | Especias del Paraguay{% endblock %}
+{% block tw_description %}{{ product.category.name }} al por mayor — Especias del Paraguay.{% endblock %}
 
 {% block structured_data %}
 <!-- Schema.org Product (enriched: alternateName, keywords, scientific name) -->
@@ -47,19 +47,19 @@
     "@type": "Product",
     "name": "{{ product.name }}",
     {% if _aliases %}"alternateName": [{% for a in _aliases %}"{{ a|replace('"','\\"') }}"{% if not loop.last %},{% endif %}{% endfor %}],{% endif %}
-    "description": "{{ (product.description if product.description else product.name + ' — ' + product.category.name + ' al por mayor en Paraguay. Importación directa por Grãos S.A.')|replace('"','\\"') }}",
+    "description": "{{ (product.description if product.description else product.name + ' — ' + product.category.name + ' al por mayor en Paraguay. Importación directa por Especias del Paraguay')|replace('"','\\"') }}",
     "category": "{{ product.category.name }}",
     {% if _aliases or _scientific %}"keywords": "{% if _scientific %}{{ _scientific }}, {% endif %}{{ product.name }}{% for a in _aliases %}, {{ a|replace('"','\\"') }}{% endfor %}",{% endif %}
-    {% if product.image %}"image": "https://www.graos.com.py{{ product.image }}",{% endif %}
-    "url": "https://www.graos.com.py/producto/{{ product.slug }}",
+    {% if product.image %}"image": "{{ product.image }}",{% endif %}
+    "url": "/producto/{{ product.slug }}",
     "brand": {
         "@type": "Brand",
-        "name": "Grãos S.A."
+        "name": "Especias del Paraguay"
     },
     "manufacturer": {
         "@type": "Organization",
-        "name": "Grãos S.A.",
-        "@id": "https://www.graos.com.py/#organization"
+        "name": "Especias del Paraguay",
+        "@id": "/#especias-organization"
     },
     {% if product.origin %}"countryOfOrigin": {"@type": "Country", "name": "{{ product.origin }}"},{% endif %}
     "sku": "{{ product.slug }}",
@@ -71,7 +71,7 @@
         "@type": "BusinessAudience",
         "audienceType": "Importadores, distribuidores, mayoristas, fábricas y restaurantes en Paraguay"
     },
-    "@id": "https://www.graos.com.py/producto/{{ product.slug }}#product"
+    "@id": "/producto/{{ product.slug }}#product"
 }
 </script>
 <!-- Schema.org BreadcrumbList -->
@@ -80,9 +80,9 @@
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-        {"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.graos.com.py/"},
-        {"@type": "ListItem", "position": 2, "name": "Productos", "item": "https://www.graos.com.py/productos"},
-        {"@type": "ListItem", "position": 3, "name": "{{ product.category.name }}", "item": "https://www.graos.com.py/productos/{{ product.category.slug }}"},
+        {"@type": "ListItem", "position": 1, "name": "Inicio", "item": "/"},
+        {"@type": "ListItem", "position": 2, "name": "Productos", "item": "/productos"},
+        {"@type": "ListItem", "position": 3, "name": "{{ product.category.name }}", "item": "/productos/{{ product.category.slug }}"},
         {"@type": "ListItem", "position": 4, "name": "{{ product.name }}"}
     ]
 }
@@ -94,12 +94,12 @@
 {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "@id": "https://www.graos.com.py/producto/{{ product.slug }}#webpage",
-    "url": "https://www.graos.com.py/producto/{{ product.slug }}",
+    "@id": "/producto/{{ product.slug }}#webpage",
+    "url": "/producto/{{ product.slug }}",
     "name": "{{ product.name }}{% if _alias_primary and _alias_primary != product.name %} — {{ _alias_primary }}{% endif %}",
     "inLanguage": "es-PY",
-    "isPartOf": {"@id": "https://www.graos.com.py/#website"},
-    "about": {"@id": "https://www.graos.com.py/producto/{{ product.slug }}#product"},
+    "isPartOf": {"@id": "/#especias-website"},
+    "about": {"@id": "/producto/{{ product.slug }}#product"},
     "mentions": [
         {% for a in _aliases %}{"@type": "Thing", "name": "{{ a|replace('"','\\"') }}"}{% if not loop.last %},{% endif %}{% endfor %}
     ]
@@ -115,7 +115,7 @@
 {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "@id": "https://www.graos.com.py/producto/{{ product.slug }}#faq",
+    "@id": "/producto/{{ product.slug }}#faq",
     "mainEntity": [
         {% for item in faq %}
         {

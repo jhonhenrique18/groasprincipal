@@ -12,7 +12,7 @@
 {% block meta_description %}Guías editoriales sobre los productos naturales que importamos: beneficios, usos industriales, recetas y dónde comprar al por mayor en Paraguay. Conocimiento real, sin marketing vacío.{% endblock %}
 {% block meta_keywords %}guía manzanilla, guía canela, guía cúrcuma, guía hibisco, guía spirulina, guía quinoa, guía chía, productos naturales paraguay, guía mayorista paraguay, especias guía{% endblock %}
 
-{% block og_title %}Guías Especializadas — Grãos S.A.{% endblock %}
+{% block og_title %}Guías Especializadas — Especias del Paraguay{% endblock %}
 {% block og_description %}Conocimiento real sobre los productos naturales más buscados de Paraguay. Para industria, restaurantes, herboristerías y consumo familiar.{% endblock %}
 
 {% block structured_data %}
@@ -20,11 +20,11 @@
 {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "@id": "https://www.graos.com.py/guias#collection",
-    "name": "Guías Especializadas — Grãos S.A.",
+    "@id": "/guias#collection",
+    "name": "Guías Especializadas — Especias del Paraguay",
     "description": "Guías editoriales sobre productos naturales al por mayor en Paraguay: beneficios, usos industriales, recetas y compra mayorista.",
     "inLanguage": "es-PY",
-    "isPartOf": {"@id": "https://www.graos.com.py/#website"},
+    "isPartOf": {"@id": "/#especias-website"},
     "mainEntity": {
         "@type": "ItemList",
         "numberOfItems": {{ guides|length }},
@@ -33,7 +33,7 @@
             {
                 "@type": "ListItem",
                 "position": {{ loop.index }},
-                "url": "https://www.graos.com.py/guias/{{ g.slug }}",
+                "url": "/guias/{{ g.slug }}",
                 "name": "{{ g.title|replace('"','\\"') }}"
             }{% if not loop.last %},{% endif %}
             {% endfor %}
@@ -46,7 +46,7 @@
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-        {"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.graos.com.py/"},
+        {"@type": "ListItem", "position": 1, "name": "Inicio", "item": "/"},
         {"@type": "ListItem", "position": 2, "name": "Guías"}
     ]
 }

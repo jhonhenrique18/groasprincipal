@@ -120,6 +120,32 @@ csrf = CSRFProtect(app)
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp', 'gif'}
 
+# ──────────────────── MAINTENANCE MODE ────────────────────
+# Site is intentionally offline. Public routes return 410 Gone with a neutral
+# maintenance page so search engines deindex aggressively. Admin remains
+# reachable so content can still be managed while the site is dark.
+# Flip MAINTENANCE_MODE to False to bring the site back online.
+MAINTENANCE_MODE = os.environ.get('MAINTENANCE_MODE', '1') != '0'
+
+_MAINTENANCE_ALLOWED_PREFIXES = (
+    '/admin',
+    '/static',
+    '/uploads',
+    '/robots.txt',
+)
+
+@app.before_request
+def _maintenance_gate():
+    if not MAINTENANCE_MODE:
+        return None
+    path = request.path or '/'
+    for prefix in _MAINTENANCE_ALLOWED_PREFIXES:
+        if path == prefix or path.startswith(prefix + '/') or path.startswith(prefix):
+            return None
+    # Everything public returns 410 Gone with a neutral maintenance page.
+    # 410 is the strongest deindex signal — far stronger than 404.
+    return make_response(render_template('maintenance.html'), 410)
+
 # ──────────────────── HELPERS ────────────────────
 
 def allowed_file(filename):
@@ -155,6 +181,9 @@ def add_security_headers(response):
     response.headers['Permissions-Policy'] = 'geolocation=(), microphone=(), camera=()'
     if not app.debug:
         response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    if MAINTENANCE_MODE:
+        # Belt-and-suspenders deindex signal at the HTTP header level.
+        response.headers['X-Robots-Tag'] = 'noindex, nofollow, noarchive, nosnippet'
     # Cache headers for static assets
     if response.content_type and ('css' in response.content_type or 'javascript' in response.content_type):
         response.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
@@ -462,6 +491,10 @@ def guia_detail(slug):
 
 @app.route('/robots.txt')
 def robots():
+    if MAINTENANCE_MODE:
+        # Block every crawler from every path while the site is dark.
+        # No sitemap reference — there is intentionally no live content to index.
+        return Response("User-agent: *\nDisallow: /\n", mimetype='text/plain')
     content = """User-agent: *
 Allow: /
 Disallow: /admin/
@@ -469,17 +502,18 @@ Disallow: /api/
 Disallow: /uploads/
 
 Crawl-delay: 1
-
-Sitemap: https://www.graos.com.py/sitemap.xml
-Sitemap: https://www.graos.com.py/sitemap-products.xml
 """
     return Response(content, mimetype='text/plain')
 
 @app.route('/sitemap.xml')
 def sitemap():
+    if MAINTENANCE_MODE:
+        # Sitemap intentionally gone. Serving an empty sitemap would re-register
+        # the URLs as "known but currently empty" — 410 says "permanently gone".
+        return make_response(render_template('maintenance.html'), 410)
     from datetime import datetime as dt
     today = dt.utcnow().strftime('%Y-%m-%d')
-    base = 'https://www.graos.com.py'
+    base = 'https://especiasdelparaguay.com.py'
     pages = []
     # Static pages
     pages.append({'loc': base + '/', 'priority': '1.0', 'changefreq': 'weekly', 'lastmod': today})
@@ -521,9 +555,11 @@ def sitemap():
 
 @app.route('/sitemap-products.xml')
 def sitemap_products():
+    if MAINTENANCE_MODE:
+        return make_response(render_template('maintenance.html'), 410)
     from datetime import datetime as dt
     today = dt.utcnow().strftime('%Y-%m-%d')
-    base = 'https://www.graos.com.py'
+    base = 'https://especiasdelparaguay.com.py'
     xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n'
     xml += '        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n'
@@ -551,6 +587,8 @@ def sitemap_products():
 
 @app.errorhandler(404)
 def page_not_found(e):
+    if MAINTENANCE_MODE:
+        return make_response(render_template('maintenance.html'), 410)
     return render_template('404.html'), 404
 
 @app.route('/nosotros')
@@ -936,6 +974,13 @@ def init_db():
     """Create tables and run seed if database is empty."""
     db.create_all()
     _ensure_seo_columns()
+    if MAINTENANCE_MODE:
+        # Wipe contact info from DB on every boot while site is dark.
+        # Idempotent: only updates if there's something to clear.
+        for key in ('whatsapp', 'email', 'hero_image'):
+            if SiteSetting.get(key):
+                SiteSetting.set(key, '')
+                app.logger.info('Maintenance: cleared SiteSetting %r', key)
     if Category.query.count() == 0:
         # First run — seed all data
         import json
@@ -958,12 +1003,13 @@ def init_db():
                 aliases=seo['aliases'], scientific_name=seo['scientific_name'],
             ))
         db.session.commit()
+        # Contact defaults intentionally empty. Set via admin/settings after reactivation.
         if not SiteSetting.get('whatsapp'):
-            SiteSetting.set('whatsapp', '+595 983002684')
+            SiteSetting.set('whatsapp', '')
         if not SiteSetting.get('email'):
-            SiteSetting.set('email', 'jhonatan@grupo-dip.com')
+            SiteSetting.set('email', '')
         if not SiteSetting.get('hero_image'):
-            SiteSetting.set('hero_image', '/static/uploads/6a6805d27ce146bfa9af82e53d827753.png')
+            SiteSetting.set('hero_image', '')
     else:
         # Existing DB — backfill aliases for products that don't have them yet
         _backfill_seo_aliases()

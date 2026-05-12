@@ -30,7 +30,7 @@ class Product(db.Model):
     active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    # SEO breadth layer — additive over the existing graos.com.py / Grãos S.A.
+    # SEO breadth layer — alias-aware product schema
     # baseline. None of these fields change the slug, canonical or sitemap
     # entry; they expand keyword coverage in title, meta and JSON-LD so generic
     # queries (e.g. "manzanilla") match a product whose canonical name is a

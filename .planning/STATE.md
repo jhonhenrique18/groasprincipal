@@ -6,7 +6,7 @@ See: .planning/PROJECT.md (updated 2026-04-05)
 See also: .planning/CONTEXT.md
 
 **Core value:** Catálogo de produtos atualizado e acessível que converte visitantes em contatos de WhatsApp para vendas B2B ao por mayor.
-**Current focus:** SEO Fase D consolidada e deployada — 26 guias totais (16 novas: Comino grano/polvo, Pimienta polvo, Anís semilla CHIPA, Castaña Cajú, Almendra, Nuez Mariposa, Pistacho, Harina Almendra, Curry, Paprika Dulce + 2 Pillars Chipa+Asado + Colorífico + Sal Rosa + Pillar Importador B2B). Polish UX completo (Fraunces serif, hero redesign, gallery fix, button fixes, Vista rápida modal vs Ver producto navigation).
+**Current focus:** ⛔ SITE OFFLINE — Modo deindex ativo. Wipe total de "Grãos S.A." do código (templates, schemas, configs, assets) + 410 Gone em todas as rotas públicas + robots.txt Disallow: / + X-Robots-Tag noindex globais. Maintenance page neutra no /. Admin permanece acessível. Toggle via env var `MAINTENANCE_MODE=0` na Railway para reativar. Reativação aguarda "barra limpa" no Google (~60-120 dias de quarentena). Decisões pendentes para reativação: domínio final (manter graos.com.py vs migrar para especiasdelparaguay.com.py), schema Organization novo, disclosure de razão social, higiene Compliance (logs Railway/Meta token).
 
 ## Current Position
 
@@ -81,9 +81,12 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-05-03 (Claude)
-Stopped at: SEO Fase A + Fase D completas e deployadas em produção. 26 guias editoriais long-form ranqueando (12k+ palavras de conteúdo curado). Topic clusters formados (chipa, asado, plant-based, repostería premium). Marca "Especias del Paraguay" no visível, "Grãos S.A." preservada no schema/SEO. Próximo natural: monitorar GSC para ver impacto em ranking dos termos genéricos, considerar Fase B (search server-side) e Fase C (FAQPage/HowTo nas páginas de produto canônicas).
-Resume file: .planning/checkpoints/2026-05-03-seo-fase-d-guias-editoriales.md
+Last session: 2026-05-11 (Claude)
+Stopped at: Wipe total de "Grãos S.A." + modo deindex deployado em produção. Conselho de 4 especialistas (Arquiteto/SEO/Cético/Compliance) consultado em paralelo antes da execução; tensão "sem rastros vs autoridade SEO" nomeada e usuário escolheu corte total (autoridade descartada porque site fica offline mesmo). Site retorna 410 Gone em todas rotas públicas, robots Disallow, X-Robots-Tag noindex globais. Próximo natural: validar deploy Railway em produção, submeter URL Removal no GSC, monitorar deindex orgânico via Pages report, decidir domínio de reativação após quarentena.
+Resume file: .planning/checkpoints/2026-05-11-graos-wipe-and-deindex.md
+
+Sessão anterior (SEO Fase A+D, hoje descartada):
+- 2026-05-03 (Claude). 26 guias editoriais + topic clusters + 112 produtos com FAQPage/HowTo. Toda a autoridade SEO construída nesse trabalho está sendo intencionalmente descartada pela decisão do usuário de wipe total + offline. Resume file legado: .planning/checkpoints/2026-05-03-seo-fase-d-guias-editoriales.md
 
 Pacote anterior (security defense in depth, ainda pendente):
 - Última sessão: 2026-04-19 (Codex). Reaudit confirmou hardening básico (items 1-7) refletido no código. Riscos residuais: cookie flags, CSP, proxy-aware rate limit, tightening de /api/meta-capi-event.

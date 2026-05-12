@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{# ─────────── SEO BREADTH (additive over Grãos baseline) ───────────
+{# ─────────── SEO BREADTH (alias-aware product schema) ───────────
    Listing pages need to rank for both the canonical category name
    ("Hierbas y Tés") and for generic terms users actually type
    ("té de manzanilla", "infusiones", "hierbas medicinales"). The route
@@ -11,9 +11,9 @@
 {% set _alias_pool = alias_pool %}
 
 {% block title %}{% if current_cat %}{{ current_cat.name }} al por mayor en Paraguay{% else %}Catálogo Productos Naturales al por Mayor{% endif %}{% endblock %}
-{% block meta_description %}{% if current_cat %}{{ current_cat.name }} al por mayor en Paraguay{% if _alias_pool %} — incluye {{ _alias_pool[:5]|join(', ') }} y más{% endif %}. Importación directa por Grãos S.A. con entregas a todo el país.{% else %}Catálogo completo de productos naturales al por mayor: especias, condimentos, hierbas medicinales, frutos secos, semillas, harinas y suplementos. Importación directa de 16 países por Grãos S.A. Paraguay.{% endif %}{% endblock %}
+{% block meta_description %}{% if current_cat %}{{ current_cat.name }} al por mayor en Paraguay{% if _alias_pool %} — incluye {{ _alias_pool[:5]|join(', ') }} y más{% endif %}. Importación directa por Especias del Paraguay con entregas a todo el país.{% else %}Catálogo completo de productos naturales al por mayor: especias, condimentos, hierbas medicinales, frutos secos, semillas, harinas y suplementos. Importación directa de 16 países por Especias del Paraguay.{% endif %}{% endblock %}
 {% block meta_keywords %}{% if current_cat %}{{ current_cat.name }} al por mayor, {{ current_cat.name }} Paraguay, comprar {{ current_cat.name }}{% for a in _alias_pool[:15] %}, {{ a }}{% endfor %}{% else %}catálogo productos naturales, especias al por mayor, condimentos mayorista Paraguay, hierbas medicinales, suplementos naturales, frutos secos importados, harinas especiales, importadora paraguay{% endif %}{% endblock %}
-{% block og_title %}{% if current_cat %}{{ current_cat.name }} al por mayor{% else %}Productos{% endif %} — Grãos S.A.{% endblock %}
+{% block og_title %}{% if current_cat %}{{ current_cat.name }} al por mayor{% else %}Productos{% endif %} — Especias del Paraguay{% endblock %}
 {% block og_description %}{% if current_cat %}{{ current_cat.name }} al por mayor con importación directa{% if _alias_pool %} — {{ _alias_pool[:3]|join(', ') }} y más{% endif %}.{% else %}Catálogo de productos naturales al por mayor para todo el Paraguay.{% endif %}{% endblock %}
 
 {% block structured_data %}
@@ -23,7 +23,7 @@
 {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "@id": "https://www.graos.com.py/productos/{{ current_cat.slug }}#faq",
+    "@id": "/productos/{{ current_cat.slug }}#faq",
     "mainEntity": [
         {% for item in category_content.faq %}
         {
@@ -43,10 +43,10 @@
 {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "{% if current_cat %}{{ current_cat.name }} al por mayor en Paraguay{% else %}Catálogo de Productos Naturales al por Mayor{% endif %} — Grãos S.A.",
-    "description": "{% if current_cat %}{{ current_cat.name }} al por mayor en Paraguay — importación directa por Grãos S.A.{% else %}Catálogo completo de productos naturales al por mayor en Paraguay: especias, condimentos, hierbas medicinales y suplementos.{% endif %}",
+    "name": "{% if current_cat %}{{ current_cat.name }} al por mayor en Paraguay{% else %}Catálogo de Productos Naturales al por Mayor{% endif %} — Especias del Paraguay",
+    "description": "{% if current_cat %}{{ current_cat.name }} al por mayor en Paraguay — importación directa por Especias del Paraguay{% else %}Catálogo completo de productos naturales al por mayor en Paraguay: especias, condimentos, hierbas medicinales y suplementos.{% endif %}",
     "inLanguage": "es-PY",
-    "isPartOf": {"@id": "https://www.graos.com.py/#website"},
+    "isPartOf": {"@id": "/#especias-website"},
     {% if _alias_pool %}"keywords": "{% if current_cat %}{{ current_cat.name }}, {% endif %}{{ _alias_pool[:20]|join(', ') }}",{% endif %}
     {% if _alias_pool %}"mentions": [
         {% for a in _alias_pool[:15] %}{"@type": "Thing", "name": "{{ a|replace('"','\\"') }}"}{% if not loop.last %},{% endif %}{% endfor %}
@@ -59,14 +59,14 @@
             {
                 "@type": "ListItem",
                 "position": {{ loop.index }},
-                "url": "https://www.graos.com.py/producto/{{ p.slug }}",
+                "url": "/producto/{{ p.slug }}",
                 "name": "{{ p.name }}"{% if p.alias_list %},
                 "item": {
                     "@type": "Product",
                     "name": "{{ p.name }}",
                     "alternateName": [{% for a in p.alias_list[:6] %}"{{ a|replace('"','\\"') }}"{% if not loop.last %},{% endif %}{% endfor %}],
-                    "url": "https://www.graos.com.py/producto/{{ p.slug }}"{% if p.image %},
-                    "image": "https://www.graos.com.py{{ p.image }}"{% endif %}
+                    "url": "/producto/{{ p.slug }}"{% if p.image %},
+                    "image": "{{ p.image }}"{% endif %}
                 }{% endif %}
             }{% if not loop.last %},{% endif %}
             {% endfor %}
@@ -79,9 +79,9 @@
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-        {"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.graos.com.py/"}
+        {"@type": "ListItem", "position": 1, "name": "Inicio", "item": "/"}
         {% if current_cat %}
-        ,{"@type": "ListItem", "position": 2, "name": "Productos", "item": "https://www.graos.com.py/productos"}
+        ,{"@type": "ListItem", "position": 2, "name": "Productos", "item": "/productos"}
         ,{"@type": "ListItem", "position": 3, "name": "{{ current_cat.name }}"}
         {% else %}
         ,{"@type": "ListItem", "position": 2, "name": "Productos"}

@@ -23,7 +23,7 @@
 {% block og_type %}article{% endblock %}
 {% block og_title %}{{ guide.title }}{% endblock %}
 {% block og_description %}{{ guide.dek }}{% endblock %}
-{% block og_image %}{% if product and product.image %}https://www.graos.com.py{{ product.image }}{% else %}https://www.graos.com.py/static/img/og-image-1200x630.png{% endif %}{% endblock %}
+{% block og_image %}{% if product and product.image %}{{ product.image }}{% else %}/static/img/og-image-1200x630.png{% endif %}{% endblock %}
 
 {% block structured_data %}
 <!-- Article schema (the editorial guide itself) -->
@@ -31,34 +31,34 @@
 {
     "@context": "https://schema.org",
     "@type": "Article",
-    "@id": "https://www.graos.com.py/guias/{{ slug }}#article",
+    "@id": "/guias/{{ slug }}#article",
     "headline": "{{ guide.title|replace('"','\\"') }}",
     "description": "{{ guide.dek|replace('"','\\"') }}",
-    "image": {% if product and product.image %}"https://www.graos.com.py{{ product.image }}"{% else %}"https://www.graos.com.py/static/img/og-image-1200x630.png"{% endif %},
+    "image": {% if product and product.image %}"{{ product.image }}"{% else %}"/static/img/og-image-1200x630.png"{% endif %},
     "datePublished": "{{ guide.published }}",
     "dateModified": "{{ guide.updated }}",
     "inLanguage": "es-PY",
     "author": {
         "@type": "Organization",
-        "name": "Grãos S.A.",
-        "@id": "https://www.graos.com.py/#organization"
+        "name": "Especias del Paraguay",
+        "@id": "/#especias-organization"
     },
     "publisher": {
         "@type": "Organization",
-        "name": "Grãos S.A.",
-        "@id": "https://www.graos.com.py/#organization",
+        "name": "Especias del Paraguay",
+        "@id": "/#especias-organization",
         "logo": {
             "@type": "ImageObject",
-            "url": "https://www.graos.com.py/static/img/logo-verde.png"
+            "url": "/static/img/logo-verde.png"
         }
     },
-    "mainEntityOfPage": "https://www.graos.com.py/guias/{{ slug }}",
+    "mainEntityOfPage": "/guias/{{ slug }}",
     "articleSection": "{{ guide.category }}",
     "wordCount": {{ guide.reading_time * 200 }},
     "about": {
         "@type": "Product",
         "name": "{{ product.name if product else guide.title }}",
-        "@id": "https://www.graos.com.py/producto/{{ guide.product_slug }}#product"
+        "@id": "/producto/{{ guide.product_slug }}#product"
     }{% if _aliases %},
     "keywords": "{% for a in _aliases %}{{ a|replace('"','\\"') }}{% if not loop.last %}, {% endif %}{% endfor %}{% if _scientific %}, {{ _scientific }}{% endif %}"{% endif %}
 }
@@ -70,8 +70,8 @@
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-        {"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.graos.com.py/"},
-        {"@type": "ListItem", "position": 2, "name": "Guías", "item": "https://www.graos.com.py/guias"},
+        {"@type": "ListItem", "position": 1, "name": "Inicio", "item": "/"},
+        {"@type": "ListItem", "position": 2, "name": "Guías", "item": "/guias"},
         {"@type": "ListItem", "position": 3, "name": "{{ guide.title|replace('"','\\"')|truncate(60) }}"}
     ]
 }
@@ -83,7 +83,7 @@
 {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "@id": "https://www.graos.com.py/guias/{{ slug }}#faq",
+    "@id": "/guias/{{ slug }}#faq",
     "mainEntity": [
         {% for item in guide.faq %}
         {

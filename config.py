@@ -10,7 +10,7 @@ class Config:
     if not _secret and not os.environ.get('DATABASE_URL'):
         _secret = secrets.token_hex(32)
     SECRET_KEY = _secret
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'sqlite:///graos.db')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'sqlite:///epy.db')
     # Railway uses postgres:// but SQLAlchemy needs postgresql://
     if SQLALCHEMY_DATABASE_URI and SQLALCHEMY_DATABASE_URI.startswith('postgres://'):
         SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI.replace('postgres://', 'postgresql://', 1)
