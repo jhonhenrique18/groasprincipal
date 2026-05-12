@@ -981,6 +981,44 @@ def init_db():
             if SiteSetting.get(key):
                 SiteSetting.set(key, '')
                 app.logger.info('Maintenance: cleared SiteSetting %r', key)
+        # Defense in depth: scrub any residual brand mentions from product/category
+        # rows that may have been edited via admin while the site was live.
+        # Variants covered: Grãos S.A., Grãos SA, Graos SA, Grãos, graos sa.
+        _legacy_brand_patterns = (
+            'Grãos S.A.', 'Grãos SA', 'Graos SA', 'Graos S.A.',
+            'Grãos Paraguay', 'Graos Paraguay', 'Grãos', 'graos sa',
+        )
+        replacement = 'Especias del Paraguay'
+        scrubbed_rows = 0
+        for prod in Product.query.all():
+            dirty = False
+            for pat in _legacy_brand_patterns:
+                if prod.name and pat in prod.name:
+                    prod.name = prod.name.replace(pat, replacement); dirty = True
+                if prod.description and pat in prod.description:
+                    prod.description = prod.description.replace(pat, replacement); dirty = True
+                if prod.origin and pat in prod.origin:
+                    prod.origin = prod.origin.replace(pat, replacement); dirty = True
+            if dirty:
+                scrubbed_rows += 1
+        for cat in Category.query.all():
+            dirty = False
+            for pat in _legacy_brand_patterns:
+                if cat.name and pat in cat.name:
+                    cat.name = cat.name.replace(pat, replacement); dirty = True
+            if dirty:
+                scrubbed_rows += 1
+        for ss in SiteSetting.query.all():
+            if ss.value:
+                cleaned = ss.value
+                for pat in _legacy_brand_patterns:
+                    cleaned = cleaned.replace(pat, replacement)
+                if cleaned != ss.value:
+                    ss.value = cleaned
+                    scrubbed_rows += 1
+        if scrubbed_rows:
+            db.session.commit()
+            app.logger.info('Maintenance: scrubbed legacy brand strings from %d DB rows', scrubbed_rows)
     if Category.query.count() == 0:
         # First run — seed all data
         import json

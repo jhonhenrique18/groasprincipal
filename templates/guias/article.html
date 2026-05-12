@@ -23,7 +23,7 @@
 {% block og_type %}article{% endblock %}
 {% block og_title %}{{ guide.title }}{% endblock %}
 {% block og_description %}{{ guide.dek }}{% endblock %}
-{% block og_image %}{% if product and product.image %}{{ product.image }}{% else %}/static/img/og-image-1200x630.png{% endif %}{% endblock %}
+{% block og_image %}{% if product and product.image %}{{ product.image }}{% else %}{% endif %}{% endblock %}
 
 {% block structured_data %}
 <!-- Article schema (the editorial guide itself) -->
@@ -34,7 +34,7 @@
     "@id": "/guias/{{ slug }}#article",
     "headline": "{{ guide.title|replace('"','\\"') }}",
     "description": "{{ guide.dek|replace('"','\\"') }}",
-    "image": {% if product and product.image %}"{{ product.image }}"{% else %}"/static/img/og-image-1200x630.png"{% endif %},
+    "image": {% if product and product.image %}"{{ product.image }}"{% else %}""{% endif %},
     "datePublished": "{{ guide.published }}",
     "dateModified": "{{ guide.updated }}",
     "inLanguage": "es-PY",
@@ -49,7 +49,6 @@
         "@id": "/#especias-organization",
         "logo": {
             "@type": "ImageObject",
-            "url": "/static/img/logo-verde.png"
         }
     },
     "mainEntityOfPage": "/guias/{{ slug }}",

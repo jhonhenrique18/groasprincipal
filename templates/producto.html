@@ -35,7 +35,7 @@
 {% block og_type %}product{% endblock %}
 {% block og_title %}{{ product.name }}{% if _alias_primary and _alias_primary != product.name %} — {{ _alias_primary }}{% endif %} | Especias del Paraguay{% endblock %}
 {% block og_description %}{{ product.name }}{% if _alias_primary and _alias_primary != product.name %} ({{ _alias_primary }}){% endif %} | {{ product.category.name }} al por mayor. {% if product.origin %}Origen: {{ product.origin }}.{% endif %} Importación directa.{% endblock %}
-{% block og_image %}{% if product.image %}{{ product.image }}{% else %}/static/img/og-image-1200x630.png{% endif %}{% endblock %}
+{% block og_image %}{% if product.image %}{{ product.image }}{% else %}{% endif %}{% endblock %}
 {% block tw_title %}{{ product.name }}{% if _alias_primary and _alias_primary != product.name %} — {{ _alias_primary }}{% endif %} | Especias del Paraguay{% endblock %}
 {% block tw_description %}{{ product.category.name }} al por mayor — Especias del Paraguay.{% endblock %}
 
